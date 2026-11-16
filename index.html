@@ -6,6 +6,7 @@
 <title>Vigie Contrôle Interne</title>
 <meta name="description" content="Pilotage du contrôle interne : risques, contrôles, tests, plans d'action, conformité, équipe, formations et veille.">
 <meta name="theme-color" content="#003865">
+<script>window.VIGIE_VERSION = "5.1 du 16 novembre 2026";</script>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -4698,7 +4699,7 @@ function ouvrirPanneau(){
       <button class="btn" data-stk="export">Exporter une sauvegarde</button>
       <button class="btn" data-stk="import">Importer une sauvegarde</button>
       ${demo?"":`<button class="btn" data-stk="changer">Changer de dossier</button>`}
-    </div></div>`;
+    </div><p class="sub" style="margin-top:14px">Version de l'application : <b>${esc(window.VIGIE_VERSION||"")}</b></p></div>`;
 }
 document.addEventListener("click", async e=>{
   const t=e.target;

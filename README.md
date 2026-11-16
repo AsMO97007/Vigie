@@ -1,6 +1,6 @@
 # Vigie — pilotage du contrôle interne
 
-Vigie réunit tout le dispositif de contrôle interne en un seul outil : cartographie des risques, référentiel de contrôles, plan de tests, plans d'action, score de conformité, tâches et organisation de l'équipe, formations interactives et veille réglementaire avec son plan d'action.
+Vigie réunit tout le dispositif de contrôle interne en un seul outil : cartographie des risques et des risques majeurs, incidents, indicateurs clés de risque, référentiel de contrôles, plan de tests, auto-évaluation, séparation des tâches, plans d'action, **PCIF (plan de contrôle des filiales)**, score de conformité et son évolution, rapport au comité d'audit, tâches et organisation de l'équipe, formations interactives et veille réglementaire.
 
 Cette version fonctionne **sans serveur et sans installation** :
 
@@ -68,6 +68,24 @@ Vous pouvez aussi déposer ce dossier d'application lui-même dans SharePoint, �
 
 ---
 
+## Les fonctions de pilotage
+
+- **Risques opérationnels** : bouton **Importer** pour reprendre une cartographie Excel existante (Vigie reconnaît les colonnes et vous laisse corriger la correspondance), bouton **Exporter** en Excel, Word ou PDF.
+- **Risques majeurs** : **Regrouper par catégorie** crée un risque majeur par catégorie à partir des risques opérationnels ; vous renommez, fusionnez et réaffectez ensuite. Chaque risque majeur prend la cotation de son risque opérationnel le plus critique.
+- **Incidents**, **Indicateurs de risque** (avec seuils d'alerte et valeurs mensuelles), **Auto-évaluation** des contrôles, **Séparation des tâches** (matrice des tâches incompatibles et détection des cumuls).
+- **Évolution et journal** : un état est enregistré chaque trimestre, et chaque modification est tracée (qui, quoi, quand).
+- **Rapport comité d'audit** (tableau de bord) en Word ou PDF, et **Relancer les retards** : un e-mail prêt à envoyer par responsable.
+- **Preuves** : sur les tests et les plans d'action, collez les liens SharePoint des pièces justificatives.
+
+## PCIF — plan de contrôle des filiales
+
+1. Ouvrez **PCIF filiales** et cliquez sur **Importer le classeur PCIF**. Choisissez votre classeur Excel : Vigie lit les feuilles « PCIF » (code, question, critères S/A/M/I, pièces attendues, priorité, type de grille), « PCIF RGPD » et « PCIF GRILLE DE MATURITE », et reprend les **personnes en charge** et les commentaires des onglets par processus (Achats, RH, SI…). La feuille en anglais et le récapitulatif ne sont pas importés.
+2. Indiquez l'exercice et la date limite, puis importez. Chaque point devient une fiche : critères d'évaluation, pièces attendues, résultat (S/A/M/I, Oui/Non ou taux), statut, justification et liens vers les pièces.
+3. **Récapitulatif** reprend le tableau par processus de votre onglet « Récapitulatif » (clés, secondaires, total) avec l'avancement et le niveau de maîtrise. **Par personne** liste ce qu'il reste à chacun et prépare les e-mails de relance.
+4. **Exporter** produit le PCIF rempli en Excel et une synthèse en PDF ou Word. **+ Exercice** reconduit le référentiel l'année suivante (personnes conservées, résultats remis à zéro).
+
+Réimporter le classeur met à jour les libellés, critères et personnes **sans effacer** les résultats déjà saisis. Le classeur n'est jamais copié sur GitHub : son contenu est enregistré uniquement dans le dossier partagé de l'équipe.
+
 ## Sauvegardes
 
 - Cliquez sur l'état de synchronisation, en bas de la barre latérale, puis **Exporter une sauvegarde** : vous obtenez un fichier `sauvegarde-vigie-AAAA-MM-JJ.json` contenant toutes les données de l'équipe. **Importer une sauvegarde** permet de les recharger.
@@ -89,6 +107,6 @@ Remplacez les fichiers sur GitHub. Chaque utilisateur reçoit la nouvelle versio
 
 | Fichier | Rôle |
 |---|---|
-| `index.html` | **Toute l'application** en un seul fichier : pages, styles, formations, stockage partagé et données de départ |
-| `manifest.webmanifest`, `sw.js`, `icons/` | Installation comme application et ouverture hors connexion |
+| `index.html` | **Toute l'application** en un seul fichier : pages, styles, formations, stockage partagé, données de départ et bibliothèques d'export (SheetJS, jsPDF) |
+| `manifest.webmanifest`, `sw.js`, `icon.svg`, `icon-192.png`, `icon-512.png`, `icon-maskable-512.png` | Installation comme application et ouverture hors connexion |
 | `Lancer Vigie.bat` | Lanceur Windows (fenêtre Edge sans barre d'adresse) |

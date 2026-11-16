@@ -40,7 +40,7 @@ Vigie (dans Edge) lit tous les fichiers vigie-*.json, les fusionne et affiche le
 ### 2. Publier l'application sur GitHub Pages
 
 1. Créez un dépôt sur GitHub, par exemple `vigie`.
-2. Déposez-y tout le contenu de ce dossier (bouton **Add file › Upload files**, ou `git push`).
+2. Déposez-y le contenu de ce dossier (bouton **Add file › Upload files**, ou `git push`). Le fichier indispensable est `index.html`, qui contient toute l'application ; les autres servent à l'installation comme application.
 3. Dans le dépôt : **Settings › Pages › Build and deployment › Source : Deploy from a branch**, choisissez la branche `main` et le dossier `/ (root)`, puis **Save**.
 4. Après une minute, l'adresse de l'application s'affiche, par exemple `https://votre-compte.github.io/vigie/`.
 
@@ -89,11 +89,6 @@ Remplacez les fichiers sur GitHub. Chaque utilisateur reçoit la nouvelle versio
 
 | Fichier | Rôle |
 |---|---|
-| `index.html` | Page de l'application |
-| `css/vigie.css` | Styles (charte bleu, marine et prune) |
-| `js/app.js` | Application : tableaux de bord, dispositif, équipe, tâches, veille |
-| `js/formations.js` | Contenu des quatre parcours de formation |
-| `js/stockage.js` | Lecture, fusion et écriture des fichiers dans le dossier partagé |
-| `js/depart.js` | Données de départ proposées au premier lancement |
+| `index.html` | **Toute l'application** en un seul fichier : pages, styles, formations, stockage partagé et données de départ |
 | `manifest.webmanifest`, `sw.js`, `icons/` | Installation comme application et ouverture hors connexion |
 | `Lancer Vigie.bat` | Lanceur Windows (fenêtre Edge sans barre d'adresse) |

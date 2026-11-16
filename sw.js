@@ -1,8 +1,8 @@
 /* Vigie — service worker : permet d'ouvrir l'application sans connexion.
    Les fichiers de l'application sont toujours repris du réseau quand il est disponible,
    pour que chacun reçoive automatiquement les mises à jour publiées sur GitHub. */
-const CACHE = "vigie-v1";
-const COQUILLE = ["./", "index.html", "css/vigie.css", "js/formations.js", "js/depart.js", "js/stockage.js", "js/app.js", "manifest.webmanifest", "icons/icon.svg", "icons/icon-192.png"];
+const CACHE = "vigie-v2";
+const COQUILLE = ["./", "index.html", "manifest.webmanifest", "icons/icon.svg", "icons/icon-192.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(COQUILLE)).then(() => self.skipWaiting())); });
 self.addEventListener("activate", e => { e.waitUntil(caches.keys().then(k => Promise.all(k.filter(x => x !== CACHE).map(x => caches.delete(x)))).then(() => self.clients.claim())); });
 self.addEventListener("fetch", e => {

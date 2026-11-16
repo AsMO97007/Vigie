@@ -1079,6 +1079,180 @@ details.recap summary{cursor:pointer; font-weight:650; font-size:14px}
 .pk-rb[aria-pressed="true"].r4{background:var(--surface-3); border-color:var(--ink-2)}
 .pk-rb[aria-pressed="true"] small{color:inherit}
 
+/* =================== Registre des risques (présentation tableur) =================== */
+:root{ --tb-head:#0088CE; --tb-head-2:#0079B8; --tb-head-ink:#FFFFFF; --tb-first:#A9D8F2; --tb-first-ink:#003865; --tb-zebra:#F7FAFD; --tb-hover:#EAF5FC; --tb-grid:#E3E8ED; }
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --tb-head:#0A5A94; --tb-head-2:#08507F; --tb-head-ink:#F1F4F7; --tb-first:#0B3B5E; --tb-first-ink:#CFE6F7; --tb-zebra:#022541; --tb-hover:#063457; --tb-grid:#123F62; } }
+:root[data-theme="dark"]{ --tb-head:#0A5A94; --tb-head-2:#08507F; --tb-head-ink:#F1F4F7; --tb-first:#0B3B5E; --tb-first-ink:#CFE6F7; --tb-zebra:#022541; --tb-hover:#063457; --tb-grid:#123F62; }
+
+.rg-top{display:flex; flex-wrap:wrap; gap:10px 14px; align-items:center; justify-content:space-between; margin-bottom:14px}
+.rg-top .seg button{display:inline-flex; align-items:center; gap:6px}
+.rg-tools{display:flex; flex-wrap:wrap; gap:8px}
+.rg-tools .btn[aria-pressed="true"]{border-color:var(--accent); color:var(--accent)}
+.rg-wrap{background:var(--surface); border:1px solid var(--tb-grid); border-radius:14px; overflow:auto; max-height:calc(100vh - 150px); box-shadow:var(--sh-1); overscroll-behavior:contain}
+.rg{border-collapse:separate; border-spacing:0; table-layout:fixed; width:100%}
+.rg thead th{position:sticky; top:0; z-index:3; background:var(--tb-head); color:var(--tb-head-ink); padding:0; border-bottom:0; border-right:1px solid rgba(255,255,255,.22); vertical-align:bottom; text-transform:uppercase; letter-spacing:.04em; font-size:11px; font-weight:800; white-space:normal}
+.rg thead th.rg-vigie{background:var(--navy)}
+.rg-h{display:flex; align-items:flex-end; gap:6px; padding:10px 8px 8px 10px; min-height:52px}
+.rg-lbl{flex:1; min-width:0; border:0; background:transparent; color:inherit; font:inherit; text-transform:inherit; letter-spacing:inherit; text-align:left; cursor:pointer; padding:0; line-height:1.25}
+.rg-lbl:hover{text-decoration:underline; text-underline-offset:3px}
+.rg-s{margin-left:4px; font-size:9px}
+.rg-fb{flex:none; width:19px; height:19px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(0,0,0,.18); border-radius:3px; background:#F3F3F3; color:#4A4A4A; cursor:pointer; padding:0; box-shadow:inset 0 1px 0 #fff}
+.rg-fb:hover{background:#fff}
+.rg-fb.on{background:#FFF3C4; color:#7A5300; border-color:#C9A227}
+.rg tbody td{padding:9px 10px; border-bottom:1px solid var(--tb-grid); border-right:1px solid var(--tb-grid); font-size:12.5px; line-height:1.45; vertical-align:middle; color:var(--ink); background:var(--surface); word-wrap:break-word}
+.rg tbody tr:nth-child(even) td{background:var(--tb-zebra)}
+.rg tbody tr{cursor:pointer}
+.rg tbody tr:hover td{background:var(--tb-hover)}
+.rg tbody tr:focus-visible td{outline:none; background:var(--tb-hover)}
+.rg .rg-first{position:sticky; left:0; z-index:2}
+.rg thead .rg-first{z-index:4; box-shadow:2px 0 0 rgba(0,0,0,.08)}
+.rg tbody td.rg-first, .rg tbody tr:nth-child(even) td.rg-first, .rg tbody tr:hover td.rg-first{background:var(--tb-first); color:var(--tb-first-ink); font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:.02em; box-shadow:2px 0 0 rgba(0,56,101,.08)}
+.rg tbody td b{font-weight:700; font-size:13px; color:var(--ink)}
+.rg-wrap.dense .rg-txt{display:-webkit-box; -webkit-line-clamp:5; -webkit-box-orient:vertical; overflow:hidden}
+.rg-empty{color:var(--muted); opacity:.6}
+.rg-mono{font-size:11.5px; color:var(--ink-2)}
+.rg-sm{display:block; font-size:11.5px; color:var(--muted); margin-top:3px; line-height:1.3}
+.rg-links{display:flex; flex-wrap:wrap; gap:4px; margin-top:6px}
+.rg-chip{border:1px solid var(--accent-soft); background:var(--accent-soft); color:var(--accent); font-family:var(--f-mono); font-size:10.5px; font-weight:600; border-radius:6px; padding:2px 6px; cursor:pointer}
+.rg-chip:hover{border-color:var(--accent)}
+.rg-chip.maj{background:var(--warm-soft); color:var(--warm); border-color:var(--warm-soft)}
+.rg-crit{display:inline-flex; align-items:center; gap:4px}
+.rg-arrow{color:var(--muted); font-size:11px}
+.rg .pill{font-size:11px; white-space:nowrap}
+.rg-none{text-align:center; padding:30px !important; color:var(--muted)}
+.rg-foot{font-size:12px; color:var(--muted); margin:10px 2px 0}
+.rg-menu{width:300px; max-height:calc(100vh - 24px); overflow:auto; padding:8px; display:flex; flex-direction:column; gap:6px}
+.rg-mh{font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); padding:4px 6px 2px}
+.rg-sorts{display:flex; flex-direction:column; border-bottom:1px solid var(--line); padding-bottom:6px}
+.rg-sorts button{font-size:13px !important}
+.rg-q{display:flex; align-items:center; gap:6px; border:1px solid var(--line); border-radius:8px; padding:0 8px; color:var(--muted); background:var(--bg)}
+.rg-q input{border:0; outline:0; background:transparent; padding:7px 0; width:100%; font-size:13px; color:var(--ink)}
+.rg-vals{max-height:260px; overflow:auto; border:1px solid var(--line); border-radius:8px; padding:4px}
+.rg-vals label{display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:8px; align-items:center; padding:4px 6px; border-radius:6px; font-size:12.5px; cursor:pointer}
+.rg-vals label:hover{background:var(--surface-2)}
+.rg-vals label[hidden]{display:none}
+.rg-vals label span{overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.rg-vals small{color:var(--muted); font-variant-numeric:tabular-nums}
+.rg-vals input{accent-color:var(--accent)}
+.rg-all{border-bottom:1px solid var(--line); border-radius:0 !important; margin-bottom:2px; font-weight:600}
+.rg-mf{display:flex; justify-content:flex-end; gap:6px; padding-top:4px}
+@media (max-width:700px){ .rg-wrap{max-height:none} .rg .rg-first{position:static} }
+.rg-full .app{grid-template-columns:minmax(0,1fr)} .rg-full .rail{display:none} .rg-full .content{max-width:none}
+.rg-full .rg-wrap{max-height:calc(100vh - 110px)}
+
+/* =================== Finitions : cohérence visuelle de tout l'outil =================== */
+:root{ --r:16px; --r-s:11px; --ring:0 0 0 3px rgba(0,136,206,.22); --tint:#F4F9FD; --ease:cubic-bezier(.2,.7,.2,1) }
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --tint:#032A4A; --ring:0 0 0 3px rgba(58,166,226,.3) } }
+:root[data-theme="dark"]{ --tint:#032A4A; --ring:0 0 0 3px rgba(58,166,226,.3) }
+::selection{background:rgba(0,136,206,.18)}
+*{scrollbar-width:thin; scrollbar-color:var(--line-2) transparent}
+*::-webkit-scrollbar{width:10px; height:10px} *::-webkit-scrollbar-thumb{background:var(--line-2); border-radius:10px; border:2px solid transparent; background-clip:padding-box} *::-webkit-scrollbar-track{background:transparent}
+body{font-feature-settings:"ss01","cv11"; letter-spacing:-.003em}
+h1,h2,h3{text-wrap:balance}
+p{text-wrap:pretty}
+
+/* ---- Barre latérale ---- */
+.rail{background:linear-gradient(180deg, var(--side) 0%, #002B4E 100%); box-shadow:inset -1px 0 0 rgba(255,255,255,.06)}
+.nav a{position:relative; transition:background .15s var(--ease), opacity .15s}
+.nav a[aria-current="page"]{background:linear-gradient(90deg, rgba(0,136,206,.34), rgba(0,136,206,.10)); box-shadow:inset 0 0 0 1px rgba(151,199,236,.22)}
+.nav a[aria-current="page"]::before{content:""; position:absolute; left:-14px; top:8px; bottom:8px; width:4px; border-radius:0 4px 4px 0; background:#5BBDF0}
+.nav .grp{color:rgba(151,199,236,.8); padding-top:16px}
+.nav .count{font-size:11.5px}
+.nav .count.alert{box-shadow:0 2px 8px -2px rgba(229,72,77,.6)}
+
+/* ---- Barre supérieure ---- */
+.topbar{background:color-mix(in srgb, var(--bg) 82%, transparent); backdrop-filter:saturate(1.4) blur(12px); -webkit-backdrop-filter:saturate(1.4) blur(12px)}
+.searchbtn{border-radius:12px; box-shadow:0 1px 2px rgba(0,56,101,.04); transition:border-color .15s, box-shadow .15s}
+.searchbtn:hover{box-shadow:var(--ring); border-color:var(--accent)}
+
+/* ---- En-têtes de page ---- */
+.head{position:relative; isolation:isolate; padding:22px 24px; margin-bottom:22px; border-radius:20px; background:linear-gradient(115deg, var(--surface) 0%, var(--surface) 55%, var(--tint) 100%); border:1px solid var(--line); box-shadow:var(--sh-1); overflow:hidden}
+.head::after{content:""; position:absolute; z-index:-1; right:-70px; top:-90px; width:300px; height:300px; border-radius:50%; background:radial-gradient(circle at center, rgba(151,199,236,.38) 0%, rgba(151,199,236,.12) 45%, transparent 70%)}
+.head::before{content:""; position:absolute; z-index:-1; right:120px; bottom:-60px; width:150px; height:150px; border-radius:50%; border:1.5px solid rgba(0,136,206,.10)}
+.head h1{letter-spacing:-.02em}
+.head .eyebrow{color:var(--accent); letter-spacing:.14em}
+.head .lede{max-width:70ch}
+.banner{border:1px solid color-mix(in srgb, var(--warm) 22%, transparent); border-radius:14px; padding:12px 16px}
+
+/* ---- Cartes, panneaux, indicateurs ---- */
+.panel{border-radius:var(--r); border-color:color-mix(in srgb, var(--line) 85%, transparent); transition:box-shadow .2s var(--ease)}
+.panel-head h2{letter-spacing:-.01em}
+.kpi{position:relative; overflow:hidden; border-radius:var(--r); transition:transform .18s var(--ease), box-shadow .18s var(--ease)}
+.kpi::before{content:""; position:absolute; inset:0 0 auto; height:3px; background:linear-gradient(90deg, var(--accent), var(--sky))}
+.kpi.tone-crit::before{background:linear-gradient(90deg, var(--crit), #F09AA0)} .kpi.tone-ok::before{background:linear-gradient(90deg, var(--ok), #8FD3AA)}
+.kpi:hover{transform:translateY(-2px); box-shadow:var(--sh-2)}
+.cat{border-radius:14px; transition:transform .16s var(--ease), border-color .16s, box-shadow .16s}
+.cat:hover{box-shadow:var(--sh-2)}
+.mcard2, .pk-person{border-radius:var(--r)}
+
+/* ---- Boutons et champs ---- */
+.btn{min-height:38px; border-radius:11px; transition:border-color .15s, background .15s, box-shadow .15s, transform .1s; box-shadow:0 1px 2px rgba(0,56,101,.05)}
+.btn.sm{min-height:30px; border-radius:9px}
+.btn:hover{border-color:var(--accent); color:var(--accent)}
+.btn.primary{background:linear-gradient(180deg, #0F95D9 0%, var(--accent) 100%); border-color:transparent; color:#fff}
+.btn.primary:hover{color:#fff; filter:none; box-shadow:0 8px 20px -8px var(--accent), var(--ring)}
+.btn.danger:hover{color:var(--crit); border-color:var(--crit)}
+.btn.danger.armed:hover{color:#fff}
+.btn.ghost:hover{background:var(--surface-3); color:var(--ink)}
+.btn:focus-visible, .seg button:focus-visible{outline:none; box-shadow:var(--ring)}
+.seg{border-radius:12px; background:color-mix(in srgb, var(--surface-3) 85%, transparent)}
+.seg button{border-radius:9px; transition:background .15s, color .15s}
+.seg button[aria-pressed="true"]{color:var(--accent); box-shadow:0 1px 3px rgba(0,56,101,.14)}
+.seg button:hover{color:var(--ink)}
+.search, .toolbar select, .field input[type=text], .field input[type=date], .field input[type=number], .field input[type=url], .field input[type=email], .field select, .field textarea{transition:border-color .15s, box-shadow .15s}
+.search{border-radius:11px; min-height:40px}
+.search:focus-within{border-color:var(--accent); box-shadow:var(--ring)}
+.toolbar select{min-height:40px; border-radius:11px; padding-inline:12px}
+.toolbar select:focus{outline:none; border-color:var(--accent); box-shadow:var(--ring)}
+.field input[type=text],.field input[type=date],.field input[type=number],.field input[type=url],.field input[type=email],.field select,.field textarea{background:var(--surface); border-color:var(--line-2); border-radius:11px; padding:10px 12px}
+.field label{color:var(--ink-2)}
+
+/* ---- Tableaux : en-têtes bleus, dans tout l'outil ---- */
+.tablewrap{border-radius:var(--r); border-color:var(--tb-grid); overflow:auto}
+.tablewrap > table > thead th, table.data thead th{position:sticky; top:0; z-index:1; background:var(--tb-head); color:var(--tb-head-ink); border-bottom:0; border-right:1px solid rgba(255,255,255,.18); font-size:11px; font-weight:800; letter-spacing:.06em; padding:12px 14px}
+.tablewrap > table > thead th:last-child, table.data thead th:last-child{border-right:0}
+table.data tbody tr:nth-child(even):not(.grouprow) td{background:var(--tb-zebra)}
+table.data tbody tr[data-open]{transition:background .12s}
+table.data tbody tr[data-open]:hover td{background:var(--tb-hover)}
+tr.grouprow td{background:color-mix(in srgb, var(--tb-first) 55%, var(--surface)) !important; color:var(--tb-first-ink); border-bottom-color:var(--tb-grid)}
+tr.grouprow .sub{color:var(--tb-first-ink) !important; opacity:.75}
+.pk-grp td{background:color-mix(in srgb, var(--tb-first) 55%, var(--surface)) !important}
+.pk-recap .pk-tot td{background:color-mix(in srgb, var(--tb-first) 80%, var(--surface)) !important; color:var(--tb-first-ink)}
+.sodm thead th, .sodp thead th{background:transparent !important; color:var(--muted) !important; position:static}
+td{border-bottom-color:var(--tb-grid)}
+
+/* ---- Pastilles ---- */
+.pill{border-radius:20px; font-weight:700; letter-spacing:.005em}
+.badge{border-radius:7px}
+.keytag{border-radius:6px}
+
+/* ---- Tiroir de saisie ---- */
+.drawer{width:min(680px,100%); border-radius:20px 0 0 20px; overflow:hidden}
+.drawer header{background:linear-gradient(120deg, var(--tint), var(--surface) 70%); position:relative}
+.drawer header::after{content:""; position:absolute; left:0; right:0; bottom:-1px; height:3px; background:linear-gradient(90deg, var(--accent), var(--sky) 60%, transparent)}
+.drawer .body{gap:14px 16px; padding:20px 24px 26px}
+.drawer footer{background:var(--surface-2)}
+.section-lbl{display:flex; align-items:center; gap:8px; color:var(--accent); border-top:0; margin-top:10px; padding:10px 12px; background:var(--tint); border-radius:10px; border-left:3px solid var(--accent); letter-spacing:.1em}
+.field textarea{min-height:76px; line-height:1.5}
+.scrim{background:rgba(0,28,51,.42)}
+
+/* ---- Menus, palettes, notifications ---- */
+.menu{border-radius:14px; box-shadow:0 18px 50px -18px rgba(0,56,101,.45), 0 0 0 1px rgba(0,56,101,.04)}
+.toast{border-radius:12px; box-shadow:0 14px 34px -12px rgba(0,0,0,.45)}
+.xpanel{border-radius:20px}
+.xp-head{background:linear-gradient(120deg, var(--tint), var(--surface) 70%)}
+
+/* ---- Vides et chargements ---- */
+.empty{padding:44px 24px}
+.empty b{font-family:var(--f-display); font-size:19px}
+
+/* ---- Accueil ---- */
+.welcome .wbtn{box-shadow:0 14px 34px -12px rgba(0,136,206,.7)}
+
+/* ---- Mouvement réduit ---- */
+@media (prefers-reduced-motion: reduce){ .kpi, .cat, .btn, .nav a{transition:none} .kpi:hover{transform:none} }
+@media (max-width:760px){ .head{padding:18px 16px; border-radius:16px} .head::before{display:none} .drawer{border-radius:0} }
+
 /* =================== Version locale : stockage partagé =================== */
 .stk-btn{display:flex; flex-direction:column; align-items:flex-start; gap:2px; width:100%; border:0; background:transparent; color:var(--side-muted); text-align:left; cursor:pointer; border-radius:10px; padding:6px 8px; font-size:12px}
 .stk-btn:hover{background:var(--side-2); color:var(--side-ink)}
@@ -2128,7 +2302,23 @@ window.VIGIE_DEPART = {
     "ref": "R-001",
     "titre": "Paiement de factures fictives ou en double",
     "traitement": "Réduire",
-    "majeurId": "rm1"
+    "majeurId": "rm1",
+    "typeProcessus": "ACHATS",
+    "macroProcessus": "ACHATS HORS PRODUCTION",
+    "processusDetail": "COMPTABILITÉ FOURNISSEURS",
+    "codeProcessus": "ACH_FOUR",
+    "activites": "Réception, saisie et règlement des factures fournisseurs",
+    "taches": "Réception des factures (PDF, portail, courrier) ;\nSaisie et imputation ;\nRapprochement commande / réception / facture ;\nMise en paiement",
+    "acteurs": "Comptabilité fournisseurs ;\nAcheteurs ;\nTrésorerie",
+    "consequences": "Sortie de trésorerie injustifiée ;\nPerte financière ;\nFraude non détectée",
+    "impactNiveau": "Fort",
+    "categorieDetail": "Fraude / Financier",
+    "controleN1": "Contrôle de doublon automatique à la saisie ;\nValidation de la facture par l'acheteur",
+    "controleN2": "Revue trimestrielle des paiements en double par le contrôle interne",
+    "maitrise": "Satisfaisant",
+    "procedures": "Procédure comptabilité fournisseurs (mars 2026)",
+    "objectifsProc": "Ne payer que des prestations commandées et reçues ;\nÉviter les doubles paiements",
+    "refPC2": "PC2-ACH-01"
    },
    "r10": {
     "categorie": "Stratégique",
@@ -2143,7 +2333,19 @@ window.VIGIE_DEPART = {
     "ref": "R-010",
     "titre": "Perte d'un client représentant 22 % du chiffre d'affaires",
     "traitement": "Réduire",
-    "majeurId": "rm7"
+    "majeurId": "rm7",
+    "typeProcessus": "DIRECTION GÉNÉRALE",
+    "macroProcessus": "STRATÉGIE",
+    "processusDetail": "PORTEFEUILLE CLIENTS",
+    "codeProcessus": "DG_CLI",
+    "activites": "Pilotage du portefeuille et de la concentration clients",
+    "taches": "Suivi de la part des principaux clients ;\nPlan commercial de diversification",
+    "acteurs": "Directrice générale ;\nDirection commerciale",
+    "consequences": "Baisse brutale du chiffre d'affaires",
+    "impactNiveau": "Très fort",
+    "categorieDetail": "Stratégique",
+    "maitrise": "À évaluer",
+    "refPC2": ""
    },
    "r11": {
     "categorie": "Ressources humaines",
@@ -2156,7 +2358,20 @@ window.VIGIE_DEPART = {
     "ref": "R-011",
     "titre": "Départ non anticipé d'experts techniques clés",
     "traitement": "Réduire",
-    "majeurId": "rm7"
+    "majeurId": "rm7",
+    "typeProcessus": "RESSOURCES HUMAINES",
+    "macroProcessus": "GESTION DES TALENTS",
+    "processusDetail": "GPEC",
+    "codeProcessus": "RH_GPEC",
+    "activites": "Identification et fidélisation des compétences clés",
+    "taches": "Cartographie des postes critiques ;\nPlans de succession ;\nEntretiens de carrière",
+    "acteurs": "DRH ;\nManagers",
+    "consequences": "Perte de savoir-faire ;\nRetards de projets",
+    "impactNiveau": "Fort",
+    "categorieDetail": "Ressources humaines",
+    "maitrise": "Faible",
+    "objectifsProc": "Conserver les compétences critiques",
+    "refPC2": "PC2-RH-09"
    },
    "r12": {
     "categorie": "RSE et environnement",
@@ -2171,7 +2386,23 @@ window.VIGIE_DEPART = {
     "ref": "R-012",
     "titre": "Pollution accidentelle d'un site par les eaux de process",
     "traitement": "Réduire",
-    "majeurId": "rm6"
+    "majeurId": "rm6",
+    "typeProcessus": "PRODUCTION",
+    "macroProcessus": "ENVIRONNEMENT",
+    "processusDetail": "REJETS AQUEUX",
+    "codeProcessus": "PRD_ENV",
+    "activites": "Surveillance des rejets du site de production",
+    "taches": "Autosurveillance mensuelle ;\nDéclarations à la DREAL ;\nMaintenance de la station",
+    "acteurs": "Responsable HSE ;\nDirecteur industriel",
+    "consequences": "Pollution ;\nSanction administrative ;\nAtteinte à l'image",
+    "impactNiveau": "Fort",
+    "categorieDetail": "Environnement",
+    "controleN1": "Autosurveillance mensuelle des rejets aqueux",
+    "controleN2": "Contrôle inopiné annuel par un laboratoire agréé",
+    "maitrise": "Satisfaisant",
+    "procedures": "Procédure environnement (2025)",
+    "objectifsProc": "Respecter les seuils de rejet autorisés",
+    "refPC2": ""
    },
    "r2": {
     "categorie": "Fraude et corruption",
@@ -2186,7 +2417,23 @@ window.VIGIE_DEPART = {
     "ref": "R-002",
     "titre": "Modification frauduleuse des coordonnées bancaires fournisseurs",
     "traitement": "Réduire",
-    "majeurId": "rm1"
+    "majeurId": "rm1",
+    "typeProcessus": "TRÉSORERIE",
+    "macroProcessus": "FINANCE",
+    "processusDetail": "RÉFÉRENTIEL FOURNISSEURS",
+    "codeProcessus": "TRE_RIB",
+    "activites": "Création et modification des coordonnées bancaires des tiers",
+    "taches": "Réception de la demande de changement ;\nContre-appel du fournisseur ;\nModification dans l'ERP ;\nValidation par une seconde personne",
+    "acteurs": "Trésorière ;\nComptabilité fournisseurs",
+    "consequences": "Virement détourné ;\nPerte financière ;\nAtteinte à la relation fournisseur",
+    "impactNiveau": "Très fort",
+    "categorieDetail": "Fraude externe",
+    "controleN1": "Contre-appel sur un numéro connu avant toute modification ;\nDouble validation dans l'ERP",
+    "controleN2": "Revue mensuelle du fichier des modifications de RIB",
+    "maitrise": "Moyen",
+    "procedures": "Procédure de modification des RIB (janvier 2026)",
+    "objectifsProc": "Empêcher la fraude au changement de RIB",
+    "refPC2": "PC2-TRE-02"
    },
    "r3": {
     "categorie": "Financier et comptable",
@@ -2201,7 +2448,23 @@ window.VIGIE_DEPART = {
     "ref": "R-003",
     "titre": "Chiffre d'affaires comptabilisé sur la mauvaise période",
     "traitement": "Réduire",
-    "majeurId": "rm4"
+    "majeurId": "rm4",
+    "typeProcessus": "COMPTABILITÉ",
+    "macroProcessus": "CLÔTURE",
+    "processusDetail": "CHIFFRE D'AFFAIRES",
+    "codeProcessus": "CPT_CUT",
+    "activites": "Rattachement du chiffre d'affaires à la bonne période",
+    "taches": "Arrêté des livraisons ;\nFactures à établir ;\nContrôle du cut-off",
+    "acteurs": "Contrôle de gestion ;\nComptabilité clients",
+    "consequences": "Comptes inexacts ;\nRéserve des commissaires aux comptes",
+    "impactNiveau": "Fort",
+    "categorieDetail": "Information financière",
+    "controleN1": "Contrôle des bons de livraison des derniers jours de la période",
+    "controleN2": "Revue analytique du chiffre d'affaires par le DAF",
+    "maitrise": "Satisfaisant",
+    "procedures": "Instructions de clôture (décembre 2025)",
+    "objectifsProc": "Fiabiliser le chiffre d'affaires publié",
+    "refPC2": "PC2-CPT-03"
    },
    "r4": {
     "categorie": "Systèmes d'information et cyber",
@@ -2216,7 +2479,23 @@ window.VIGIE_DEPART = {
     "ref": "R-004",
     "titre": "Accès non autorisés à l'ERP",
     "traitement": "Réduire",
-    "majeurId": "rm2"
+    "majeurId": "rm2",
+    "typeProcessus": "SYSTÈMES D'INFORMATION",
+    "macroProcessus": "INFORMATIQUE",
+    "processusDetail": "HABILITATIONS SI",
+    "codeProcessus": "SI_HAB",
+    "activites": "Gestion des accès à l'ERP sur tout le cycle collaborateur",
+    "taches": "Demande et approbation des droits ;\nAttribution au moindre privilège ;\nRevue périodique ;\nSuppression à la sortie",
+    "acteurs": "DSI ;\nManagers ;\nRH",
+    "consequences": "Fuite de données ;\nOpérations non autorisées",
+    "impactNiveau": "Très fort",
+    "categorieDetail": "Cybersécurité / Accès",
+    "controleN1": "Suppression des comptes à la sortie sur alerte RH",
+    "controleN2": "Revue semestrielle des habilitations ERP",
+    "maitrise": "Moyen",
+    "procedures": "Procédure de gestion des habilitations (à mettre à jour)",
+    "objectifsProc": "Limiter les accès aux besoins effectifs",
+    "refPC2": "PC2-SI-04"
    },
    "r5": {
     "categorie": "Ressources humaines",
@@ -2231,7 +2510,23 @@ window.VIGIE_DEPART = {
     "ref": "R-005",
     "titre": "Erreurs dans le calcul de la paie",
     "traitement": "Réduire",
-    "majeurId": "rm4"
+    "majeurId": "rm4",
+    "typeProcessus": "RESSOURCES HUMAINES",
+    "macroProcessus": "PAIE",
+    "processusDetail": "CALCUL DE LA PAIE",
+    "codeProcessus": "RH_PAIE",
+    "activites": "Calcul et contrôle de la paie mensuelle",
+    "taches": "Saisie des éléments variables ;\nCalcul ;\nContrôle des écarts ;\nValidation",
+    "acteurs": "Responsable paie ;\nDRH",
+    "consequences": "Rappels de salaire ;\nRisque social ;\nCharges indues",
+    "impactNiveau": "Modéré",
+    "categorieDetail": "Social",
+    "controleN1": "Contrôle des écarts de paie d'un mois sur l'autre",
+    "controleN2": "Revue annuelle par l'expert-comptable social",
+    "maitrise": "Bon",
+    "procedures": "Étapes paie (février 2026)",
+    "objectifsProc": "Payer juste et à temps",
+    "refPC2": "PC2-RH-05"
    },
    "r6": {
     "categorie": "Opérationnel",
@@ -2244,7 +2539,23 @@ window.VIGIE_DEPART = {
     "ref": "R-006",
     "titre": "Écarts d'inventaire non expliqués",
     "traitement": "Réduire",
-    "majeurId": "rm3"
+    "majeurId": "rm3",
+    "typeProcessus": "LOGISTIQUE",
+    "macroProcessus": "STOCKS",
+    "processusDetail": "INVENTAIRE",
+    "codeProcessus": "LOG_INV",
+    "activites": "Suivi des stocks de membranes et de produits finis",
+    "taches": "Entrées et sorties ;\nInventaire tournant ;\nAnalyse des écarts",
+    "acteurs": "Responsable logistique ;\nContrôle de gestion",
+    "consequences": "Valorisation erronée des stocks ;\nPertes non expliquées",
+    "impactNiveau": "Modéré",
+    "categorieDetail": "Opérations",
+    "controleN1": "Inventaire tournant mensuel des articles à forte valeur",
+    "controleN2": "Inventaire annuel en présence des commissaires aux comptes",
+    "maitrise": "Insuffisant",
+    "procedures": "Procédure d'inventaire (à formaliser)",
+    "objectifsProc": "Fiabiliser les quantités et la valeur des stocks",
+    "refPC2": ""
    },
    "r7": {
     "categorie": "Conformité et juridique",
@@ -2259,7 +2570,23 @@ window.VIGIE_DEPART = {
     "ref": "R-007",
     "titre": "Non-conformité aux obligations anticorruption (Sapin II)",
     "traitement": "Réduire",
-    "majeurId": "rm5"
+    "majeurId": "rm5",
+    "typeProcessus": "CONFORMITÉ",
+    "macroProcessus": "ÉTHIQUE",
+    "processusDetail": "ANTICORRUPTION",
+    "codeProcessus": "CONF_SAP",
+    "activites": "Déploiement du programme Sapin II",
+    "taches": "Cartographie des risques de corruption ;\nÉvaluation des tiers ;\nRegistre des cadeaux ;\nFormation",
+    "acteurs": "Responsable conformité ;\nAcheteurs ;\nCommerciaux",
+    "consequences": "Sanction de l'AFA ;\nAtteinte à la réputation",
+    "impactNiveau": "Fort",
+    "categorieDetail": "Conformité",
+    "controleN1": "Évaluation des tiers à risque avant entrée en relation",
+    "controleN2": "Audit annuel du programme anticorruption",
+    "maitrise": "Moyen",
+    "procedures": "Code de conduite (2025) ;\nProcédure d'évaluation des tiers (2026)",
+    "objectifsProc": "Prévenir et détecter les faits de corruption",
+    "refPC2": "PC2-CONF-06"
    },
    "r8": {
     "categorie": "Opérationnel",
@@ -2274,7 +2601,22 @@ window.VIGIE_DEPART = {
     "ref": "R-008",
     "titre": "Dépendance à un fournisseur unique de membranes",
     "traitement": "Réduire",
-    "majeurId": "rm3"
+    "majeurId": "rm3",
+    "typeProcessus": "ACHATS",
+    "macroProcessus": "ACHATS DE PRODUCTION",
+    "processusDetail": "SOURCING",
+    "codeProcessus": "ACH_SRC",
+    "activites": "Sélection et suivi des fournisseurs de membranes",
+    "taches": "Cartographie des fournisseurs critiques ;\nQualification d'un second fournisseur ;\nSuivi des stocks de sécurité",
+    "acteurs": "Directeur des achats ;\nDirecteur industriel",
+    "consequences": "Rupture d'approvisionnement ;\nArrêt de production",
+    "impactNiveau": "Très fort",
+    "categorieDetail": "Continuité d'activité",
+    "controleN1": "Suivi trimestriel de la part du premier fournisseur",
+    "maitrise": "Moyen",
+    "procedures": "Stratégie achats (2026)",
+    "objectifsProc": "Sécuriser les approvisionnements critiques",
+    "refPC2": "PC2-ACH-07"
    },
    "r9": {
     "categorie": "Systèmes d'information et cyber",
@@ -2289,7 +2631,23 @@ window.VIGIE_DEPART = {
     "ref": "R-009",
     "titre": "Attaque par rançongiciel paralysant la production et la facturation",
     "traitement": "Réduire",
-    "majeurId": "rm2"
+    "majeurId": "rm2",
+    "typeProcessus": "SYSTÈMES D'INFORMATION",
+    "macroProcessus": "SÉCURITÉ SI",
+    "processusDetail": "CYBERINCIDENT ET CRISE",
+    "codeProcessus": "SI_CYB",
+    "activites": "Prévenir, détecter et gérer une cyberattaque",
+    "taches": "Sauvegardes déconnectées ;\nCorrectifs de sécurité ;\nCircuit d'alerte ;\nExercice de crise",
+    "acteurs": "DSI ;\nDirection générale ;\nPrestataire infogérance",
+    "consequences": "Arrêt de la production ;\nPerte de données ;\nRançon",
+    "impactNiveau": "Très fort",
+    "categorieDetail": "Cybersécurité",
+    "controleN1": "Sauvegardes déconnectées et test de restauration trimestriel",
+    "controleN2": "Test d'intrusion annuel",
+    "maitrise": "Moyen",
+    "procedures": "Plan de reprise informatique (2025)",
+    "objectifsProc": "Limiter l'impact d'une attaque et reprendre rapidement",
+    "refPC2": "PC2-SI-08"
    }
   },
   "controles": {
@@ -4436,6 +4794,7 @@ const PROCESSUS = ["Direction générale","Achats","Ventes","Trésorerie","Paie 
 const CATEGORIES = ["Stratégique","Opérationnel","Financier et comptable","Fraude et corruption","Conformité et juridique","Systèmes d'information et cyber","Ressources humaines","RSE et environnement"];
 const PROBA = ["Rare","Peu probable","Possible","Probable","Quasi certain"];
 const IMPACT = ["Mineur","Modéré","Significatif","Majeur","Critique"];
+const MAITRISE = ["Insuffisant","Faible","Moyen","Satisfaisant","Bon","Optimal","À évaluer"];
 const INC_TYPES = ["Fraude externe","Fraude interne","Erreur de traitement","Défaillance informatique ou cyber","Non-conformité","Sinistre ou accident","Litige client ou fournisseur","Autre"];
 const REFERENTIELS = ["Loi Sapin II","RGPD","Lanceurs d'alerte","Sécurité des SI","Contrôle interne financier","Fraude aux paiements","Autre"];
 const THEMES = ["Référentiels","Réglementation","Fraude","Cyber et SI","RSE et durabilité","IA"];
@@ -4460,17 +4819,35 @@ const EXI_STATUTS = [["Conforme","s-c","Conforme"],["Partiellement conforme","s-
 const EXI_PILL = {"Conforme":"p-ok","Partiellement conforme":"p-warn","Non conforme":"p-crit","Non applicable":"p-neutral","À évaluer":"p-neutral"};
 
 const SCHEMA = {
-  risques:{ sing:"risque", prefix:"R", title:"Cartographie des risques", view:"risques", fields:[
-    {k:"titre",l:"Intitulé du risque",t:"text",req:1,ph:"Risque de … dû à … entraînant …"},
-    {k:"categorie",l:"Catégorie",t:"select",o:CATEGORIES,req:1,half:1},
-    {k:"processus",l:"Processus",t:"select",o:PROCESSUS,req:1,half:1},
+  risques:{ sing:"risque", prefix:"R", title:"Risques opérationnels", view:"risques", fields:[
+    {k:"titre",l:"Risque",t:"text",req:1,ph:"ex. Données perdues ou non restaurables"},
+    {k:"categorie",l:"Catégorie de risque",t:"select",o:CATEGORIES,req:1,half:1},
+    {k:"impactNiveau",l:"Impact",t:"select",o:["Faible","Modéré","Fort","Très fort"],half:1},
+    {k:"description",l:"Risques détaillés",t:"textarea",ph:"Les causes et scénarios, un par ligne"},
+    {k:"consequences",l:"Conséquences directes",t:"textarea"},
+    {k:"categorieDetail",l:"Catégorie (libellé de votre cartographie)",t:"text",half:1},
+    {k:"majeurId",l:"Cartographie des risques majeurs",t:"ref",ref:"majeurs",half:1},
+    {sec:"Processus"},
+    {k:"typeProcessus",l:"Type de processus",t:"text",half:1,ph:"ex. Systèmes d'information"},
+    {k:"processus",l:"Processus de référence Vigie",t:"select",o:PROCESSUS,half:1},
+    {k:"macroProcessus",l:"# Processus",t:"text",half:1,ph:"ex. Informatique"},
+    {k:"processusDetail",l:"Processus",t:"text",half:1,ph:"ex. Sauvegarde"},
+    {k:"codeProcessus",l:"Code processus",t:"text",half:1,ph:"ex. SI_SAUV"},
     {k:"proprietaire",l:"Propriétaire du risque",t:"person",half:1},
+    {k:"activites",l:"Activités",t:"textarea"},
+    {k:"taches",l:"Tâches / sous-tâches",t:"textarea"},
+    {k:"acteurs",l:"Acteurs en charge",t:"textarea"},
+    {sec:"Dispositif de maîtrise"},
+    {k:"controleN1",l:"Contrôle niveau 1",t:"textarea",hint:"Les contrôles du référentiel rattachés à ce risque s'affichent aussi dans le registre."},
+    {k:"controleN2",l:"Contrôle niveau 2",t:"textarea"},
+    {k:"maitrise",l:"Niveau de maîtrise",t:"select",o:MAITRISE,half:1},
     {k:"traitement",l:"Stratégie de traitement",t:"select",o:["Réduire","Accepter","Transférer","Éviter"],half:1},
-    {k:"majeurId",l:"Risque majeur de rattachement",t:"ref",ref:"majeurs"},
-    {k:"description",l:"Description : causes et conséquences",t:"textarea"},
+    {k:"procedures",l:"Procédure(s) et date de dernière mise à jour",t:"textarea"},
+    {k:"objectifsProc",l:"Objectifs procédures",t:"textarea"},
+    {k:"refPC2",l:"Référence plan de contrôle niveau 2",t:"text",ph:"ex. code d'un point PCIF"},
     {sec:"Évaluation inhérente (avant contrôles)"},
-    {k:"proba",l:"Probabilité",t:"scale",o:PROBA,req:1},
-    {k:"impact",l:"Impact",t:"scale",o:IMPACT,req:1},
+    {k:"proba",l:"Probabilité",t:"scale",o:PROBA},
+    {k:"impact",l:"Impact",t:"scale",o:IMPACT},
     {sec:"Évaluation résiduelle (après contrôles)"},
     {k:"probaR",l:"Probabilité résiduelle",t:"scale",o:PROBA},
     {k:"impactR",l:"Impact résiduel",t:"scale",o:IMPACT},
@@ -4873,7 +5250,7 @@ function renderNav(){
     ${Stockage.statutHtml()}`;
 }
 $("#nav").addEventListener("click", e=>{ const a=e.target.closest("a[data-v]"); if(!a) return; e.preventDefault(); go(a.dataset.v); });
-function go(v, filters){ closeOverlay(); view=v; Object.assign(F,{q:"",processus:"",extra:"",cell:null,cat:"",theme:"",exiStat:"",assignee:"",prio:"",plan:false}, filters||{}); if(v==="formations" && !(filters&&filters.keepCourse)){ FS.p=null; FS.m=null; } try{ history.replaceState(null,"","#"+v); }catch(_){} render(); $("#main").focus({preventScroll:true}); window.scrollTo(0,0); }
+function go(v, filters){ closeOverlay(); if(v!=="risques") document.body.classList.remove("rg-full"); view=v; Object.assign(F,{q:"",processus:"",extra:"",cell:null,cat:"",theme:"",exiStat:"",assignee:"",prio:"",plan:false}, filters||{}); if(v==="formations" && !(filters&&filters.keepCourse)){ FS.p=null; FS.m=null; } try{ history.replaceState(null,"","#"+v); }catch(_){} render(); $("#main").focus({preventScroll:true}); window.scrollTo(0,0); }
 $("#topDate").textContent = new Date().toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"}).replace(/^./,c=>c.toUpperCase());
 window.addEventListener("scroll", ()=>{ $("#topbar").classList.toggle("scrolled", window.scrollY>4); }, {passive:true});
 
@@ -5067,7 +5444,7 @@ function renderConformite(){
 
 /* ---------- Listes du dispositif ---------- */
 const LEDE = {
-  risques:"Identifiez et évaluez les risques par catégorie et par processus, avant et après prise en compte des contrôles.",
+  risques:"Le registre de vos risques opérationnels, processus par processus : activités, acteurs, risques détaillés, conséquences, contrôles de niveau 1 et 2, maîtrise et procédures.",
   controles:"Documentez les activités de contrôle qui couvrent chaque risque et repérez les contrôles clés.",
   tests:"Planifiez et documentez les tests de conception et d'efficacité opérationnelle.",
   actions:"Suivez les constats issus des tests et des audits jusqu'à la mise en œuvre des actions correctives.",
@@ -5081,7 +5458,7 @@ const EXTRA = {
 function renderListShell(col){
   const sc = SCHEMA[col];
   let cats = "";
-  if(col==="risques" && S.risques.length){
+  if(col==="risques" && S.risques.length && RG.mode==="carto"){
     const list = CATEGORIES.concat(S.risques.some(r=>catOf(r)==="Non classé")?["Non classé"]:[]);
     cats = `<div class="cats" role="group" aria-label="Catégories de risques">${list.map(c=>{ const rs=S.risques.filter(r=>catOf(r)===c); const L=level(rs.reduce((m,r)=>Math.max(m,cur(r)),0));
       return `<button class="cat" data-cat="${esc(c)}" aria-pressed="${F.cat===c}"><span class="ci">${svg(CAT_ICON[c],19)}</span><b>${esc(c)}</b><small>${rs.length} ${plural(rs.length,"risque")}${L?` · <span class="dot c${L.c}"></span>${L.n.toLowerCase()}`:""}</small></button>`; }).join("")}</div>`;
@@ -5099,7 +5476,7 @@ function filtered(col){
   const q = norm(F.q);
   return S[col].filter(o=>{
     if(F.processus && procOf(o,col)!==F.processus) return false;
-    if(q){ const hay=norm([o.ref,o.titre,o.description,o.proprietaire,o.responsable,o.testeur,o.commentaire,o.categorie, col==="tests"?byId("controles",o.controleId)?.titre:""].join(" ")); if(!hay.includes(q)) return false; }
+    if(q){ const hay=norm([o.ref,o.titre,o.description,o.typeProcessus,o.macroProcessus,o.processusDetail,o.codeProcessus,o.acteurs,o.activites,o.consequences,o.categorieDetail,o.proprietaire,o.responsable,o.testeur,o.commentaire,o.categorie, col==="tests"?byId("controles",o.controleId)?.titre:""].join(" ")); if(!hay.includes(q)) return false; }
     const x = F.extra;
     if(col==="risques"){
       if(F.cat && catOf(o)!==F.cat) return false;
@@ -5126,6 +5503,7 @@ function renderListBody(){
     const ok = col==="risques" || (col==="controles"&&S.risques.length) || (col==="tests"&&S.controles.length) || col==="actions" || col==="incidents" || col==="kri";
     host.innerHTML=`<div class="tablewrap"><div class="empty"><b>Rien pour l'instant</b><p>${msg||({incidents:"Aucun incident déclaré. Enregistrez ici les incidents et les pertes : ils éclairent la cotation de vos risques.",kri:"Aucun indicateur. Un indicateur clé de risque signale qu'un risque augmente avant qu'il ne se réalise : définissez-le avec ses seuils d'alerte."})[col]||"Aucun élément pour l'instant."}</p>${canWrite&&ok?`<button class="btn primary" data-new="${col}">${nouveau(col)}</button>`:""}</div></div>`; return;
   }
+  if(col==="risques" && RG.mode==="registre"){ host.innerHTML=registreHtml(rows); return; }
   if(!rows.length){ host.innerHTML=`<div class="tablewrap"><div class="empty"><p>Aucun résultat avec ces filtres.</p></div></div>`; return; }
   const T = TABLES[col];
   const sorted = rows.slice().sort(T.sort||sortRef);
@@ -5880,7 +6258,7 @@ function paintDrawer(){
     else if(f.t==="textarea") input=`<textarea id="${fid}" ${ro?"disabled":""}>${esc(v)}</textarea>`;
     else if(f.t==="date") input=`<input type="date" id="${fid}" value="${esc(v)}" ${ro?"disabled":""}>`;
     else if(f.t==="number") input=`<input type="number" id="${fid}" value="${v??""}" min="${f.min??0}" ${f.max!=null?`max="${f.max}"`:""} ${ro?"disabled":""}>`;
-    else if(f.t==="select") input=`<select id="${fid}" ${ro?"disabled":""}><option value="">Choisir…</option>${f.o.map(o=>`<option ${v===o?"selected":""}>${esc(o)}</option>`).join("")}</select>`;
+    else if(f.t==="select") input=`<select id="${fid}" ${ro?"disabled":""}><option value="">Choisir…</option>${v&&!f.o.includes(v)?`<option selected>${esc(v)}</option>`:""}${f.o.map(o=>`<option ${v===o?"selected":""}>${esc(o)}</option>`).join("")}</select>`;
     else if(f.t==="ref"){ const opts=S[f.ref].filter(o=>!(col===f.ref && o.id===id)).slice().sort(col==="equipe"||f.ref==="equipe"?(a,b)=>String(a.nom).localeCompare(String(b.nom),"fr"):sortRef); input=`<select id="${fid}" ${ro?"disabled":""}><option value="">${f.req?"Choisir…":"Aucun"}</option>${opts.map(o=>`<option value="${esc(o.id)}" ${v===o.id?"selected":""}>${f.ref==="equipe"?esc(o.nom)+" — "+esc(o.fonction||""):esc(o.ref)+" — "+esc(o.titre)}</option>`).join("")}</select>`; }
     else if(f.t==="link") input=`<select id="${fid}" ${ro?"disabled":""}><option value="">Aucun</option>${linkOptions(v)}</select>`;
     else if(f.t==="check") return `<div class="field"><label class="check"><input type="checkbox" id="${fid}" ${v?"checked":""} ${ro?"disabled":""}> ${f.l}</label>${hint}</div>`;
@@ -6497,7 +6875,7 @@ function exportMenu(btn, col){
   const items=[];
   if(col==="majeurs"){ items.push({ic:"pdf",l:"Cartographie en PDF",s:"Carte, classement et détail",run:()=>exportDoc("majeurs","pdf")},{ic:"docx",l:"Cartographie en Word",s:"Document modifiable",run:()=>exportDoc("majeurs","docx")},{ic:"xlsx",l:"Excel",s:"Risques majeurs et rattachements",run:()=>exportXlsx("majeurs")}); }
   else {
-    items.push({ic:"xlsx",l:"Excel",s:label?`Les ${label}`:"Toutes les colonnes",run:()=>exportXlsx(col)});
+    items.push({ic:"xlsx",l:"Excel",s:col==="risques"?"Registre complet, mis en forme":label?`Les ${label}`:"Toutes les colonnes",run:()=>col==="risques"?rgExportXlsx():exportXlsx(col)});
     if(col==="risques"){ items.push({ic:"docx",l:"Word",s:"Cartographie et fiches par catégorie",run:()=>exportDoc("risques","docx")},{ic:"pdf",l:"PDF",s:"Cartographie et tableau des risques",run:()=>exportDoc("risques","pdf")}); }
     items.push({ic:"csv",l:"CSV",s:"Pour un autre logiciel",run:()=>exportCsv()});
   }
@@ -6523,20 +6901,55 @@ async function exportXlsx(col){
   await saveFile(`${slugId(SCHEMA[col]?.title||col)}-${TODAY_ISO}.xlsx`, new Blob([buf], {type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
 }
 
+
+/* Classeur protégé (étiquette de confidentialité Microsoft Purview / IRM, ou mot de passe) : illisible par un navigateur */
+async function estChiffre(file){
+  try{ const b=new Uint8Array(await file.arrayBuffer()); if(!(b[0]===0xD0&&b[1]===0xCF&&b[2]===0x11&&b[3]===0xE0)) return false;
+    const pat=[..."EncryptedPackage"].flatMap(c=>[c.charCodeAt(0),0]);
+    outer: for(let i=0;i<b.length-pat.length;i++){ for(let j=0;j<pat.length;j++){ if(b[i+j]!==pat[j]) continue outer; } return true; }
+  }catch(_){}
+  return false;
+}
+function panelChiffre(eyebrow, file){
+  panel(`<div class="xp-head"><div><div class="eyebrow">${esc(eyebrow)}</div><h2>Ce classeur est protégé</h2></div><button class="btn ghost" data-close-ov aria-label="Fermer">✕</button></div>
+    <div class="xp-body"><p style="margin:0;font-size:14.5px;line-height:1.6"><b>${esc(file.name)}</b> est chiffré, le plus souvent par une <b>étiquette de confidentialité</b> (Confidentiel, Restreint…) ou un mot de passe. Seul Excel peut l'ouvrir ; Vigie ne peut pas le lire.</p>
+      <p class="h3s" style="margin-top:6px">Pour l'importer, enregistrez une copie sans protection</p>
+      <ol class="impnotes"><li>Ouvrez le fichier dans Excel.</li><li><b>Fichier › Enregistrer une copie</b> et choisissez le type <b>CSV UTF-8 (délimité par des virgules)</b> : un fichier CSV ne porte pas de chiffrement. Si le classeur a plusieurs onglets, affichez d'abord celui des risques.</li><li>Importez ce fichier CSV dans Vigie, puis supprimez-le.</li></ol>
+      <p class="sub" style="font-size:13px;margin:0">Autre possibilité : <b>Accueil › Sensibilité</b>, choisissez une étiquette sans chiffrement si votre entreprise l'autorise. Respectez la politique de classification de votre entreprise : les données importées restent dans votre dossier SharePoint.</p></div>
+    <div class="xp-foot"><span></span><button class="btn primary" data-close-ov>Compris</button></div>`, "narrow");
+}
 /* ---------- import Excel des risques ---------- */
-const IMP_TARGETS = [["","Ne pas importer"],["ref","Référence"],["titre","Intitulé du risque"],["categorie","Catégorie"],["processus","Processus"],["proprietaire","Propriétaire"],["description","Description"],["proba","Probabilité"],["impact","Impact"],["probaR","Probabilité résiduelle"],["impactR","Impact résiduel"],["traitement","Traitement"],["majeur","Risque majeur"]];
+const IMP_TARGETS = [["","Ne pas importer"],["ref","Référence / N° ID risque"],["titre","Intitulé du risque"],["description","Risques détaillés (causes)"],["consequences","Conséquences directes"],["categorie","Catégorie de risque"],
+  ["typeProcessus","Type de processus"],["macroProcessus","Macro-processus (# Processus)"],["processusDetail","Processus"],["codeProcessus","Code processus"],["activites","Activités"],["taches","Tâches / sous-tâches"],["acteurs","Acteurs en charge"],
+  ["proprietaire","Propriétaire"],["proba","Probabilité"],["impact","Impact"],["probaR","Probabilité résiduelle"],["impactR","Impact résiduel"],["traitement","Traitement"],
+  ["controleN1","Contrôle niveau 1"],["controleN2","Contrôle niveau 2"],["maitrise","Niveau de maîtrise"],["procedures","Procédures et date de mise à jour"],["objectifsProc","Objectifs des procédures"],["majeur","Risque majeur (cartographie)"],["refPC2","Référence plan de contrôle niveau 2"]];
 function guessTarget(h){
-  const n=norm(h).replace(/[^a-z0-9 ]/g," ").replace(/\s+/g," ").trim(); if(!n) return "";
+  const raw=String(h||"").trim(); const n=norm(raw).replace(/[^a-z0-9 ]/g," ").replace(/\s+/g," ").trim(); if(!n) return "";
+  const hash=/^[#№]/.test(raw);
+  if(/plan de controle/.test(n)) return "refPC2";
+  if(/majeur|macro risque|niveau 1 de risque|risque principal|cartographie des risques/.test(n)) return "majeur";
+  if(/type de processus|type processus|famille de processus/.test(n)) return "typeProcessus";
+  if(/code processus|code du processus/.test(n)) return "codeProcessus";
+  if(/macro processus/.test(n) || (hash && /processus/.test(n))) return "macroProcessus";
+  if(hash && /risque/.test(n)) return "ref";
+  if(/controle/.test(n) && /(niveau|n) ?2|second/.test(n)) return "controleN2";
+  if(/controle/.test(n) && /(niveau|n) ?1|premier|^controles?$|dispositif/.test(n)) return "controleN1";
+  if(/maitrise/.test(n)) return "maitrise";
+  if(/objectif/.test(n) && /procedure/.test(n)) return "objectifsProc";
+  if(/procedure/.test(n)) return "procedures";
+  if(/^(ref|reference|id|code|numero|n|no|num)\b|id risque/.test(n) || n==="n°") return "ref";
   const resid = /resid|net\b|apres|actuel/.test(n);
-  if(/majeur|macro|niveau 1|n1\b|risque principal/.test(n)) return "majeur";
-  if(/^(ref|reference|id|code|numero|n|no|num)\b/.test(n) || n==="n°") return "ref";
   if(/proba|frequence|vraisemblance|occurrence|^p$/.test(n)) return resid?"probaR":"proba";
+  if(/tache/.test(n)) return "taches";
+  if(/activite/.test(n)) return "activites";
+  if(/acteur|intervenant/.test(n)) return "acteurs";
+  if(/consequence/.test(n) && !/financiere/.test(n)) return "consequences";
   if(/impact|gravite|severite|^i$|consequence financiere/.test(n)) return resid?"impactR":"impact";
   if(/categor|famille|typolog|type de risque|nature/.test(n)) return "categorie";
-  if(/processus|activite|domaine|direction|macro processus/.test(n)) return "processus";
+  if(/processus|domaine|direction/.test(n)) return "processusDetail";
   if(/proprietaire|responsable|pilote|owner|porteur/.test(n)) return "proprietaire";
   if(/traitement|strategie|reponse au risque/.test(n)) return "traitement";
-  if(/description|cause|consequence|detail|commentaire/.test(n)) return "description";
+  if(/risques? detaille|description|cause|detail|commentaire/.test(n)) return "description";
   if(/risque|intitule|libelle|evenement|titre|nom/.test(n)) return "titre";
   return "";
 }
@@ -6553,6 +6966,7 @@ let IMP=null;
 function importRisques(){ const i=document.createElement("input"); i.type="file"; i.accept=".xlsx,.xls,.xlsm,.csv,.ods"; i.onchange=()=>{ const f=i.files&&i.files[0]; if(f) readImport(f); }; i.click(); }
 async function readImport(file){
   panel(`<div class="xp-head"><div><div class="eyebrow">Import Excel</div><h2>Lecture de ${esc(file.name)}…</h2></div></div><div class="loading"><span></span><span></span><span></span></div>`, "narrow");
+  if(await estChiffre(file)){ panelChiffre("Import Excel", file); return; }
   try{ await ensureLibs(); const wb=XLSX.read(await file.arrayBuffer(), {type:"array", cellDates:true});
     const sheets=wb.SheetNames.map(n=>({n, rows:XLSX.utils.sheet_to_json(wb.Sheets[n], {header:1, defval:"", blankrows:false})})).filter(s=>s.rows.length);
     if(!sheets.length) throw new Error("vide");
@@ -6569,7 +6983,12 @@ function prepImport(){
 }
 function impRows(){
   const M=IMP.map; return IMP.data.map(r=>{ const o={}; M.forEach((t,i)=>{ if(t) o[t]=r[i]; });
-    const x={ ref:String(o.ref??"").trim(), titre:String(o.titre??"").trim(), categorie:toCat(o.categorie, IMP.defCat), processus:toProc(o.processus), proprietaire:String(o.proprietaire??"").trim(), description:String(o.description??"").trim(),
+    const T=k=>String(o[k]??"").replace(/\r/g,"").trim();
+    const acteurs=T("acteurs"), typeP=T("typeProcessus"), macro=T("macroProcessus"), procD=T("processusDetail");
+    const procV=[procD,macro,typeP].map(v=>{ const x=toProc(v); return PROCESSUS.includes(x)?x:""; }).find(Boolean) || "";
+    const x={ ref:String(o.ref??"").trim(), titre:String(o.titre??"").trim(), categorie:toCat(o.categorie, IMP.defCat), categorieDetail:T("categorie"), processus:procV, proprietaire:T("proprietaire")||acteurs.split(/\s*[;\n]\s*/)[0]||"", description:T("description"),
+      typeProcessus:typeP, macroProcessus:macro, processusDetail:procD, codeProcessus:T("codeProcessus"), activites:T("activites"), taches:T("taches"), acteurs, consequences:T("consequences"),
+      impactNiveau: (o.impact!=null && isNaN(Number(o.impact))) ? T("impact") : "", controleN1:T("controleN1"), controleN2:T("controleN2"), maitrise:T("maitrise"), procedures:T("procedures"), objectifsProc:T("objectifsProc"), refPC2:T("refPC2"),
       proba:toScale(o.proba), impact:toScale(o.impact), probaR:toScale(o.probaR), impactR:toScale(o.impactR), traitement:toTrait(o.traitement)||"Réduire", majeur:String(o.majeur??"").trim() };
     return x; }).filter(x=>x.titre); }
 function showImport(){
@@ -6599,8 +7018,9 @@ async function runImport(btn){
   try{
     for(const r of R){
       btn.textContent=`Import… ${ok+upd+1}/${R.length}`;
-      let mid=""; if(r.majeur){ const k=norm(r.majeur); mid=majs.get(k)||[...S.majeurs].find(m=>norm(m.ref)===k)?.id||""; if(!mid){ const d={ref:nextM(), titre:r.majeur.slice(0,120), categorie:r.categorie, exemple:false, creeLe:now, modifieLe:now}; mid=await W.add("majeurs", d); majs.set(k, mid); } }
+      let mid=""; if(r.majeur){ const mm=r.majeur.match(/^([A-Z]{1,5}-\d{1,4})\s*[·:\-–]?\s*(.+)$/); const mref=mm?mm[1]:"", mtit=mm?mm[2]:r.majeur; const k=norm(mtit); mid=majs.get(k)||[...S.majeurs].find(m=>norm(m.ref)===norm(mref||r.majeur))?.id||""; if(!mid){ const d={ref:mref&&!S.majeurs.some(m=>m.ref===mref)?mref:nextM(), titre:mtit.slice(0,120), categorie:r.categorie, exemple:false, creeLe:now, modifieLe:now}; mid=await W.add("majeurs", d); majs.set(k, mid); } }
       const body={titre:r.titre, categorie:r.categorie, processus:r.processus, proprietaire:r.proprietaire, description:r.description, proba:r.proba, impact:r.impact, probaR:r.probaR, impactR:r.impactR, traitement:r.traitement};
+      RG_FIELDS.forEach(k=>{ if(r[k]) body[k]=r[k]; }); if(r.categorieDetail && r.categorieDetail!==r.categorie) body.categorieDetail=r.categorieDetail;
       Object.keys(body).forEach(k=>{ if(body[k]===null||body[k]==="") delete body[k]; }); if(mid) body.majeurId=mid;
       const e = IMP.upd ? ((r.ref&&exist.get(norm(r.ref))) || existT.get(norm(r.titre))) : null;
       if(e){ await W.update("risques", e.id, {...body, modifieLe:now}); upd++; }
@@ -6610,7 +7030,7 @@ async function runImport(btn){
     closeOverlay(); IMP=null; toast(`${ok} ${plural(ok,"risque importé","risques importés")}${upd?`, ${upd} ${plural(upd,"mis à jour","mis à jour")}`:""}`);
   }catch(e){ btn.disabled=false; btn.textContent="Réessayer"; toast(`Import interrompu après ${ok+upd} risques. Réessayez : les risques déjà importés seront mis à jour.`); }
 }
-async function modeleExcel(){
+async function modeleExcel(){ return rgModele();
   try{ await ensureLibs(); }catch(_){ toast("Le module Excel n'a pas pu être chargé."); return; }
   const head=["Référence","Intitulé du risque","Catégorie","Processus","Propriétaire","Description","Probabilité (1 à 5)","Impact (1 à 5)","Probabilité résiduelle (1 à 5)","Impact résiduel (1 à 5)","Traitement","Risque majeur"];
   const ex=[["R-101","Risque de paiement d'une facture en double dû à l'absence de contrôle des doublons, entraînant une perte financière","Fraude et corruption","Achats","Directeur des achats","Saisie manuelle des factures reçues par e-mail et par courrier.",3,3,2,3,"Réduire","Fraude, détournement et corruption"],
@@ -6851,6 +7271,188 @@ function plusChange(e){
 }
 document.addEventListener("submit", e=>{ const f=e.target; if(!f || !f.dataset || f.dataset.sodForm!=="act") return; e.preventDefault(); const i=$("#sodNewAct"); const l=i.value.trim(); if(!l) return; const d=byId("sod",SOD_CUR); const id=slugId(l).slice(0,24)+"-"+Math.random().toString(36).slice(2,5); sodSave(d,{activites:[...(d.activites||[]), {id,l}]}); }, true);
 
+/* =========================================================
+   Registre des risques opérationnels : présentation tableur (en-têtes bleus, filtres par colonne)
+   ========================================================= */
+const RG_FIELDS = ["typeProcessus","macroProcessus","processusDetail","codeProcessus","activites","taches","acteurs","consequences","impactNiveau","controleN1","controleN2","maitrise","procedures","objectifsProc","refPC2"];
+const RG_COLS = [
+  {k:"typeProcessus", l:"Type de processus", w:150, v:o=>o.typeProcessus||o.processus||"", first:1},
+  {k:"macroProcessus", l:"# Processus", w:160},
+  {k:"processusDetail", l:"Processus", w:160},
+  {k:"codeProcessus", l:"Code processus", w:110, mono:1},
+  {k:"activites", l:"Activités", w:230, long:1},
+  {k:"taches", l:"Tâches / sous-tâches", w:230, long:1},
+  {k:"acteurs", l:"Acteurs en charge", w:170, long:1},
+  {k:"ref", l:"# ID risque", w:96, mono:1},
+  {k:"titre", l:"Risques", w:220, strong:1},
+  {k:"description", l:"Risques détaillés", w:320, long:1},
+  {k:"categorie", l:"Catégorie de risque", w:190, v:o=>o.categorieDetail||o.categorie||""},
+  {k:"consequences", l:"Conséquences directes", w:250, long:1},
+  {k:"impactNiveau", l:"Impact", w:104, v:o=>o.impactNiveau||(o.impact?IMPACT[o.impact-1]:"")},
+  {k:"criticite", l:"Criticité", w:112, v:o=>{ const L=level(cur(o)); return L?L.n:"Non coté"; }, vigie:1},
+  {k:"controleN1", l:"Contrôle niveau 1", w:260, long:1},
+  {k:"controleN2", l:"Contrôle niveau 2", w:260, long:1},
+  {k:"maitrise", l:"Niveau de maîtrise", w:136},
+  {k:"procedures", l:"Procédure(s) et date de dernière mise à jour", w:250, long:1},
+  {k:"objectifsProc", l:"Objectifs procédures", w:250, long:1},
+  {k:"majeur", l:"Cartographie des risques majeurs", w:200, v:o=>{ const m=byId("majeurs",o.majeurId); return m?`${m.ref} · ${m.titre}`:""; }},
+  {k:"refPC2", l:"Référence plan de contrôle niveau 2", w:170, mono:1},
+];
+let RG = {mode:"registre", f:{}, sort:null, dense:true, hidden:[]};
+try{ const s=JSON.parse(localStorage.getItem("vigie.registre")||"{}"); if(s.mode==="carto"||s.mode==="registre") RG.mode=s.mode; if(Array.isArray(s.hidden)) RG.hidden=s.hidden; if(typeof s.dense==="boolean") RG.dense=s.dense; }catch(_){}
+function rgSave(){ try{ localStorage.setItem("vigie.registre", JSON.stringify({mode:RG.mode, hidden:RG.hidden, dense:RG.dense})); }catch(_){} }
+const rgCol = k => RG_COLS.find(c=>c.k===k);
+const rgVal = (c,o) => String((c.v ? c.v(o) : o[c.k]) ?? "").trim();
+const rgCols = () => RG_COLS.filter(c=>!RG.hidden.includes(c.k));
+const RG_MAIT_CLS = v => { const n=norm(v); return /insuff|faible|absent|nul/.test(n)?"p-crit":/moyen|partiel|perfect|a ameliorer/.test(n)?"p-warn":/satisf|bon|optimal|maitrise|fort/.test(n)?"p-ok":"p-neutral"; };
+function rgText(s){ return esc(s).replace(/\r/g,"").replace(/\n+/g,"<br>"); }
+function rgCell(c,o){
+  const v=rgVal(c,o);
+  if(c.k==="criticite"){ const i=inh(o), r=res(o); return i||r ? `<span class="rg-crit">${scoreChip(i)}${r?`<span class="rg-arrow">→</span>${scoreChip(r)}`:""}</span>` : '<span class="rg-empty">Non coté</span>'; }
+  if(c.k==="impactNiveau" && v){ const n=norm(v), cls=/tres fort|critique|majeur|5/.test(n)?"p-crit":/fort|eleve|4/.test(n)?"p-high":/moyen|modere|signif|3/.test(n)?"p-warn":"p-ok"; return `<span class="pill ${cls}">${esc(v)}</span>`; }
+  if(c.k==="maitrise") return v ? `<span class="pill ${RG_MAIT_CLS(v)}">${esc(v)}</span>` : '<span class="rg-empty">À évaluer</span>';
+  if(c.k==="controleN1"){ const K=S.controles.filter(k=>k.risqueId===o.id);
+    return (v?`<div class="rg-txt">${rgText(v)}</div>`:"") + (K.length?`<div class="rg-links">${K.map(k=>`<button class="rg-chip" data-open="controles:${k.id}" title="${esc(k.titre)}">${esc(k.ref)}${k.cle?" · clé":""}</button>`).join("")}</div>`:"") || '<span class="rg-empty">—</span>'; }
+  if(c.k==="majeur"){ const m=byId("majeurs",o.majeurId); return m?`<button class="rg-chip maj" data-open="majeurs:${m.id}">${esc(m.ref)}</button><span class="rg-sm">${esc(m.titre)}</span>`:'<span class="rg-empty">—</span>'; }
+  if(c.k==="refPC2" && v){ const p=(S.pcif||[]).find(x=>x.ref===v && x.type!=="exercice"); return p&&typeof pkOpen==="function"?`<button class="rg-chip" data-pk-open="${p.id}">${esc(v)}</button>`:`<span class="mono">${esc(v)}</span>`; }
+  if(!v) return '<span class="rg-empty">—</span>';
+  if(c.k==="titre") return `<b>${esc(v)}</b>${exTag(o)}`;
+  if(c.mono) return `<span class="mono rg-mono">${esc(v)}</span>`;
+  if(c.long) return `<div class="rg-txt">${rgText(v)}</div>`;
+  return esc(v);
+}
+function rgFilterRows(rows){
+  const F2=RG.f; let R=rows.filter(o=>Object.entries(F2).every(([k,f])=>{ const c=rgCol(k); if(!c) return true; const v=rgVal(c,o);
+    if(f.q) return norm(v).includes(norm(f.q)); if(f.vals) return f.vals.includes(v||"(Vides)"); return true; }));
+  if(RG.sort){ const c=rgCol(RG.sort.k), d=RG.sort.d; R.sort((a,b)=>{ if(c.k==="criticite") return d*(cur(a)-cur(b)); return d*rgVal(c,a).localeCompare(rgVal(c,b),"fr",{numeric:true}); }); }
+  else { const T=rgCol("typeProcessus"); R.sort((a,b)=>rgVal(T,a).localeCompare(rgVal(T,b),"fr") || String(a.macroProcessus||"").localeCompare(String(b.macroProcessus||""),"fr") || String(a.codeProcessus||"").localeCompare(String(b.codeProcessus||""),"fr") || sortRef(a,b)); }
+  return R;
+}
+const rgFilterCount = () => Object.keys(RG.f).length;
+function registreTop(){
+  if(!S.risques.length) return "";
+  const n=rgFilterCount();
+  return `<div class="rg-top"><div class="seg" role="group" aria-label="Présentation"><button data-rg-mode="registre" aria-pressed="${RG.mode==="registre"}">${svg('<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M9 9v11M15 9v11"/>',15)} Registre</button><button data-rg-mode="carto" aria-pressed="${RG.mode==="carto"}">${svg('<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',15)} Par catégorie</button></div>
+    ${RG.mode==="registre"?`<div class="rg-tools">${n?`<button class="btn sm" data-rg-clear>${svg('<path d="M4 5h16l-6 7v6l-4 2v-8z"/><path d="M15 15l5 5M20 15l-5 5"/>',14)}Effacer ${n} ${plural(n,"filtre")}</button>`:""}<button class="btn sm" data-rg-dense aria-pressed="${!RG.dense}">${svg(RG.dense?'<path d="M4 6h16M4 12h16M4 18h16"/>':'<path d="M4 5h16M4 10h10M4 15h16M4 20h10"/>',14)}${RG.dense?"Texte complet":"Lignes compactes"}</button><button class="btn sm" data-rg-full aria-pressed="${document.body.classList.contains("rg-full")}">${svg(document.body.classList.contains("rg-full")?'<path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/>':'<path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>',14)}${document.body.classList.contains("rg-full")?"Quitter le plein écran":"Plein écran"}</button><button class="btn sm" data-rg-cols>${svg('<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16M15 4v16"/>',14)}Colonnes${RG.hidden.length?` (${RG_COLS.length-RG.hidden.length}/${RG_COLS.length})`:""}</button></div>`:""}</div>`;
+}
+const RG_FUNNEL = '<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5h18l-7 8v6l-4 2v-8z"/></svg>';
+const RG_CARET = '<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 9l6 6 6-6z"/></svg>';
+function registreHtml(rows){
+  const C=rgCols(), R=rgFilterRows(rows), W=C.reduce((s,c)=>s+c.w,0);
+  const th=c=>{ const f=RG.f[c.k], s=RG.sort&&RG.sort.k===c.k?RG.sort.d:0;
+    return `<th class="${c.first?"rg-first":""} ${c.vigie?"rg-vigie":""}" scope="col"><div class="rg-h"><button class="rg-lbl" data-rg-sort="${c.k}" title="Trier">${esc(c.l)}${s?`<span class="rg-s">${s>0?"▲":"▼"}</span>`:""}</button><button class="rg-fb ${f?"on":""}" data-rg-filter="${c.k}" aria-label="Filtrer : ${esc(c.l)}" title="Filtrer">${f?RG_FUNNEL:RG_CARET}</button></div></th>`; };
+  const body = R.length ? R.map(o=>`<tr data-open="risques:${o.id}" tabindex="0">${C.map(c=>`<td class="${c.first?"rg-first":""} ${c.long?"rg-long":""}">${rgCell(c,o)}</td>`).join("")}</tr>`).join("")
+    : `<tr><td colspan="${C.length}" class="rg-none">Aucun risque ne correspond aux filtres. <button class="linkbtn" data-rg-clear>Effacer les filtres</button></td></tr>`;
+  return `<div class="rg-wrap ${RG.dense?"dense":""}"><table class="rg" style="min-width:${W}px"><colgroup>${C.map(c=>`<col style="width:${c.w}px">`).join("")}</colgroup><thead><tr>${C.map(th).join("")}</tr></thead><tbody>${body}</tbody></table></div>
+    <p class="rg-foot">${R.length} ${plural(R.length,"risque")} sur ${S.risques.length} · cliquez une ligne pour ouvrir la fiche · ▾ pour filtrer une colonne, son titre pour trier${RG.dense?" · les textes longs sont abrégés : « Texte complet » les affiche en entier":""}.</p>`;
+}
+function rgMenu(btn, k){
+  const c=rgCol(k); if(!c) return; const r=btn.getBoundingClientRect(); const f=RG.f[k]||{};
+  const base=filtered("risques"); const counts=new Map(); base.forEach(o=>{ const v=rgVal(c,o)||"(Vides)"; counts.set(v,(counts.get(v)||0)+1); });
+  const vals=[...counts.entries()].sort((a,b)=>a[0]==="(Vides)"?1:b[0]==="(Vides)"?-1:a[0].localeCompare(b[0],"fr",{numeric:true}));
+  const list = !c.long && vals.length<=200;
+  const sel=new Set(f.vals||vals.map(x=>x[0]));
+  const left=Math.max(8,Math.min(r.left-200,window.innerWidth-308));
+  menuOpen=true;
+  $("#overlayHost").innerHTML=`<div class="scrim" data-close-ov style="z-index:50;background:transparent;backdrop-filter:none"></div>
+    <div class="menu rg-menu" role="dialog" aria-label="Filtrer ${esc(c.l)}" style="top:${Math.min(r.bottom+6, window.innerHeight-420)}px;left:${left}px">
+      <div class="rg-mh">${esc(c.l)}</div>
+      <div class="rg-sorts"><button data-rg-sortset="${k}:1">${svg('<path d="M7 4v16M3 8l4-4 4 4M14 6h7M14 12h5M14 18h3"/>',15)}Trier de A à Z</button><button data-rg-sortset="${k}:-1">${svg('<path d="M7 4v16M3 16l4 4 4-4M14 6h3M14 12h5M14 18h7"/>',15)}Trier de Z à A</button></div>
+      <label class="rg-q">${svg('<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>',14)}<input id="rgQ" type="search" placeholder="${list?"Rechercher une valeur":"Contient…"}" value="${esc(f.q||"")}" autocomplete="off"></label>
+      ${list?`<div class="rg-vals" id="rgVals"><label class="rg-all"><input type="checkbox" data-rg-all ${sel.size===vals.length?"checked":""}><span>(Tout sélectionner)</span></label>${vals.map(([v,n])=>`<label data-v="${esc(norm(v))}"><input type="checkbox" data-rg-val="${esc(v)}" ${sel.has(v)?"checked":""}><span>${esc(v.length>90?v.slice(0,90)+"…":v)}</span><small>${n}</small></label>`).join("")}</div>`:`<p class="sub" style="margin:4px 4px 8px">Affiche les risques dont ce champ contient le texte saisi.</p>`}
+      <div class="rg-mf"><button class="btn sm" data-rg-reset="${k}">Effacer</button><button class="btn sm primary" data-rg-apply="${k}" data-list="${list?1:0}">Appliquer</button></div>
+    </div>`;
+  const mEl=$("#overlayHost .rg-menu"); if(mEl){ const h=mEl.offsetHeight; mEl.style.top=Math.max(12, Math.min(r.bottom+6, window.innerHeight-h-12))+"px"; }
+  setTimeout(()=>$("#rgQ")?.focus(),20);
+}
+function rgApply(k, list){
+  if(list){ const boxes=[...document.querySelectorAll("#rgVals [data-rg-val]")]; const on=boxes.filter(b=>b.checked).map(b=>b.dataset.rgVal);
+    if(on.length===boxes.length) delete RG.f[k]; else RG.f[k]={vals:on}; }
+  else { const q=String($("#rgQ")?.value||"").trim(); if(q) RG.f[k]={q}; else delete RG.f[k]; }
+  closeOverlay(); render();
+}
+
+/* ---------- export Excel mis en forme (en-têtes bleus comme le registre) ---------- */
+function colLetter(i){ let s=""; i++; while(i>0){ const m=(i-1)%26; s=String.fromCharCode(65+m)+s; i=Math.floor((i-1)/26); } return s; }
+function xlsxStyled(sheets){
+  const xe2=s=>String(s??"").replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g,"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const styles=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
+<fonts count="4"><font><sz val="10"/><name val="Arial"/></font><font><b/><sz val="10"/><color rgb="FFFFFFFF"/><name val="Arial"/></font><font><b/><sz val="10"/><name val="Arial"/></font><font><b/><sz val="14"/><color rgb="FF003865"/><name val="Arial"/></font></fonts>
+<fills count="5"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF0088CE"/><bgColor indexed="64"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFA9D8F2"/><bgColor indexed="64"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFF3F8FC"/><bgColor indexed="64"/></patternFill></fill></fills>
+<borders count="2"><border><left/><right/><top/><bottom/><diagonal/></border><border><left style="thin"><color rgb="FFD9D9D9"/></left><right style="thin"><color rgb="FFD9D9D9"/></right><top style="thin"><color rgb="FFD9D9D9"/></top><bottom style="thin"><color rgb="FFD9D9D9"/></bottom><diagonal/></border></borders>
+<cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>
+<cellXfs count="6"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>
+<xf numFmtId="0" fontId="1" fillId="2" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment vertical="center" wrapText="1"/></xf>
+<xf numFmtId="0" fontId="0" fillId="0" borderId="1" xfId="0" applyBorder="1" applyAlignment="1"><alignment vertical="center" wrapText="1"/></xf>
+<xf numFmtId="0" fontId="0" fillId="3" borderId="1" xfId="0" applyFill="1" applyBorder="1" applyAlignment="1"><alignment vertical="center" wrapText="1"/></xf>
+<xf numFmtId="0" fontId="2" fillId="0" borderId="1" xfId="0" applyFont="1" applyBorder="1" applyAlignment="1"><alignment vertical="center" wrapText="1"/></xf>
+<xf numFmtId="0" fontId="3" fillId="0" borderId="0" xfId="0" applyFont="1"/></cellXfs>
+<cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`;
+  const sheetXml=sh=>{ const n=sh.cols.length, last=colLetter(n-1);
+    const cell=(r,i,v,s)=>{ const ref=colLetter(i)+r; if(typeof v==="number" && isFinite(v)) return `<c r="${ref}" s="${s}"><v>${v}</v></c>`; return `<c r="${ref}" s="${s}" t="inlineStr"><is><t xml:space="preserve">${xe2(v)}</t></is></c>`; };
+    const rows=[`<row r="1" ht="36" customHeight="1">${sh.cols.map((c,i)=>cell(1,i,c.h,1)).join("")}</row>`];
+    sh.rows.forEach((R,j)=>rows.push(`<row r="${j+2}">${R.map((v,i)=>cell(j+2,i,v,i===0&&sh.firstFill?3:(sh.bold||[]).includes(i)?4:2)).join("")}</row>`));
+    return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheetPr><outlinePr summaryBelow="0"/></sheetPr><dimension ref="A1:${last}${sh.rows.length+1}"/><sheetViews><sheetView workbookViewId="0" zoomScale="90" zoomScaleNormal="90"><pane xSplit="${sh.freezeCols||0}" ySplit="1" topLeftCell="${colLetter(sh.freezeCols||0)}2" activePane="bottomRight" state="frozen"/></sheetView></sheetViews><sheetFormatPr defaultRowHeight="15"/><cols>${sh.cols.map((c,i)=>`<col min="${i+1}" max="${i+1}" width="${c.w}" customWidth="1"/>`).join("")}</cols><sheetData>${rows.join("")}</sheetData><autoFilter ref="A1:${last}${Math.max(2,sh.rows.length+1)}"/><pageMargins left="0.4" right="0.4" top="0.5" bottom="0.5" header="0.3" footer="0.3"/><pageSetup orientation="landscape" paperSize="9"/></worksheet>`; };
+  const ct=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>${sheets.map((s,i)=>`<Override PartName="/xl/worksheets/sheet${i+1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`).join("")}</Types>`;
+  const rels=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>`;
+  const wb=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><bookViews><workbookView/></bookViews><sheets>${sheets.map((s,i)=>`<sheet name="${xe2(s.name.slice(0,31))}" sheetId="${i+1}" r:id="rId${i+1}"/>`).join("")}</sheets><definedNames>${sheets.map((s,i)=>`<definedName name="_xlnm._FilterDatabase" localSheetId="${i}" hidden="1">'${xe2(s.name.slice(0,31)).replace(/'/g,"''")}'!$A$1:$${colLetter(s.cols.length-1)}$${Math.max(2,s.rows.length+1)}</definedName>`).join("")}</definedNames></workbook>`;
+  const wrels=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">${sheets.map((s,i)=>`<Relationship Id="rId${i+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i+1}.xml"/>`).join("")}<Relationship Id="rId${sheets.length+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`;
+  const C=XLSX.CFB, z=C.utils.cfb_new(), enc=new TextEncoder();
+  [["[Content_Types].xml",ct],["_rels/.rels",rels],["xl/workbook.xml",wb],["xl/_rels/workbook.xml.rels",wrels],["xl/styles.xml",styles],...sheets.map((s,i)=>[`xl/worksheets/sheet${i+1}.xml`, sheetXml(s)])].forEach(([p,s])=>C.utils.cfb_add(z,"/"+p,enc.encode(s)));
+  const out=C.write(z,{fileType:"zip", type:"array", compression:true});
+  return new Blob([out instanceof Uint8Array?out:new Uint8Array(out)], {type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+}
+const RG_XL = [
+  ["TYPE DE PROCESSUS",18,o=>o.typeProcessus||o.processus],["# PROCESSUS",20,o=>o.macroProcessus],["PROCESSUS",20,o=>o.processusDetail],["CODE PROCESSUS",14,o=>o.codeProcessus],
+  ["ACTIVITES",34,o=>o.activites],["TACHES/SOUS TACHES",34,o=>o.taches],["ACTEURS EN CHARGE",24,o=>o.acteurs],["# ID RISQUE",11,o=>o.ref],["RISQUES",30,o=>o.titre],
+  ["RISQUES DETAILLES",50,o=>o.description],["CATEGORIE DE RISQUE",26,o=>o.categorieDetail||o.categorie],["CONSEQUENCES DIRECTES",38,o=>o.consequences],["IMPACT",12,o=>o.impactNiveau||(o.impact?IMPACT[o.impact-1]:"")],
+  ["CONTRÔLE\nNiveau 1",38,o=>[o.controleN1, ...S.controles.filter(k=>k.risqueId===o.id).map(k=>`${k.ref} ${k.titre}`)].filter(Boolean).join("\n")],["CONTRÔLE\nNiveau 2",38,o=>o.controleN2],["NIVEAU DE MAITRISE",16,o=>o.maitrise],
+  ["PROCEDURE(S) ET DATE DE DERNIERE MISE A JOUR",36,o=>o.procedures],["OBJECTIFS PROCEDURES",36,o=>o.objectifsProc],["CARTOGRAPHIE DES RISQUES MAJEURS",28,o=>{ const m=byId("majeurs",o.majeurId); return m?`${m.ref} ${m.titre}`:""; }],["REFERENCE PLAN DE CONTRÔLE NIVEAU 2",22,o=>o.refPC2],
+  ["PROBABILITE",12,o=>o.proba||""],["IMPACT (1 A 5)",12,o=>o.impact||""],["CRITICITE BRUTE",12,o=>inh(o)||""],["PROBABILITE RESIDUELLE",13,o=>o.probaR||""],["IMPACT RESIDUEL",12,o=>o.impactR||""],["CRITICITE RESIDUELLE",13,o=>res(o)||""],["PROPRIETAIRE",20,o=>o.proprietaire],["TRAITEMENT",12,o=>o.traitement],
+];
+async function rgExportXlsx(){
+  try{ await ensureLibs(); }catch(_){ toast("Le module Excel n'a pas pu être chargé."); return; }
+  const rows = RG.mode==="registre" ? rgFilterRows(filtered("risques")) : filtered("risques").sort(sortRef);
+  const blob=xlsxStyled([{name:"Risques opérationnels", cols:RG_XL.map(([h,w])=>({h,w})), rows:rows.map(o=>RG_XL.map(([,,f])=>{ const v=f(o); return v==null?"":v; })), firstFill:true, bold:[8], freezeCols:1}]);
+  await saveFile(`registre-risques-operationnels-${TODAY_ISO}.xlsx`, blob);
+}
+async function rgModele(){
+  try{ await ensureLibs(); }catch(_){ toast("Le module Excel n'a pas pu être chargé."); return; }
+  const ex=[["SYSTEMES D'INFORMATION","INFORMATIQUE","SAUVEGARDE","SI_SAUV","Sauvegarde et restauration des données","Définir le périmètre ;\nSurveiller les sauvegardes ;\nTester les restaurations","Directeur technique ;\nAdministrateur SI","R-101","Données perdues ou non restaurables","Couverture incomplète ;\nÉchec silencieux ;\nRestauration impossible","Systèmes d'information et cyber","Perte de données ;\nArrêt de production","Très fort","Contrôle quotidien des journaux de sauvegarde","Test trimestriel de restauration","À évaluer","Politique de sauvegarde (mars 2026)","Rendre les données récupérables","RM-002 Cyberattaque et défaillance des SI","SI-REF-04","","","","","","","Directeur technique","Réduire"]];
+  const val=[["Catégories de risque","Processus Vigie","Impact","Niveau de maîtrise","Traitement"]]; const L=Math.max(CATEGORIES.length, PROCESSUS.length, 7);
+  for(let i=0;i<L;i++) val.push([CATEGORIES[i]||"", PROCESSUS[i]||"", i<5?`${IMPACT[i]} (${i+1})`:"", MAITRISE[i]||"", ["Réduire","Accepter","Transférer","Éviter"][i]||""]);
+  const blob=xlsxStyled([{name:"Registre", cols:RG_XL.map(([h,w])=>({h,w})), rows:ex, firstFill:true, bold:[8], freezeCols:1},
+    {name:"Valeurs possibles", cols:val[0].map(h=>({h,w:30})), rows:val.slice(1)}]);
+  await saveFile("modele-registre-risques-vigie.xlsx", blob);
+}
+
+/* ---------- événements ---------- */
+document.addEventListener("click", e=>{
+  const t=e.target; if(!(t instanceof Element)) return;
+  const m=t.closest("[data-rg-mode]"); if(m){ RG.mode=m.dataset.rgMode; rgSave(); render(); return; }
+  if(t.closest("[data-rg-clear]")){ RG.f={}; RG.sort=null; closeOverlay(); render(); return; }
+  if(t.closest("[data-rg-full]")){ document.body.classList.toggle("rg-full"); render(); return; }
+  if(t.closest("[data-rg-dense]")){ RG.dense=!RG.dense; rgSave(); render(); return; }
+  const so=t.closest("[data-rg-sort]"); if(so){ e.stopPropagation(); const k=so.dataset.rgSort; RG.sort = RG.sort&&RG.sort.k===k ? (RG.sort.d>0?{k,d:-1}:null) : {k,d:1}; render(); return; }
+  const ss=t.closest("[data-rg-sortset]"); if(ss){ const [k,d]=ss.dataset.rgSortset.split(":"); RG.sort={k,d:Number(d)}; closeOverlay(); render(); return; }
+  const fb=t.closest("[data-rg-filter]"); if(fb){ e.stopPropagation(); rgMenu(fb, fb.dataset.rgFilter); return; }
+  const rs=t.closest("[data-rg-reset]"); if(rs){ delete RG.f[rs.dataset.rgReset]; closeOverlay(); render(); return; }
+  const ap=t.closest("[data-rg-apply]"); if(ap){ rgApply(ap.dataset.rgApply, ap.dataset.list==="1"); return; }
+  if(t.closest("[data-rg-cols]")){ e.stopPropagation(); const b=t.closest("[data-rg-cols]"); const r=b.getBoundingClientRect(); menuOpen=true;
+    $("#overlayHost").innerHTML=`<div class="scrim" data-close-ov style="z-index:50;background:transparent;backdrop-filter:none"></div><div class="menu rg-menu" role="dialog" aria-label="Colonnes affichées" style="top:${r.bottom+6}px;left:${Math.max(8,Math.min(r.right-300,window.innerWidth-308))}px"><div class="rg-mh">Colonnes affichées</div><div class="rg-vals" style="max-height:360px">${RG_COLS.map(c=>`<label><input type="checkbox" data-rg-colv="${c.k}" ${RG.hidden.includes(c.k)?"":"checked"} ${c.k==="titre"?"disabled":""}><span>${esc(c.l)}</span></label>`).join("")}</div><div class="rg-mf"><button class="btn sm" data-rg-colsall>Tout afficher</button><button class="btn sm primary" data-close-ov>Fermer</button></div></div>`; return; }
+  if(t.closest("[data-rg-colsall]")){ RG.hidden=[]; rgSave(); closeOverlay(); render(); return; }
+}, true);
+document.addEventListener("change", e=>{
+  const t=e.target; if(!(t instanceof Element)) return;
+  if(t.matches("[data-rg-colv]")){ const k=t.dataset.rgColv; RG.hidden = t.checked ? RG.hidden.filter(x=>x!==k) : [...new Set([...RG.hidden,k])]; rgSave(); renderListBody(); return; }
+  if(t.matches("[data-rg-all]")){ document.querySelectorAll("#rgVals label:not([hidden]) [data-rg-val]").forEach(b=>b.checked=t.checked); return; }
+}, true);
+document.addEventListener("input", e=>{ if(e.target.id==="rgQ"){ const q=norm(e.target.value); document.querySelectorAll("#rgVals label[data-v]").forEach(l=>{ l.hidden = !!q && !l.dataset.v.includes(q); }); } });
+document.addEventListener("keydown", e=>{ if(e.key==="Escape" && document.body.classList.contains("rg-full") && !menuOpen && !drawer){ document.body.classList.remove("rg-full"); render(); } });
+document.addEventListener("keydown", e=>{ if(e.key==="Enter" && e.target.id==="rgQ"){ e.preventDefault(); const ap=document.querySelector("[data-rg-apply]"); if(ap){ if(ap.dataset.list==="1" && e.target.value.trim()){ document.querySelectorAll("#rgVals label[data-v] [data-rg-val]").forEach(b=>{ b.checked=!b.closest("label").hidden; }); } rgApply(ap.dataset.rgApply, ap.dataset.list==="1"); } } }, true);
+
+LIST_TOP.risques = registreTop;
+
 /* ---------- listes : incidents et indicateurs ---------- */
 Object.assign(LEDE, {
   incidents:"Déclarez les incidents et les pertes, rattachez-les à un risque : ils éclairent la cotation et alimentent le rapport au comité d'audit.",
@@ -6963,6 +7565,7 @@ function pkImportPick(){ const i=document.createElement("input"); i.type="file";
 async function pkRead(file){
   panel(`<div class="xp-head"><div><div class="eyebrow">Import du PCIF</div><h2>Lecture de ${esc(file.name)}…</h2></div></div><div class="loading"><span></span><span></span><span></span></div>`, "narrow");
   try{
+    if(await estChiffre(file)){ panelChiffre("Import du PCIF", file); return; }
     await ensureLibs(); const wb=XLSX.read(await file.arrayBuffer(), {type:"array", cellDates:true});
     const pts=[], aff=[], refs={}; let year="";
     wb.SheetNames.forEach(n=>{ const rows=XLSX.utils.sheet_to_json(wb.Sheets[n], {header:1, defval:"", blankrows:true, raw:false}); if(!rows.length) return;
@@ -7197,7 +7800,7 @@ document.addEventListener("click", e=>{
   const rf=t.closest("[data-pk-ref]"); if(rf){ PK.ref=rf.dataset.pkRef; PK.theme=""; render(); return; }
   const tb=t.closest("[data-pk-tab]"); if(tb){ PK.tab=tb.dataset.pkTab; render(); return; }
   const fr=t.closest("[data-pk-filter-resp]"); if(fr){ Object.assign(PK,{tab:"points", resp:fr.dataset.pkFilterResp, statut:"", res:"", theme:"", prio:"", q:""}); render(); return; }
-  const op=t.closest("[data-pk-open]"); if(op){ pkOpen(op.dataset.pkOpen); return; }
+  const op=t.closest("[data-pk-open]"); if(op){ e.stopPropagation(); pkOpen(op.dataset.pkOpen); return; }
   const rb=t.closest("[data-pk-res]"); if(rb && PKD){ pkCollect(); const i=Number(rb.dataset.pkRes); PKD.d.resultat = pkRes(PKD.d)===i ? null : i; pkPaint(); return; }
   if(t.closest("[data-pk-save]")){ pkSave(); return; }
   if(t.closest("[data-pk-action]") && PKD){ const d=pkCollect(), id=PKD.id; closeOverlay(); PKD=null;

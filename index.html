@@ -6,7 +6,7 @@
 <title>Vigie Contrôle Interne</title>
 <meta name="description" content="Pilotage du contrôle interne : risques, contrôles, tests, plans d'action, conformité, équipe, formations et veille.">
 <meta name="theme-color" content="#003865">
-<script>window.VIGIE_VERSION = "5.1 du 16 novembre 2026";</script>
+<script>window.VIGIE_VERSION = "5.2 du 16 novembre 2026";</script>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -1253,6 +1253,10 @@ td{border-bottom-color:var(--tb-grid)}
 /* ---- Mouvement réduit ---- */
 @media (prefers-reduced-motion: reduce){ .kpi, .cat, .btn, .nav a{transition:none} .kpi:hover{transform:none} }
 @media (max-width:760px){ .head{padding:18px 16px; border-radius:16px} .head::before{display:none} .drawer{border-radius:0} }
+
+/* ---- Pleine largeur : l'espace de travail occupe tout l'écran ---- */
+.content{max-width:none}
+@media (min-width:1800px){ .content{padding-left:40px; padding-right:40px} .topbar{padding-left:40px; padding-right:40px} }
 
 /* =================== Version locale : stockage partagé =================== */
 .stk-btn{display:flex; flex-direction:column; align-items:flex-start; gap:2px; width:100%; border:0; background:transparent; color:var(--side-muted); text-align:left; cursor:pointer; border-radius:10px; padding:6px 8px; font-size:12px}

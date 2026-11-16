@@ -1,0 +1,99 @@
+# Vigie — pilotage du contrôle interne
+
+Vigie réunit tout le dispositif de contrôle interne en un seul outil : cartographie des risques, référentiel de contrôles, plan de tests, plans d'action, score de conformité, tâches et organisation de l'équipe, formations interactives et veille réglementaire avec son plan d'action.
+
+Cette version fonctionne **sans serveur et sans installation** :
+
+- l'application (ce dépôt) est publiée sur **GitHub Pages** et s'installe comme une application depuis Microsoft Edge ;
+- les données de l'équipe restent dans un **dossier SharePoint**, synchronisé sur chaque ordinateur par **OneDrive**.
+
+Aucune donnée n'est envoyée à GitHub ni à un service tiers : GitHub ne sert qu'à distribuer le code de l'application.
+
+---
+
+## Comment fonctionne le travail en équipe
+
+```
+SharePoint  ──  dossier « Vigie » de l'équipe
+                 ├─ vigie-claire-martin-x7k2.json     ← écrit uniquement par le poste de Claire
+                 ├─ vigie-sophie-renaud-ab12.json     ← écrit uniquement par le poste de Sophie
+                 └─ vigie-mony-assare-q9f1.json       ← écrit uniquement par votre poste
+      ▲ synchronisé par OneDrive sur chaque PC
+      │
+Vigie (dans Edge) lit tous les fichiers vigie-*.json, les fusionne et affiche le résultat.
+```
+
+- Chaque ordinateur écrit **uniquement son propre fichier**. Personne n'écrit dans le fichier d'un autre, donc OneDrive ne crée jamais de « copies en conflit ».
+- Pour chaque élément (un risque, une tâche, une actualité…), **la version modifiée le plus récemment l'emporte**. Une suppression est elle aussi datée et l'emporte sur les versions plus anciennes.
+- Vigie relit le dossier **toutes les 15 secondes** et à chaque retour sur la fenêtre. Les modifications d'un collègue apparaissent dès qu'OneDrive a synchronisé son fichier, en général en quelques secondes.
+- Chaque fiche indique qui l'a modifiée en dernier et quand.
+
+---
+
+## Mise en place (une seule fois)
+
+### 1. Créer le dossier partagé dans SharePoint
+
+1. Dans le site SharePoint de l'équipe, créez un dossier, par exemple **Contrôle interne › Vigie**.
+2. Donnez l'accès en **modification** aux collègues qui utiliseront Vigie.
+
+### 2. Publier l'application sur GitHub Pages
+
+1. Créez un dépôt sur GitHub, par exemple `vigie`.
+2. Déposez-y tout le contenu de ce dossier (bouton **Add file › Upload files**, ou `git push`).
+3. Dans le dépôt : **Settings › Pages › Build and deployment › Source : Deploy from a branch**, choisissez la branche `main` et le dossier `/ (root)`, puis **Save**.
+4. Après une minute, l'adresse de l'application s'affiche, par exemple `https://votre-compte.github.io/vigie/`.
+
+> Avec un compte GitHub gratuit, GitHub Pages impose un dépôt **public** : le code de l'application est visible, mais **aucune donnée** n'y figure (le fichier `.gitignore` empêche d'y publier un fichier de données par erreur). Si votre entreprise dispose de GitHub Enterprise, le dépôt peut rester privé.
+
+### 3. Sur chaque ordinateur (vous et chaque collègue)
+
+1. Dans SharePoint, ouvrez le dossier **Vigie** et cliquez sur **Ajouter un raccourci à Mes fichiers**. Le dossier apparaît dans l'Explorateur Windows sous **OneDrive - *votre entreprise***.
+2. Conseillé : clic droit sur ce dossier dans l'Explorateur › **Toujours conserver sur cet appareil**, pour que les fichiers soient disponibles même hors connexion.
+3. Ouvrez l'adresse de l'application dans **Microsoft Edge** (ou Google Chrome).
+4. Installez-la comme une application : menu **…** › **Applications** › **Installer ce site en tant qu'application**. Vigie obtient alors son icône sur le bureau et dans le menu Démarrer, et s'ouvre dans sa propre fenêtre.
+5. Au premier lancement, indiquez votre nom, puis cliquez sur **Choisir le dossier** et sélectionnez le dossier **Vigie** dans OneDrive. Acceptez l'autorisation de modification demandée par le navigateur.
+
+La première personne trouve un dossier vide et choisit par quoi commencer : **données de départ** (exigences réglementaires, veille et un exemple de dispositif sur une entreprise fictive, facile à effacer), **sauvegarde** à importer, ou **dispositif vide**. Les suivantes retrouvent directement les données de l'équipe.
+
+> À chaque ouverture, le navigateur peut vous demander de confirmer l'accès au dossier : un clic sur **Autoriser l'accès** suffit. Si le navigateur propose l'option **Autoriser à chaque visite**, choisissez-la pour ne plus avoir la question.
+
+---
+
+## Variante sans GitHub
+
+Vous pouvez aussi déposer ce dossier d'application lui-même dans SharePoint, à côté du dossier de données. Chaque collègue lance alors **`Lancer Vigie.bat`** depuis l'Explorateur : Vigie s'ouvre dans une fenêtre Edge sans barre d'adresse. Les mises à jour de l'application se font en remplaçant les fichiers dans SharePoint.
+
+`Lancer Vigie.bat` peut aussi ouvrir la version GitHub Pages : renseignez son adresse dans la ligne `ADRESSE_EN_LIGNE` du fichier.
+
+---
+
+## Sauvegardes
+
+- Cliquez sur l'état de synchronisation, en bas de la barre latérale, puis **Exporter une sauvegarde** : vous obtenez un fichier `sauvegarde-vigie-AAAA-MM-JJ.json` contenant toutes les données de l'équipe. **Importer une sauvegarde** permet de les recharger.
+- SharePoint conserve en plus l'historique des versions de chaque fichier.
+
+## Mettre à jour l'application
+
+Remplacez les fichiers sur GitHub. Chaque utilisateur reçoit la nouvelle version à l'ouverture suivante. Les données, elles, ne sont pas touchées.
+
+## Ce qu'il faut savoir
+
+- **Navigateur** : Microsoft Edge ou Google Chrome sur ordinateur. Firefox et Safari ne permettent pas encore à une application web d'écrire dans un dossier ; ils ouvrent Vigie en mode démonstration.
+- **Même fiche modifiée au même moment** par deux personnes : la dernière enregistrée l'emporte. Les fiches différentes ne se gênent jamais.
+- **Progression en formation, prénom affiché et préférences** : enregistrés sur chaque ordinateur, pas dans le dossier partagé.
+- **Actions de la veille** : saisissez-les dans la fiche de l'actualité (bouton **Modifier**), une par ligne : `15/01/2027 ; Haute ; Mettre à jour la cartographie ; Contrôleur interne`. Le plan d'action de la veille s'imprime ou s'enregistre en PDF avec le bouton **Imprimer ou PDF**.
+- **Hors connexion** : Vigie s'ouvre et enregistre sur l'ordinateur ; OneDrive envoie les modifications au retour du réseau.
+
+## Contenu du dépôt
+
+| Fichier | Rôle |
+|---|---|
+| `index.html` | Page de l'application |
+| `css/vigie.css` | Styles (charte bleu, marine et prune) |
+| `js/app.js` | Application : tableaux de bord, dispositif, équipe, tâches, veille |
+| `js/formations.js` | Contenu des quatre parcours de formation |
+| `js/stockage.js` | Lecture, fusion et écriture des fichiers dans le dossier partagé |
+| `js/depart.js` | Données de départ proposées au premier lancement |
+| `manifest.webmanifest`, `sw.js`, `icons/` | Installation comme application et ouverture hors connexion |
+| `Lancer Vigie.bat` | Lanceur Windows (fenêtre Edge sans barre d'adresse) |

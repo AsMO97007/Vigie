@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Vigie Contrôle Interne</title>
+<meta name="description" content="Pilotage du contrôle interne : risques, contrôles, tests, plans d'action, conformité, équipe, formations et veille.">
+<meta name="theme-color" content="#003865">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,500;0,7..72,650;1,7..72,500&family=Figtree:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="css/vigie.css">
+</head>
+<body>
+<div class="welcome" id="welcome" role="dialog" aria-modal="true" aria-labelledby="wTitle">
+  <canvas id="wCanvas" aria-hidden="true"></canvas>
+  <div class="wl">
+    <div class="brandw"><svg width="40" height="40" viewBox="0 0 38 38" aria-hidden="true"><rect width="38" height="38" rx="11" fill="#003865"/><path d="M5.5 19c3.4-5.6 8-8.4 13.5-8.4S29.1 13.4 32.5 19c-3.4 5.6-8 8.4-13.5 8.4S8.9 24.6 5.5 19z" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linejoin="round"/><circle cx="19" cy="19" r="5.6" fill="#0088CE"/><path d="M16.4 19.1l1.8 1.8 3.4-3.6" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Vigie<small>Contrôle interne</small></span></div>
+    <div><div class="dline" id="wDate">&nbsp;</div><h1 id="wTitle"><span id="wHello">Bonjour,</span><em>voyons ce qu'on a aujourd'hui.</em></h1></div>
+    <p class="sum" id="wSum">Je rassemble vos priorités du jour…</p>
+    <div class="wcards" id="wCards">
+      <div class="wcard"><b>…</b><span>tâches urgentes</span></div>
+      <div class="wcard"><b>…</b><span>actions en retard</span></div>
+      <div class="wcard"><b>…</b><span>échéances cette semaine</span></div>
+      <div class="wcard"><b>…</b><span>score de conformité</span></div>
+    </div>
+    <div class="wlist" id="wList"></div>
+    <div class="wgo"><button class="wbtn" id="wGo">Continuer <span class="arr"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button><small>ou appuyez sur Entrée</small><button class="wname" id="wName" hidden>Ce n'est pas votre prénom ?</button></div>
+  </div>
+</div>
+
+<div class="app">
+  <aside class="rail">
+    <div class="brand">
+      <svg width="40" height="40" viewBox="0 0 38 38" aria-hidden="true"><defs><linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0088CE"/><stop offset="1" stop-color="#0084D4"/></linearGradient></defs><rect width="38" height="38" rx="11" fill="url(#bg1)"/><path d="M5.5 19c3.4-5.6 8-8.4 13.5-8.4S29.1 13.4 32.5 19c-3.4 5.6-8 8.4-13.5 8.4S8.9 24.6 5.5 19z" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round"/><circle cx="19" cy="19" r="5.6" fill="#fff"/><path d="M16.4 19.1l1.8 1.8 3.4-3.6" fill="none" stroke="#0088CE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div><b>Vigie</b><small>Contrôle interne</small></div>
+    </div>
+    <nav class="nav" id="nav" aria-label="Sections"></nav>
+    <div class="rail-foot" id="railFoot"></div>
+  </aside>
+  <div class="main">
+    <div class="topbar" id="topbar">
+      <button class="searchbtn" id="openSearch" aria-label="Rechercher"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><span>Rechercher un risque, un contrôle, une personne…</span><span class="kbd">Ctrl K</span></button>
+      <button class="btn primary" id="openCreate" aria-haspopup="menu"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Créer</button>
+      <span class="topdate" id="topDate"></span>
+    </div>
+    <main class="content" id="main" tabindex="-1"></main>
+  </div>
+</div>
+<div id="drawerHost"></div>
+<div id="overlayHost"></div>
+<div id="toastHost"></div>
+
+<script src="js/formations.js"></script>
+<script src="js/depart.js"></script>
+<script src="js/stockage.js"></script>
+<script src="js/app.js"></script>
+<script>
+  if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+    navigator.serviceWorker.register("sw.js").catch(() => {});
+  }
+</script>
+</body>
+</html>

@@ -70,6 +70,8 @@ Vous pouvez aussi déposer ce dossier d'application lui-même dans SharePoint, �
 
 ## Les fonctions de pilotage
 
+- **Présentation** : charte Égide (menu clair, une couleur par fonctionnalité), sélecteur **Jour / Nuit / Auto** en haut à droite, bouton **Retour** en haut de chaque page (ou Alt + ←).
+- **Registre des risques opérationnels** : présenté **par type de processus**, avec filtres en pastilles (type de processus, impact, niveau de maîtrise) ; chaque risque se déplie en trois cartes : Processus, Risque, Dispositif de maîtrise, qui reprennent les rubriques de votre cartographie Excel.
 - **Risques opérationnels** : bouton **Importer** pour reprendre une cartographie Excel existante (Vigie reconnaît les colonnes et vous laisse corriger la correspondance), bouton **Exporter** en Excel, Word ou PDF.
 - **Risques majeurs** : **Regrouper par catégorie** crée un risque majeur par catégorie à partir des risques opérationnels ; vous renommez, fusionnez et réaffectez ensuite. Chaque risque majeur prend la cotation de son risque opérationnel le plus critique.
 - **Incidents**, **Indicateurs de risque** (avec seuils d'alerte et valeurs mensuelles), **Auto-évaluation** des contrôles, **Séparation des tâches** (matrice des tâches incompatibles et détection des cumuls).

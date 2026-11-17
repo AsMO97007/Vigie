@@ -6,7 +6,7 @@
 <title>Vigie Contrôle Interne</title>
 <meta name="description" content="Pilotage du contrôle interne : risques, contrôles, tests, plans d'action, conformité, équipe, formations et veille.">
 <meta name="theme-color" content="#003865">
-<script>window.VIGIE_VERSION = "6.2 du 17 novembre 2026";</script>
+<script>window.VIGIE_VERSION = "6.3 du 17 novembre 2026";</script>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -1511,6 +1511,30 @@ tr.grouprow td{background:color-mix(in srgb,var(--tb-first) 50%,var(--surface)) 
 :root[data-theme="dark"] .eyebrow{color:color-mix(in srgb,var(--c,var(--muted)) 55%,#fff)}
 @media (max-width:700px){ .topbar{flex-wrap:wrap} .topdate{display:none} .thm{margin-left:auto} }
 
+/* ---- Tableaux : teinte de la page en cours, plus de bandeau bleu vif ---- */
+body{
+  --tb-head: color-mix(in srgb, var(--pc,#0088CE) 11%, var(--surface));
+  --tb-head-2: color-mix(in srgb, var(--pc,#0088CE) 16%, var(--surface));
+  --tb-head-ink: var(--heading);
+  --tb-first: color-mix(in srgb, var(--pc,#0088CE) 9%, var(--surface));
+  --tb-first-ink: var(--heading);
+  --tb-hover: color-mix(in srgb, var(--pc,#0088CE) 5%, var(--surface));
+}
+.tablewrap > table > thead th, table.data thead th{border-right:0 !important; box-shadow:inset 0 -2px 0 var(--pc,#0088CE); color:var(--heading)}
+tr.grouprow td{background:color-mix(in srgb, var(--pc,#0088CE) 5%, var(--surface)) !important; color:var(--heading); box-shadow:inset 3px 0 0 color-mix(in srgb, var(--pc,#0088CE) 70%, transparent)}
+tr.grouprow .sub{color:var(--muted) !important; opacity:1}
+
+/* ---- Stratégie de traitement ---- */
+#drawerHost [data-when][hidden]{display:none !important}
+.section-lbl{border-top-color:var(--sl,var(--pc,var(--accent))) !important; background:linear-gradient(180deg,color-mix(in srgb,var(--sl,var(--pc,#0088CE)) 9%,var(--surface)),var(--surface)) !important}
+.section-lbl[data-when-v="Réduire"]{--sl:var(--accent)} .section-lbl[data-when-v="Accepter"]{--sl:var(--warm)} .section-lbl[data-when-v="Transférer"]{--sl:#6B4FBB} .section-lbl[data-when-v="Éviter"]{--sl:var(--crit)}
+.trt{display:flex; align-items:center; gap:8px; flex-wrap:wrap}
+.trt-p{display:inline-flex; align-items:center; gap:6px; font-size:.8rem; font-weight:700; color:var(--tc); background:color-mix(in srgb,var(--tc) 12%,var(--surface)); border-radius:99px; padding:3px 10px}
+.trt-p::before{content:""; width:7px; height:7px; border-radius:50%; background:var(--tc)}
+.trt-d{display:grid; grid-template-columns:auto minmax(0,1fr); gap:4px 10px; margin:8px 0 0; font-size:.84rem}
+.trt-d dt{color:var(--muted); font-weight:600; font-size:.78rem; text-transform:none; letter-spacing:0; margin:0}
+.trt-d dd{margin:0; color:var(--ink)}
+
 /* =================== Version locale : stockage partagé =================== */
 .stk-btn{display:flex; flex-direction:column; align-items:flex-start; gap:2px; width:100%; border:0; background:transparent; color:var(--side-muted); text-align:left; cursor:pointer; border-radius:10px; padding:6px 8px; font-size:12px}
 .stk-btn:hover{background:var(--side-2); color:var(--side-ink)}
@@ -2691,7 +2715,7 @@ window.VIGIE_DEPART = {
     "proprietaire": "Directeur industriel",
     "ref": "R-012",
     "titre": "Pollution accidentelle d'un site par les eaux de process",
-    "traitement": "Réduire",
+    "traitement": "Transférer",
     "majeurId": "rm6",
     "typeProcessus": "PRODUCTION",
     "macroProcessus": "ENVIRONNEMENT",
@@ -2708,7 +2732,13 @@ window.VIGIE_DEPART = {
     "maitrise": "Satisfaisant",
     "procedures": "Procédure environnement (2025)",
     "objectifsProc": "Respecter les seuils de rejet autorisés",
-    "refPC2": ""
+    "refPC2": "",
+    "transfertMode": "Assurance",
+    "transfertA": "Assureur responsabilité environnementale",
+    "transfertRef": "Police RCE-2026-014",
+    "transfertEcheance": "2027-01-01",
+    "transfertCouverture": "Plafond 5 M€ par sinistre, franchise 25 k€, pollution graduelle exclue",
+    "transfertResiduel": "Franchise, atteinte à l'image auprès des riverains, obligations de remise en état non couvertes"
    },
    "r2": {
     "categorie": "Fraude et corruption",
@@ -2855,7 +2885,7 @@ window.VIGIE_DEPART = {
     "proprietaire": "Responsable logistique",
     "ref": "R-006",
     "titre": "Écarts d'inventaire non expliqués",
-    "traitement": "Réduire",
+    "traitement": "Accepter",
     "majeurId": "rm3",
     "typeProcessus": "LOGISTIQUE",
     "macroProcessus": "STOCKS",
@@ -2872,7 +2902,12 @@ window.VIGIE_DEPART = {
     "maitrise": "Insuffisant",
     "procedures": "Procédure d'inventaire (à formaliser)",
     "objectifsProc": "Fiabiliser les quantités et la valeur des stocks",
-    "refPC2": ""
+    "refPC2": "",
+    "acceptePar": "Directeur administratif et financier",
+    "accepteLe": "2026-02-10",
+    "accepteMotif": "Les écarts constatés restent inférieurs à 0,3 % de la valeur du stock depuis trois ans ; un inventaire tournant permanent coûterait plus que les pertes évitées.",
+    "accepteSeuil": "Écart annuel supérieur à 0,5 % du stock ou à 50 k€",
+    "accepteRevue": "2027-02-10"
    },
    "r7": {
     "categorie": "Conformité et juridique",
@@ -2936,7 +2971,10 @@ window.VIGIE_DEPART = {
     "maitrise": "Moyen",
     "procedures": "Stratégie achats (2026)",
     "objectifsProc": "Sécuriser les approvisionnements critiques",
-    "refPC2": "PC2-ACH-07"
+    "refPC2": "PC2-ACH-07",
+    "reductionMesures": "Qualification d'un second fournisseur de membranes\nStock de sécurité porté à 8 semaines",
+    "reductionPorteur": "Directeur des achats",
+    "reductionEcheance": "2027-03-31"
    },
    "r9": {
     "categorie": "Systèmes d'information et cyber",
@@ -5673,7 +5711,7 @@ function urgentItems(){
   S.risques.filter(r=>cur(r)>=15 && !S.controles.some(c=>c.risqueId===r.id)).forEach(r=>it.push({lvl:"u", kind:"risques", id:r.id, t:`Risque critique sans contrôle : ${r.titre}`, s:r.ref}));
   S.controles.filter(c=>lastTest(c.id)?.resultat==="Inefficace" && !S.actions.some(a=>a.controleId===c.id && isOpen(a))).forEach(c=>it.push({lvl:"h", kind:"controles", id:c.id, t:`Contrôle inefficace sans plan d'action : ${c.titre}`, s:c.ref}));
   S.exigences.filter(e=>e.statut==="Non conforme").forEach(e=>it.push({lvl:"h", kind:"exigences", id:e.id, t:`Exigence non conforme : ${e.titre}`, s:`${e.ref} · ${e.referentiel}`}));
-  it.push(...urgentPlus(), ...docUrgent());
+  it.push(...urgentPlus(), ...docUrgent(), ...trtUrgent());
   const seenAct = new Set(S.taches.filter(taskOpen).map(t=>t.lien).filter(Boolean));
   return it.filter(x=>x.kind==="taches" || !seenAct.has(x.kind+":"+x.id))
     .sort((a,b)=> (a.lvl===b.lvl?0:a.lvl==="u"?-1:1) || String(a.date||"9999").localeCompare(String(b.date||"9999")));
@@ -5779,6 +5817,7 @@ window.addEventListener("scroll", ()=>{ $("#topbar").classList.toggle("scrolled"
    ========================================================= */
 function render(){
   renderNav(); renderWelcome();
+  try{ document.body.style.setProperty("--pc", NAVC[view]||"#0088CE"); }catch(_){}
   const m = $("#main");
   autoSnapshot();
   const fn = {aujourdhui:renderToday, tableau:renderDashboard, conformite:renderConformite, formations:renderFormations, actualites:renderNews, taches:renderTasks, equipe:renderTeam, majeurs:renderMajeurs, autoeval:renderAutoeval, sod:renderSod, documents:renderDocuments, evolution:renderEvolution, pcif:(typeof renderPcif==="function"?renderPcif:null)}[view];
@@ -6771,7 +6810,7 @@ function paintDrawer(){
   if(!drawer){ host.innerHTML=""; return; }
   const {col,id,draft} = drawer, sc=SCHEMA[col], ro=!canWrite && col!=="moi";
   const body = sc.fields.map(f=>{
-    if(f.sec) return `<div class="section-lbl">${f.sec}</div>`;
+    if(f.sec) return `<div class="section-lbl" ${f.when?`data-when="${f.when[0]}" data-when-v="${[].concat(f.when[1]).join("|")}" ${whenOn(f,draft)?"":"hidden"}`:""}>${f.sec}</div>`;
     if(f.t==="refs") return refsField(f, draft, "drawer", ro);
     if(f.t==="files") return filesField(draft, ro);
     const v = draft[f.k], fid="f_"+f.k, req=f.req?' <span aria-hidden="true" style="color:var(--crit)">*</span>':"";
@@ -6800,6 +6839,7 @@ function paintDrawer(){
     <footer>${id&&canWrite&&!drawer.isMe?`<button class="btn danger ${drawer.armed?"armed":""}" id="dDel">${drawer.armed?"Confirmer la suppression":"Supprimer"}</button>`:"<span></span>"}
       <span class="actions-row"><button class="btn" data-close>${ro?"Fermer":"Annuler"}</button>${!ro?`<button class="btn primary" id="dSave">${id||drawer.isMe?"Enregistrer":"Créer"}</button>`:""}</span></footer>
   </aside>`;
+  whenApply(sc, draft);
   const first = host.querySelector(".body input, .body select, .body textarea"); if(first && !id) first.focus();
 }
 function workloadBlock(m){ if(!m) return ""; const l=loadOf(m); return `<div class="workload"><div><b>${l.risques.length}</b><small>risques possédés</small></div><div><b>${l.controles.length}</b><small>contrôles</small></div><div><b>${l.actions.length}</b><small>actions ouvertes</small></div><div><b style="${l.late.length?"color:var(--crit)":""}">${l.late.length}</b><small>en retard</small></div></div>`; }
@@ -6998,7 +7038,7 @@ async function clearExamples(btn){
 
 /* ---------- Export CSV ---------- */
 const EXPORT = {
-  risques:[["Réf.",o=>o.ref],["Risque",o=>o.titre],["Catégorie",o=>o.categorie],["Processus",o=>o.processus],["Propriétaire",o=>o.proprietaire],["Description",o=>o.description],["Probabilité",o=>o.proba],["Impact",o=>o.impact],["Criticité inhérente",o=>inh(o)||""],["Probabilité résiduelle",o=>o.probaR],["Impact résiduel",o=>o.impactR],["Criticité résiduelle",o=>res(o)||""],["Niveau résiduel",o=>level(res(o))?.n],["Traitement",o=>o.traitement],["Nb contrôles",o=>S.controles.filter(c=>c.risqueId===o.id).length]],
+  risques:[["Réf.",o=>o.ref],["Risque",o=>o.titre],["Catégorie",o=>o.categorie],["Processus",o=>o.processus],["Propriétaire",o=>o.proprietaire],["Description",o=>o.description],["Probabilité",o=>o.proba],["Impact",o=>o.impact],["Criticité inhérente",o=>inh(o)||""],["Probabilité résiduelle",o=>o.probaR],["Impact résiduel",o=>o.impactR],["Criticité résiduelle",o=>res(o)||""],["Niveau résiduel",o=>level(res(o))?.n],["Traitement",o=>o.traitement],["Modalités du traitement",o=>trtText(o)],["Nb contrôles",o=>S.controles.filter(c=>c.risqueId===o.id).length]],
   controles:[["Réf.",o=>o.ref],["Contrôle",o=>o.titre],["Clé",o=>o.cle?"Oui":"Non"],["Risque",o=>byId("risques",o.risqueId)?.ref],["Catégorie",o=>byId("risques",o.risqueId)?.categorie],["Processus",o=>procOf(o,"controles")],["Description",o=>o.description],["Type",o=>o.type],["Nature",o=>o.nature],["Fréquence",o=>o.frequence],["Responsable",o=>o.proprietaire],["Preuve",o=>o.preuve],["Dernier résultat",o=>lastTest(o.id)?.resultat],["Date dernier test",o=>lastTest(o.id)?.date]],
   tests:[["Réf.",o=>o.ref],["Contrôle",o=>byId("controles",o.controleId)?.ref],["Intitulé contrôle",o=>byId("controles",o.controleId)?.titre],["Type de test",o=>o.typeTest],["Méthode",o=>o.methode],["Période",o=>o.periode],["Date",o=>o.date],["Testeur",o=>o.testeur],["Échantillon",o=>o.echantillon],["Exceptions",o=>o.exceptions],["Résultat",o=>o.resultat],["Conclusion",o=>o.commentaire]],
   actions:[["Réf.",o=>o.ref],["Constat",o=>o.titre],["Description",o=>o.description],["Contrôle",o=>byId("controles",o.controleId)?.ref],["Risque",o=>byId("risques",o.risqueId)?.ref],["Gravité",o=>o.gravite],["Origine",o=>o.source],["Action corrective",o=>o.recommandation],["Responsable",o=>o.responsable],["Échéance",o=>o.echeance],["Statut",o=>o.statut],["Avancement %",o=>o.avancement],["En retard",o=>isLate(o)?"Oui":"Non"]],
@@ -7474,6 +7514,7 @@ function guessTarget(h){
   if(/categor|famille|typolog|type de risque|nature/.test(n)) return "categorie";
   if(/processus|domaine|direction/.test(n)) return "processusDetail";
   if(/proprietaire|responsable|pilote|owner|porteur/.test(n)) return "proprietaire";
+  if(/^modalites/.test(n)) return "";
   if(/traitement|strategie|reponse au risque/.test(n)) return "traitement";
   if(/risques? detaille|description|cause|detail|commentaire/.test(n)) return "description";
   if(/risque|intitule|libelle|evenement|titre|nom/.test(n)) return "titre";
@@ -7897,8 +7938,8 @@ function rkCard(o){
       <section class="rk-col sx-risk"><h3><span class="rk-ic">${svg('<path d="M12 3l9 16H3z" fill="currentColor" fill-opacity=".28" stroke="none"/><path d="M12 3l9 16H3z"/><path d="M12 10v4M12 16.5v.01"/>',15)}</span>Risque</h3>
         <dl class="kv">${kv("Risques détaillés", rkVal(o.description))}${kv("Catégorie de risque", esc(cat||"—"))}${kv("Conséquences directes", rkVal(o.consequences))}${kv("Impact", imp?`<span class="pill ${impCls(imp)}">${esc(imp)}</span>`:"—")}${kv("Criticité", `<span class="rk-crit">${scoreChip(inh(o))}${res(o)?`<span class="rg-arrow">→</span>${scoreChip(res(o))}`:""}</span> <span class="rk-sm">${L?L.n.toLowerCase():"non coté"}</span>`)}</dl></section>
       <section class="rk-col sx-ctl"><h3><span class="rk-ic">${svg('<path d="M12 3l7 3v5c0 5-3 8.5-7 10-4-1.5-7-5-7-10V6z" fill="currentColor" fill-opacity=".28" stroke="none"/><path d="M12 3l7 3v5c0 5-3 8.5-7 10-4-1.5-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/>',15)}</span>Dispositif de maîtrise</h3>
-        <dl class="kv">${kv("Contrôle niveau 1", rkVal(o.controleN1)+(K.length?`<div class="chips rk-links">${K.map(k=>`<button class="chip" data-open="controles:${k.id}" title="${esc(k.titre)}">${esc(k.ref)}${k.cle?" · clé":""}</button>`).join("")}</div>`:""))}${kv("Contrôle niveau 2", rkVal(o.controleN2))}${kv("Niveau de maîtrise", o.maitrise?`<span class="pill ${RG_MAIT_CLS(o.maitrise)}">${esc(o.maitrise)}</span>`:'<span class="rk-none">À évaluer</span>')}${kv("Procédures et politiques", (()=>{ const D=docsOf(o); return D.length?`<div class="rk-docs">${D.map(d=>`<button type="button" class="rk-doc" data-doc-open="${d.id}" title="Ouvrir le document">${docFileBadge(d)}<span><b>${esc(d.titre)}</b><small>${esc([d.ref,d.type,d.version?"v"+d.version:"",d.statut].filter(Boolean).join(" · "))}</small></span></button>`).join("")}</div>`:`<span class="rk-none">Aucune procédure rattachée</span>${canWrite?` <button type="button" class="linkbtn" data-open="risques:${o.id}">Rattacher</button>`:""}`; })())}${o.procedures?kv("Procédure(s) citée(s) (texte)", rkVal(o.procedures)):""}${kv("Objectifs procédures", rkVal(o.objectifsProc))}${kv("Cartographie des risques majeurs", m?`<button class="chip maj" data-open="majeurs:${m.id}">${esc(m.ref)}</button> ${esc(m.titre)}`:'<span class="rk-none">Non rattaché</span>')}${kv("Référence plan de contrôle niveau 2", o.refPC2?(pk&&typeof pkOpen==="function"?`<button class="chip" data-pk-open="${pk.id}">${esc(o.refPC2)}</button>`:`<span class="mono">${esc(o.refPC2)}</span>`):'<span class="rk-none">—</span>')}</dl></section>
-      <div class="rk-f"><span class="rk-sm">${o.proprietaire?`Propriétaire : <b>${esc(o.proprietaire)}</b>`:""}${o.traitement?` · Traitement : ${esc(o.traitement.toLowerCase())}`:""}</span><span class="actions-row"><button class="btn sm" data-new-ctl="${o.id}">${svg('<path d="M12 5v14M5 12h14"/>',14,2)}Ajouter un contrôle</button><button class="btn sm primary" data-open="risques:${o.id}">${svg('<path d="M4 20h4L19 9l-4-4L4 16v4z"/>',14,2)}Modifier la fiche</button></span></div>
+        <dl class="kv">${kv("Contrôle niveau 1", rkVal(o.controleN1)+(K.length?`<div class="chips rk-links">${K.map(k=>`<button class="chip" data-open="controles:${k.id}" title="${esc(k.titre)}">${esc(k.ref)}${k.cle?" · clé":""}</button>`).join("")}</div>`:""))}${kv("Contrôle niveau 2", rkVal(o.controleN2))}${kv("Niveau de maîtrise", o.maitrise?`<span class="pill ${RG_MAIT_CLS(o.maitrise)}">${esc(o.maitrise)}</span>`:'<span class="rk-none">À évaluer</span>')}${kv("Stratégie de traitement", trtHtml(o))}${kv("Procédures et politiques", (()=>{ const D=docsOf(o); return D.length?`<div class="rk-docs">${D.map(d=>`<button type="button" class="rk-doc" data-doc-open="${d.id}" title="Ouvrir le document">${docFileBadge(d)}<span><b>${esc(d.titre)}</b><small>${esc([d.ref,d.type,d.version?"v"+d.version:"",d.statut].filter(Boolean).join(" · "))}</small></span></button>`).join("")}</div>`:`<span class="rk-none">Aucune procédure rattachée</span>${canWrite?` <button type="button" class="linkbtn" data-open="risques:${o.id}">Rattacher</button>`:""}`; })())}${o.procedures?kv("Procédure(s) citée(s) (texte)", rkVal(o.procedures)):""}${kv("Objectifs procédures", rkVal(o.objectifsProc))}${kv("Cartographie des risques majeurs", m?`<button class="chip maj" data-open="majeurs:${m.id}">${esc(m.ref)}</button> ${esc(m.titre)}`:'<span class="rk-none">Non rattaché</span>')}${kv("Référence plan de contrôle niveau 2", o.refPC2?(pk&&typeof pkOpen==="function"?`<button class="chip" data-pk-open="${pk.id}">${esc(o.refPC2)}</button>`:`<span class="mono">${esc(o.refPC2)}</span>`):'<span class="rk-none">—</span>')}</dl></section>
+      <div class="rk-f"><span class="rk-sm">${o.proprietaire?`Propriétaire : <b>${esc(o.proprietaire)}</b>`:""}</span><span class="actions-row"><button class="btn sm" data-new-ctl="${o.id}">${svg('<path d="M12 5v14M5 12h14"/>',14,2)}Ajouter un contrôle</button><button class="btn sm primary" data-open="risques:${o.id}">${svg('<path d="M4 20h4L19 9l-4-4L4 16v4z"/>',14,2)}Modifier la fiche</button></span></div>
     </div>`:""}
   </article>`;
 }
@@ -7956,7 +7997,7 @@ const RG_XL = [
   ["RISQUES DETAILLES",50,o=>o.description],["CATEGORIE DE RISQUE",26,o=>o.categorieDetail||o.categorie],["CONSEQUENCES DIRECTES",38,o=>o.consequences],["IMPACT",12,o=>o.impactNiveau||(o.impact?IMPACT[o.impact-1]:"")],
   ["CONTRÔLE\nNiveau 1",38,o=>[o.controleN1, ...S.controles.filter(k=>k.risqueId===o.id).map(k=>`${k.ref} ${k.titre}`)].filter(Boolean).join("\n")],["CONTRÔLE\nNiveau 2",38,o=>o.controleN2],["NIVEAU DE MAITRISE",16,o=>o.maitrise],
   ["PROCEDURE(S) ET DATE DE DERNIERE MISE A JOUR",36,o=>o.procedures],["OBJECTIFS PROCEDURES",36,o=>o.objectifsProc],["CARTOGRAPHIE DES RISQUES MAJEURS",28,o=>{ const m=byId("majeurs",o.majeurId); return m?`${m.ref} ${m.titre}`:""; }],["REFERENCE PLAN DE CONTRÔLE NIVEAU 2",22,o=>o.refPC2],
-  ["PROBABILITE",12,o=>o.proba||""],["IMPACT (1 A 5)",12,o=>o.impact||""],["CRITICITE BRUTE",12,o=>inh(o)||""],["PROBABILITE RESIDUELLE",13,o=>o.probaR||""],["IMPACT RESIDUEL",12,o=>o.impactR||""],["CRITICITE RESIDUELLE",13,o=>res(o)||""],["PROPRIETAIRE",20,o=>o.proprietaire],["TRAITEMENT",12,o=>o.traitement],
+  ["PROBABILITE",12,o=>o.proba||""],["IMPACT (1 A 5)",12,o=>o.impact||""],["CRITICITE BRUTE",12,o=>inh(o)||""],["PROBABILITE RESIDUELLE",13,o=>o.probaR||""],["IMPACT RESIDUEL",12,o=>o.impactR||""],["CRITICITE RESIDUELLE",13,o=>res(o)||""],["PROPRIETAIRE",20,o=>o.proprietaire],["TRAITEMENT",12,o=>o.traitement],["MODALITES DU TRAITEMENT",44,o=>trtText(o)],
 ];
 async function rgExportXlsx(){
   try{ await ensureLibs(); }catch(_){ toast("Le module Excel n'a pas pu être chargé."); return; }
@@ -8332,6 +8373,90 @@ document.addEventListener("dragover", e=>{ const z=e.target instanceof Element &
 document.addEventListener("dragleave", e=>{ const z=e.target instanceof Element && e.target.closest("[data-dropzone]"); if(z && !z.contains(e.relatedTarget)) z.classList.remove("over"); });
 document.addEventListener("drop", e=>{ const z=e.target instanceof Element && e.target.closest("[data-dropzone]"); if(!z || !canWrite) return; e.preventDefault(); z.classList.remove("over"); const files=[...(e.dataTransfer&&e.dataTransfer.files||[])]; if(!files.length) return;
   if(z.dataset.dropzone==="drawer") docFileUpload(files[0]); else docBulk(files).then(()=>render()); });
+
+/* =========================================================
+   Stratégie de traitement : informations propres à chaque réponse au risque
+   ========================================================= */
+const TRT_MODES = ["Assurance","Contrat / clause de responsabilité","Externalisation / sous-traitance","Garantie ou caution","Autre"];
+const TRT_INFO = {
+  "Réduire":   {c:"var(--accent)", t:"Réduire", d:"On garde l'activité et on renforce les contrôles pour baisser la probabilité ou l'impact."},
+  "Accepter":  {c:"var(--warm)",   t:"Accepter", d:"On ne fait rien de plus, par une décision explicite, motivée et revue."},
+  "Transférer":{c:"#6B4FBB",       t:"Transférer", d:"Un tiers (assureur, prestataire) supporte tout ou partie des conséquences."},
+  "Éviter":    {c:"var(--crit)",   t:"Éviter", d:"On renonce à l'activité ou on la modifie pour que le risque disparaisse."}
+};
+/* Champs affichés selon la stratégie choisie (insérés dans la fiche risque) */
+const TRT_FIELDS = [
+  {sec:"Plan de réduction", when:["traitement","Réduire"]},
+  {k:"reductionMesures",l:"Mesures de réduction prévues ou en cours",t:"textarea",when:["traitement","Réduire"],hint:"Ce qui reste à mettre en place. Les contrôles et procédures déjà rattachés comptent aussi."},
+  {k:"reductionPorteur",l:"Porteur des mesures",t:"person",half:1,when:["traitement","Réduire"]},
+  {k:"reductionEcheance",l:"Échéance",t:"date",half:1,when:["traitement","Réduire"]},
+  {sec:"Acceptation du risque", when:["traitement","Accepter"]},
+  {k:"acceptePar",l:"Accepté par (niveau de décision)",t:"person",half:1,when:["traitement","Accepter"],hint:"Direction générale, comité des risques, directeur concerné…"},
+  {k:"accepteLe",l:"Date de la décision",t:"date",half:1,when:["traitement","Accepter"]},
+  {k:"accepteMotif",l:"Justification",t:"textarea",when:["traitement","Accepter"],ph:"Pourquoi on accepte : exposition faible, coût des mesures disproportionné, risque inhérent au métier…"},
+  {k:"accepteSeuil",l:"Ce qui remettrait l'acceptation en cause",t:"text",when:["traitement","Accepter"],ph:"ex. un incident de plus de 10 k€, un changement réglementaire"},
+  {k:"accepteRevue",l:"À réexaminer le",t:"date",half:1,when:["traitement","Accepter"]},
+  {sec:"Transfert du risque", when:["traitement","Transférer"]},
+  {k:"transfertMode",l:"Moyen de transfert",t:"select",o:TRT_MODES,half:1,when:["traitement","Transférer"]},
+  {k:"transfertA",l:"Transféré à",t:"text",half:1,when:["traitement","Transférer"],ph:"Assureur, prestataire, partenaire…"},
+  {k:"transfertRef",l:"Contrat ou police",t:"text",half:1,when:["traitement","Transférer"],ph:"N° de police, référence du contrat"},
+  {k:"transfertEcheance",l:"Échéance ou renouvellement",t:"date",half:1,when:["traitement","Transférer"]},
+  {k:"transfertCouverture",l:"Couverture",t:"text",when:["traitement","Transférer"],ph:"Montant garanti, plafond, franchise, exclusions"},
+  {k:"transfertResiduel",l:"Ce qui reste à votre charge",t:"textarea",when:["traitement","Transférer"],hint:"Franchise, atteinte à la réputation, pilotage du prestataire : le transfert ne supprime pas la responsabilité. Rattachez le contrat dans « Procédures, politiques et documents »."},
+  {sec:"Évitement du risque", when:["traitement","Éviter"]},
+  {k:"evitementDecision",l:"Décision prise",t:"textarea",when:["traitement","Éviter"],ph:"Activité arrêtée, refusée ou modifiée, et comment"},
+  {k:"evitementPar",l:"Décidé par",t:"person",half:1,when:["traitement","Éviter"]},
+  {k:"evitementDate",l:"Date d'effet",t:"date",half:1,when:["traitement","Éviter"]},
+  {k:"evitementEffets",l:"Conséquences de l'arrêt",t:"textarea",when:["traitement","Éviter"],ph:"Opportunités perdues, solution de remplacement"}
+];
+(function(){ const F=SCHEMA.risques.fields, i=F.findIndex(f=>f.k==="traitement"); F.splice(i<0?F.length:i+1,0,...TRT_FIELDS); })();
+function whenOn(f, src){ if(!f.when) return true; const [k,v]=f.when; return [].concat(v).includes(src[k]); }
+function whenApply(sc, draft){
+  const host=$("#drawerHost"); if(!host) return;
+  sc.fields.forEach(f=>{ if(!f.when || !f.k) return; const el=document.getElementById("f_"+f.k); const fld=el && el.closest(".field"); if(!fld) return; fld.dataset.when=f.when[0]; fld.dataset.whenV=[].concat(f.when[1]).join("|"); fld.hidden=!whenOn(f,draft); });
+}
+function whenSync(k, val){
+  document.querySelectorAll(`#drawerHost [data-when="${k}"]`).forEach(el=>{ el.hidden=!el.dataset.whenV.split("|").includes(val); });
+}
+document.addEventListener("change", e=>{
+  const t=e.target; if(!(t instanceof Element) || !drawer || !t.matches("#dForm select, #dForm input")) return;
+  const k=(t.id||"").replace(/^f_/,""); if(!k) return;
+  if(document.querySelector(`#drawerHost [data-when="${k}"]`)){ drawer.draft[k]=t.value; whenSync(k,t.value); }
+});
+
+/* Texte et rendu du détail du traitement */
+function trtLines(o){
+  const D=d=>d?fmtD(d):"", L=[];
+  if(o.traitement==="Réduire"){ if(o.reductionMesures) L.push(["Mesures prévues",o.reductionMesures]); if(o.reductionPorteur||o.reductionEcheance) L.push(["Porteur",[o.reductionPorteur,o.reductionEcheance?"échéance "+D(o.reductionEcheance):""].filter(Boolean).join(" · ")]); }
+  if(o.traitement==="Accepter"){ if(o.acceptePar||o.accepteLe) L.push(["Décision",[o.acceptePar,o.accepteLe?"le "+D(o.accepteLe):""].filter(Boolean).join(" · ")]); if(o.accepteMotif) L.push(["Justification",o.accepteMotif]); if(o.accepteSeuil) L.push(["Remise en cause si",o.accepteSeuil]); if(o.accepteRevue) L.push(["À réexaminer",D(o.accepteRevue)]); }
+  if(o.traitement==="Transférer"){ if(o.transfertA||o.transfertMode) L.push(["Transféré à",[o.transfertA,o.transfertMode].filter(Boolean).join(" · ")]); if(o.transfertRef||o.transfertEcheance) L.push(["Contrat",[o.transfertRef,o.transfertEcheance?"échéance "+D(o.transfertEcheance):""].filter(Boolean).join(" · ")]); if(o.transfertCouverture) L.push(["Couverture",o.transfertCouverture]); if(o.transfertResiduel) L.push(["Reste à charge",o.transfertResiduel]); }
+  if(o.traitement==="Éviter"){ if(o.evitementDecision) L.push(["Décision",o.evitementDecision]); if(o.evitementPar||o.evitementDate) L.push(["Décidé par",[o.evitementPar,o.evitementDate?"effet le "+D(o.evitementDate):""].filter(Boolean).join(" · ")]); if(o.evitementEffets) L.push(["Conséquences",o.evitementEffets]); }
+  return L;
+}
+function trtMissing(o){
+  if(o.traitement==="Accepter") return !o.acceptePar || !o.accepteMotif;
+  if(o.traitement==="Transférer") return !o.transfertA;
+  if(o.traitement==="Éviter") return !o.evitementDecision;
+  return false;
+}
+function trtText(o){ return trtLines(o).map(([a,b])=>`${a} : ${String(b).replace(/\s*\n\s*/g," ; ")}`).join("\n"); }
+function trtHtml(o){
+  if(!o.traitement) return '<span class="rk-none">Non renseignée</span>';
+  const I=TRT_INFO[o.traitement]||{c:"var(--muted)",t:o.traitement};
+  const L=trtLines(o);
+  const miss = trtMissing(o) ? `<span class="pill p-warn">À documenter</span>` : "";
+  return `<div class="trt" style="--tc:${I.c}"><span class="trt-p">${esc(I.t)}</span>${miss}</div>${L.length?`<dl class="trt-d">${L.map(([a,b])=>`<dt>${esc(a)}</dt><dd>${rkVal(b)}</dd>`).join("")}</dl>`:(o.traitement!=="Réduire"?`<span class="rk-none">Précisez ${o.traitement==="Accepter"?"qui accepte et pourquoi":o.traitement==="Transférer"?"à qui le risque est transféré":"la décision prise"}.</span>`:"")}`;
+}
+/* Alertes dans Aujourd'hui */
+function trtUrgent(){
+  const it=[], IN60=new Date(Date.now()+60*864e5).toISOString().slice(0,10);
+  S.risques.forEach(o=>{
+    if(o.traitement==="Accepter" && o.accepteRevue && o.accepteRevue<=TODAY_ISO) it.push({lvl:"h", kind:"risques", id:o.id, t:`Acceptation à réexaminer : ${o.titre}`, s:`${o.ref} · prévu le ${shortD(o.accepteRevue)}${o.acceptePar?` · accepté par ${o.acceptePar}`:""}`, date:o.accepteRevue});
+    if(o.traitement==="Transférer" && o.transfertEcheance && o.transfertEcheance<=IN60) it.push({lvl:o.transfertEcheance<TODAY_ISO?"u":"h", kind:"risques", id:o.id, t:`${o.transfertEcheance<TODAY_ISO?"Contrat de transfert échu":"Contrat de transfert à renouveler"} : ${o.titre}`, s:`${o.ref} · ${[o.transfertA,o.transfertRef].filter(Boolean).join(" · ")} · échéance ${shortD(o.transfertEcheance)}`, date:o.transfertEcheance, late:o.transfertEcheance<TODAY_ISO});
+    if(o.traitement==="Réduire" && o.reductionMesures && o.reductionEcheance && o.reductionEcheance<TODAY_ISO) it.push({lvl:"h", kind:"risques", id:o.id, t:`Mesures de réduction en retard : ${o.titre}`, s:`${o.ref}${o.reductionPorteur?` · ${o.reductionPorteur}`:""} · échéance ${shortD(o.reductionEcheance)}`, date:o.reductionEcheance, late:true});
+  });
+  return it;
+}
 
 /* ---------- listes : incidents et indicateurs ---------- */
 Object.assign(LEDE, {

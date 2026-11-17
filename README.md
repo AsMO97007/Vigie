@@ -88,6 +88,17 @@ Vous pouvez aussi déposer ce dossier d'application lui-même dans SharePoint, �
 
 Réimporter le classeur met à jour les libellés, critères et personnes **sans effacer** les résultats déjà saisis. Le classeur n'est jamais copié sur GitHub : son contenu est enregistré uniquement dans le dossier partagé de l'équipe.
 
+## Stratégie de traitement des risques
+
+Dans la fiche d'un risque, le choix de la stratégie fait apparaître les informations qui lui sont propres :
+
+- **Réduire** : mesures prévues, porteur et échéance (alerte dans Aujourd'hui en cas de retard).
+- **Accepter** : qui accepte, date de la décision, justification, ce qui remettrait l'acceptation en cause et date de réexamen (alerte à cette date).
+- **Transférer** : moyen (assurance, contrat, externalisation…), à qui, référence du contrat ou de la police, échéance (alerte 60 jours avant), couverture et ce qui reste à votre charge.
+- **Éviter** : décision prise, qui l'a prise, date d'effet et conséquences de l'arrêt.
+
+Ces informations s'affichent dans le registre (carte « Dispositif de maîtrise »), avec la mention « À documenter » quand l'essentiel manque, et dans la colonne « MODALITES DU TRAITEMENT » de l'export Excel.
+
 ## Procédures et politiques
 
 Le référentiel documentaire regroupe vos procédures, politiques, chartes et modes opératoires.

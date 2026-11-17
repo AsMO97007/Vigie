@@ -88,6 +88,38 @@ Vous pouvez aussi déposer ce dossier d'application lui-même dans SharePoint, �
 
 Réimporter le classeur met à jour les libellés, critères et personnes **sans effacer** les résultats déjà saisis. Le classeur n'est jamais copié sur GitHub : son contenu est enregistré uniquement dans le dossier partagé de l'équipe.
 
+## Procédures et politiques
+
+Le référentiel documentaire regroupe vos procédures, politiques, chartes et modes opératoires.
+
+**Deux façons de rattacher un fichier, cumulables sur une même fiche :**
+
+- **Copie dans le dossier Vigie.** Cliquez sur **Charger des documents**, ou glissez des fichiers Word ou PDF sur la page. Vigie les copie dans le sous-dossier **Documents** du dossier partagé, sous le nom `AAAA-MM-JJ nom du fichier`. Toute l'équipe les retrouve donc via OneDrive.
+- **Lien.** Collez l'adresse SharePoint ou Teams du document dans le champ **Lien** de la fiche. Le fichier reste à son emplacement d'origine.
+
+Le texte des fichiers Word et PDF est extrait au chargement. Vous retrouvez ainsi un document par un mot de son contenu, dans la recherche de la page ou avec Ctrl+K.
+
+Pour ajouter une nouvelle version, ouvrez la fiche et déposez le nouveau fichier. Les versions précédentes restent consultables dans la fiche.
+
+**Liens avec le reste de Vigie :**
+
+- **Risques.** Une procédure peut couvrir plusieurs risques, et un risque peut avoir plusieurs procédures. Le lien se fait depuis la fiche du document ou depuis la fiche du risque, et il est visible des deux côtés.
+- **Registre des risques.** Les procédures apparaissent sur chaque risque. Le filtre **Procédure : sans** liste les risques non couverts.
+- **Contrôles, tests et PCIF.** Un contrôle, un test ou un point PCIF peut citer ses procédures justificatives. Depuis la page d'un document, vous voyez les contrôles qui s'y rattachent et les tests déjà menés.
+
+**Revue des documents :**
+
+- La date de prochaine revue est calculée à partir de la date d'approbation et de la périodicité.
+- Les documents à réviser remontent dans **Aujourd'hui**.
+- **Relancer les propriétaires** prépare les e-mails de relance.
+
+**Autres fonctions de la page :**
+
+- **Reprendre l'existant** transforme le texte libre « Procédure(s) » de vos risques en fiches, déjà rattachées aux risques concernés.
+- **Exporter** produit le référentiel en Excel, avec une feuille des documents et une feuille des liens avec les risques.
+
+Dans la version en ligne (claude.ai), seuls les PDF et les liens sont acceptés : les fichiers Word ne peuvent pas y être déposés.
+
 ## Sauvegardes
 
 - Cliquez sur l'état de synchronisation, en bas de la barre latérale, puis **Exporter une sauvegarde** : vous obtenez un fichier `sauvegarde-vigie-AAAA-MM-JJ.json` contenant toutes les données de l'équipe. **Importer une sauvegarde** permet de les recharger.
@@ -109,6 +141,6 @@ Remplacez les fichiers sur GitHub. Chaque utilisateur reçoit la nouvelle versio
 
 | Fichier | Rôle |
 |---|---|
-| `index.html` | **Toute l'application** en un seul fichier : pages, styles, formations, stockage partagé, données de départ et bibliothèques d'export (SheetJS, jsPDF) |
+| `index.html` | **Toute l'application** en un seul fichier : pages, styles, formations, stockage partagé, données de départ et bibliothèques d'export et de lecture (SheetJS, jsPDF, pdf.js) |
 | `manifest.webmanifest`, `sw.js`, `icon.svg`, `icon-192.png`, `icon-512.png`, `icon-maskable-512.png` | Installation comme application et ouverture hors connexion |
 | `Lancer Vigie.bat` | Lanceur Windows (fenêtre Edge sans barre d'adresse) |

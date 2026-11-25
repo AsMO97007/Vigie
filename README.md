@@ -136,13 +136,14 @@ Dans la version en ligne (claude.ai), seuls les PDF et les liens sont acceptés 
 Vos données ne sont jamais stockées dans le navigateur : elles sont dans le dossier partagé, dans le fichier `vigie-votre-nom-xxxx.json`.
 
 1. **Ne modifiez rien dans Vigie** tant que vous n'avez pas retrouvé vos données.
-2. **Vérifiez le mode.** Si l'indicateur en bas du menu affiche « Mode démonstration », ou un autre dossier que celui de l'équipe, cliquez dessus et reconnectez le bon dossier.
-3. **Vérifiez OneDrive.** L'icône OneDrive doit afficher « À jour ». Faites un clic droit sur le dossier partagé, puis **Toujours conserver sur cet appareil**.
-4. **Si votre fichier a été écrasé** (fichier récent et petit), ouvrez le dossier dans SharePoint, faites un clic droit sur le fichier, choisissez **Historique des versions**, puis restaurez la version d'avant le problème.
+2. **Connectez vous-même votre fichier.** Ouvrez l'adresse de Vigie suivie de `#connexion` (par exemple `https://votre-compte.github.io/Vigie/#connexion`). Vous pouvez aussi passer par le panneau « Dossier partagé », bouton **Connexion des données**. La page liste les fichiers `vigie-….json` du dossier, avec leur auteur, leur date et leur contenu. Cliquez sur **C'est mon fichier**, ou sur **Choisir mon fichier vigie-….json** pour le sélectionner dans l'Explorateur.
+3. **Vérifiez le mode.** Si l'indicateur en bas du menu affiche « Mode démonstration », ou un autre dossier que celui de l'équipe, cliquez dessus et reconnectez le bon dossier.
+4. **Vérifiez OneDrive.** L'icône OneDrive doit afficher « À jour ». Faites un clic droit sur le dossier partagé, puis **Toujours conserver sur cet appareil**.
+5. **Si votre fichier a été écrasé** (fichier récent et petit), ouvrez le dossier dans SharePoint, faites un clic droit sur le fichier, choisissez **Historique des versions**, puis restaurez la version d'avant le problème.
 
-Depuis la version 6.4 :
+Depuis la version 6.6 :
 
-- Vigie n'écrit jamais dans le dossier tant que votre fichier n'a pas été lu. Si la lecture échoue, il affiche « Vos données ne peuvent pas être lues pour l'instant », avec un bouton **Réessayer**.
+- Vigie n'écrit jamais dans le dossier tant que votre fichier n'a pas été lu. Si OneDrive ne répond pas dans les 20 secondes, ou si la lecture échoue, il affiche « Vos données ne peuvent pas être lues pour l'instant », avec un bouton **Réessayer**.
 - Si les données du navigateur ont été effacées, Vigie retrouve votre fichier dès que vous saisissez le même nom.
 - Une copie de sécurité de votre fichier est faite chaque jour dans le sous-dossier **Sauvegardes**. Les 30 dernières sont conservées.
 

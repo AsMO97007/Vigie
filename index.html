@@ -6,7 +6,7 @@
 <title>Vigie Contrôle Interne</title>
 <meta name="description" content="Pilotage du contrôle interne : risques, contrôles, tests, plans d'action, conformité, équipe, formations et veille.">
 <meta name="theme-color" content="#003865">
-<script>window.VIGIE_VERSION = "6.4 du 25 novembre 2026";</script>
+<script>window.VIGIE_VERSION = "6.6 du 25 novembre 2026";</script>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -1561,6 +1561,28 @@ tr.grouprow .sub{color:var(--muted) !important; opacity:1}
 .setup-list{margin:0 0 16px; padding-left:20px; font-size:14.5px; line-height:1.6}
 .setup-list li{margin:4px 0}
 .setup-err{color:#B3262F !important; font-weight:600; font-size:14px !important}
+.setup-card.cx-card{width:min(780px,100%); max-height:calc(100vh - 40px); overflow:auto}
+.cx-etat{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin:0 0 16px; padding:12px 14px; border:1px solid #E1E1E1; border-radius:14px; background:#F4F7FA}
+.cx-etat span{display:block; font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#6B7785}
+.cx-etat b{display:block; font-size:13.5px; color:#003865; overflow-wrap:anywhere}
+.cx-mono{font-family:ui-monospace,Consolas,monospace; font-size:12.5px !important}
+.cx-h{font-size:15px; color:#003865; margin:20px 0 8px}
+.cx-liste{display:flex; flex-direction:column; gap:8px}
+.cx-row, .cx-sel{display:flex; align-items:center; gap:12px; border:1px solid #E1E1E1; border-radius:12px; padding:10px 12px; background:#fff}
+.cx-sel{border-color:#0088CE; background:#EEF7FD; margin:12px 0 4px}
+.cx-row-t, .cx-sel-t{flex:1; min-width:0}
+.cx-row-t > b, .cx-sel-t > b{display:block; color:#003865; overflow-wrap:anywhere}
+.cx-row-t small, .cx-sel-t small, .cx-sel-a small{display:block; font-size:12.5px; color:#5B6672; margin-top:2px}
+.cx-sel-a{display:flex; flex-direction:column; align-items:flex-end; gap:6px; max-width:250px; text-align:right}
+.cx-ko{color:#B86A06 !important}
+.cx-tag{font-size:11.5px; font-weight:700; color:#1F8A52; white-space:nowrap}
+.cx-wait{font-size:13.5px; color:#5B6672}
+.cx-plus{margin-top:18px; font-size:14px}
+.cx-plus summary{cursor:pointer; font-weight:600; color:#0088CE}
+.cx-bas{margin-top:18px; justify-content:flex-end}
+.cx-deja{margin:16px 0 0; font-size:13.5px; color:#5B6672}
+.cx-lien{border:0; background:none; padding:0; color:#0088CE; font:inherit; font-weight:600; cursor:pointer; text-decoration:underline}
+@media (max-width:640px){ .cx-etat{grid-template-columns:1fr} .cx-row, .cx-sel{flex-wrap:wrap} .cx-sel-a{align-items:flex-start; text-align:left; max-width:none} }
 .setup-choices{display:flex; flex-direction:column; gap:10px}
 .setup-choice{display:flex; flex-direction:column; gap:3px; text-align:left; border:1.5px solid #E1E1E1; background:#fff; border-radius:14px; padding:14px 16px; cursor:pointer; color:#3C3732; font:inherit; transition:border-color .15s, transform .15s}
 .setup-choice:hover, .setup-choice:focus-visible{border-color:#0088CE; transform:translateX(3px)}
@@ -4975,7 +4997,7 @@ const ecouteurs = {};
 let illisibles = [], presents = [];
 let derniereSync = null, erreur = "", ecriture = Promise.resolve(), minuterie = 0, modifie = false;
 
-const monFichier = () => `vigie-${slug(ident.nom)}-${ident.poste}.json`;
+const monFichier = () => ident.fichier || `vigie-${slug(ident.nom)}-${ident.poste}.json`;
 const vide = () => ({app:"vigie", format:FORMAT, auteur:ident?.nom||"", fonction:ident?.fonction||"", poste:ident?.poste||"", modifie:nowIso(), elements:{}, supprimes:{}});
 
 /* ---------- fusion ---------- */
@@ -4998,9 +5020,13 @@ function instantane(c){ return {docs:[...fusion[c].entries()].map(([id,r])=>({id
 function diffuser(cols){ (cols||COLLECTIONS).forEach(c=>(ecouteurs[c]||[]).forEach(cb=>{ try{ cb(instantane(c)); }catch(e){ console.error(e); } })); }
 
 /* ---------- lecture du dossier ---------- */
+function delai(pr, ms, quoi){
+  return new Promise((res, rej)=>{ const t=setTimeout(()=>{ const e=new Error(`OneDrive ne répond pas (${quoi})`); e.name="TimeoutError"; rej(e); }, ms);
+    Promise.resolve(pr).then(v=>{ clearTimeout(t); res(v); }, e=>{ clearTimeout(t); rej(e); }); });
+}
 let charge = false;                       // vrai seulement quand mon fichier a été lu (ou n'existe pas encore)
 async function lireFichierVigie(h){
-  const f=await h.getFile(); const txt=await f.text();
+  const f=await delai(h.getFile(), 15000, "ouverture du fichier"); const txt=await delai(f.text(), 15000, "lecture du fichier");
   if(!txt.trim()) throw new Error("fichier vide (OneDrive n'a pas encore téléchargé son contenu)");
   const d=JSON.parse(txt);
   if(!d || d.app!=="vigie" || typeof d.elements!=="object") throw new Error("format inconnu");
@@ -5008,7 +5034,7 @@ async function lireFichierVigie(h){
 }
 async function lireMien(){
   charge=false;
-  let h; try{ h=await dir.getFileHandle(monFichier()); }
+  let h; try{ h=await delai(dir.getFileHandle(monFichier()), 15000, "recherche de votre fichier"); }
   catch(e){ if(e && e.name==="NotFoundError"){ mien=vide(); charge=true; return; } throw e; }
   const {d}=await lireFichierVigie(h);
   mien={...vide(), ...d, elements:d.elements||{}, supprimes:d.supprimes||{}}; charge=true;
@@ -5017,14 +5043,17 @@ async function scanner(){
   if(!dir) return {change:false, auteurs:[]};
   let change=false; const vus=new Set(), auteurs=new Set(); illisibles=[]; presents=[];
   try{
-    for await (const [nom, h] of dir.entries()){
+    const it = dir.entries(); const tLimite = Date.now()+20000;
+    while(true){
+      const n = await delai(it.next(), Math.max(1000, tLimite-Date.now()), "liste du dossier"); if(n.done) break;
+      const [nom, h] = n.value;
       if(h.kind==="file" && FICHIER.test(nom)) presents.push(nom);
       if(h.kind!=="file" || !FICHIER.test(nom) || nom===monFichier()) continue;
       vus.add(nom);
       try{
-        const f=await h.getFile(); const prec=fichiers.get(nom);
+        const f=await delai(h.getFile(), 15000, nom); const prec=fichiers.get(nom);
         if(prec && prec.lm===f.lastModified && prec.size===f.size) continue;
-        const data=JSON.parse(await f.text());
+        const data=JSON.parse(await delai(f.text(), 15000, nom));
         if(!data || data.app!=="vigie" || typeof data.elements!=="object") continue;
         fichiers.set(nom,{lm:f.lastModified, size:f.size, data}); change=true; if(prec || pret) auteurs.add(data.auteur||nom);
       }catch(_){ if(!fichiers.has(nom)) illisibles.push(nom); /* fichier en cours de synchronisation par OneDrive : nouvel essai au prochain passage */ }
@@ -5066,7 +5095,7 @@ function vider(){
   modifie=false; mien.modifie=nowIso(); mien.auteur=ident.nom; mien.fonction=ident.fonction||""; mien.poste=ident.poste;
   const corps = JSON.stringify(mien, null, 1);
   ecriture = ecriture.then(async()=>{
-    await copieSecurite();
+    await delai(copieSecurite(), 20000, "copie de sécurité").catch(()=>{});
     const h=await dir.getFileHandle(monFichier(), {create:true});
     const w=await h.createWritable(); await w.write(corps); await w.close();
     erreur=""; derniereSync=new Date(); majStatut();
@@ -5173,7 +5202,9 @@ function etapeIdentite(){
         <label for="stkNom">Nom et prénom</label><input id="stkNom" type="text" autocomplete="name" placeholder="ex. Claire Martin" required>
         <label for="stkFct">Fonction</label><input id="stkFct" type="text" autocomplete="organization-title" placeholder="ex. Contrôleur interne">
         <p class="setup-err" id="stkErr" hidden>Indiquez votre nom pour continuer.</p>
-        <button class="btn primary big" type="submit">Continuer</button></form>`);
+        <button class="btn primary big" type="submit">Continuer</button></form>
+      <p class="cx-deja">Vous utilisiez déjà Vigie sur cet ordinateur ? <button type="button" class="cx-lien" data-x="cx">Connectez votre fichier vigie-….json</button></p>`);
+    ecran.querySelector('[data-x="cx"]').onclick=async()=>{ ident = ident || null; await pageConnexion(); etapeIdentite().then(res); };
     ecran.querySelector("#stkId").addEventListener("submit", e=>{ e.preventDefault();
       const nom=ecran.querySelector("#stkNom").value.trim(), fonction=ecran.querySelector("#stkFct").value.trim();
       if(!nom){ ecran.querySelector("#stkErr").hidden=false; return; }
@@ -5226,6 +5257,104 @@ function etapeContenu(){
   });
 }
 
+
+/* ---------- page « Connexion des données » : l'utilisateur relie lui-même son fichier ---------- */
+let cxEnCours = null;
+const CX_COLS = [["risques","risques"],["controles","contrôles"],["documents","documents"],["actions","actions"],["pcif","points PCIF"]];
+function cxResume(d){
+  const el=d.elements||{}; const n=c=>Object.keys(el[c]||{}).length;
+  const tot=COLLECTIONS.reduce((a,c)=>a+n(c),0);
+  const det=CX_COLS.filter(([c])=>n(c)).map(([c,l])=>`${n(c)} ${l}`).join(" · ");
+  return {tot, det};
+}
+function cxPoste(nom, d){ const m=/^vigie-(.+)-([a-z0-9]+)\.json$/i.exec(nom||""); return (d&&d.poste)||(m&&m[2])||Math.random().toString(36).slice(2,6); }
+function cxAdopter(nom, d){
+  ident = {nom: (d&&d.auteur)||ident?.nom||"Utilisateur", fonction:(d&&d.fonction)||ident?.fonction||"", poste: cxPoste(nom,d), fichier: nom};
+  ls.set(LS_ID, ident);
+  try{ history.replaceState(null, "", location.pathname + location.search); }catch(_){}
+  location.reload();
+}
+async function cxDansDossier(h){ if(!dir) return false; try{ const r=await delai(dir.resolve(h), 8000, "emplacement"); return Array.isArray(r) && r.length===1; }catch(_){ return false; } }
+function pageConnexion(){
+  if(cxEnCours) return cxEnCours;
+  cxEnCours = new Promise(fin=>{
+    let choisi=null;   // {h, nom, d, f}
+    const msg = (t, ok) => { const m=ecran.querySelector("#cxMsg"); if(!m) return; m.hidden=!t; m.textContent=t||""; m.style.color = ok ? "#1F8A52" : ""; };
+    const peint = () => {
+      const pf = supporte() && typeof window.showOpenFilePicker==="function";
+      afficher(`<div class="setup-step">Connexion des données</div><h1>Connectez vous-même votre fichier</h1>
+        <p>Vos données sont dans le dossier partagé, dans un fichier nommé <code>vigie-votre-nom-xxxx.json</code>. Sélectionnez-le : Vigie le relie à votre poste et rouvre l'application avec vos données.</p>
+        <div class="cx-etat">
+          <div><span>Vous</span><b>${esc(ident?.nom||"Non renseigné")}</b></div>
+          <div><span>Dossier connecté</span><b>${dir?esc(dir.name):(demo?"Mode démonstration":"Aucun")}</b></div>
+          <div><span>Fichier attendu</span><b class="cx-mono">${ident?esc(monFichier()):"—"}</b></div>
+        </div>
+        ${pf?`<div class="setup-actions" style="margin-top:4px">
+          <button class="btn primary big" data-cx="fichier">Choisir mon fichier vigie-….json</button>
+          <button class="btn" data-cx="dossier">${dir?"Changer de dossier":"Choisir le dossier partagé"}</button></div>`
+        :`<p class="setup-err">Ce navigateur ne permet pas de connecter un fichier. Ouvrez Vigie avec Microsoft Edge ou Google Chrome.</p>`}
+        <div id="cxChoix">${choisi?cxCarte():""}</div>
+        <p class="setup-err" id="cxMsg" hidden></p>
+        ${dir?`<h3 class="cx-h">Fichiers présents dans « ${esc(dir.name)} »</h3><div id="cxListe" class="cx-liste"><p class="cx-wait">Lecture du dossier…</p></div>`:""}
+        <details class="cx-plus"><summary>Autres possibilités</summary>
+          <p>Si votre fichier ne peut pas être relié (autre ordinateur, ancienne sauvegarde), vous pouvez en <b>importer une copie</b> dans votre fichier actuel. Les deux contenus sont alors fusionnés.</p>
+          <div class="setup-actions"><button class="btn" data-cx="importer" ${dir&&charge?"":"disabled"}>Importer une copie</button><button class="btn" data-cx="demo">Continuer en mode démonstration</button></div></details>
+        <div class="setup-actions cx-bas"><button class="btn" data-cx="fermer">${pret?"Fermer":"Revenir"}</button></div>`);
+      ecran.querySelector(".setup-card").classList.add("cx-card");
+      if(dir) cxLister();
+    };
+    const cxCarte = () => {
+      const r=cxResume(choisi.d);
+      return `<div class="cx-sel"><div class="cx-sel-t"><b>${esc(choisi.nom)}</b><small>${esc(choisi.d.auteur||"Auteur inconnu")} · modifié ${dateCourte(choisi.d.modifie||(choisi.f&&new Date(choisi.f.lastModified).toISOString()))}</small><small>${r.tot} éléments${r.det?` : ${esc(r.det)}`:""}</small></div>
+        ${choisi.dedans?`<button class="btn primary" data-cx="adopter">Utiliser ce fichier</button>`
+        :`<div class="cx-sel-a"><small>Pour l'enregistrer au bon endroit, Vigie a besoin du dossier qui contient ce fichier.</small><button class="btn primary" data-cx="dossierDuFichier">Autoriser son dossier</button></div>`}</div>`;
+    };
+    const cxLister = async () => {
+      const host=()=>ecran&&ecran.querySelector("#cxListe"); const L=[];
+      try{
+        const it=dir.entries(); const lim=Date.now()+20000;
+        while(true){ const n=await delai(it.next(), Math.max(1000, lim-Date.now()), "liste du dossier"); if(n.done) break; const [nom,h]=n.value; if(h.kind==="file" && FICHIER.test(nom)) L.push({nom,h}); }
+      }catch(e){ if(host()) host().innerHTML=`<p class="setup-err">Le dossier ne répond pas : OneDrive n'est sans doute pas démarré ou pas à jour. Vous pouvez quand même choisir votre fichier avec le bouton ci-dessus.</p>`; return; }
+      if(!host()) return;
+      if(!L.length){ host().innerHTML=`<p class="cx-wait">Aucun fichier vigie-….json dans ce dossier. Ce n'est peut-être pas le dossier de l'équipe.</p>`; return; }
+      L.sort((a,b)=>a.nom.localeCompare(b.nom));
+      host().innerHTML = L.map((x,i)=>`<div class="cx-row" data-i="${i}"><div class="cx-row-t"><b class="cx-mono">${esc(x.nom)}</b><small>Lecture…</small></div><span class="cx-tag">${ident&&x.nom===monFichier()?"Votre fichier":""}</span></div>`).join("");
+      L.forEach(async (x,i)=>{
+        let html;
+        try{ const {d,f}=await lireFichierVigie(x.h); x.d=d; x.f=f; const r=cxResume(d);
+          html=`<b class="cx-mono">${esc(x.nom)}</b><small><b>${esc(d.auteur||"?")}</b>${d.fonction?` · ${esc(d.fonction)}`:""} · modifié ${dateCourte(d.modifie||new Date(f.lastModified).toISOString())}</small><small>${r.tot} éléments${r.det?` : ${esc(r.det)}`:""}</small>`;
+        }catch(e){ html=`<b class="cx-mono">${esc(x.nom)}</b><small class="cx-ko">${e&&e.name==="TimeoutError"?"OneDrive ne répond pas pour ce fichier":"Illisible pour l'instant"} : ouvrez le dossier dans l'Explorateur et choisissez « Toujours conserver sur cet appareil ».</small>`; }
+        const row=host()&&host().querySelector(`.cx-row[data-i="${i}"]`); if(!row) return;
+        row.querySelector(".cx-row-t").innerHTML=html;
+        if(x.d && !(ident && x.nom===monFichier() && charge)){ const b=document.createElement("button"); b.className="btn"; b.textContent="C'est mon fichier"; b.onclick=()=>cxAdopter(x.nom, x.d); row.appendChild(b); }
+      });
+    };
+    const clic = async e => {
+      const b=e.target.closest("[data-cx]"); if(!b || !ecran || !ecran.contains(b)) return;
+      const x=b.dataset.cx; msg("");
+      if(x==="fermer"){ ecran.removeEventListener("click", clic); fin("fermer"); return; }
+      if(x==="demo"){ ecran.removeEventListener("click", clic); fin("demo"); return; }
+      if(x==="fichier"){
+        let h; try{ [h] = await window.showOpenFilePicker({id:"vigie-fichier", multiple:false, ...(dir?{startIn:dir}:{}), types:[{description:"Données Vigie (.json)", accept:{"application/json":[".json"]}}]}); }catch(_){ return; }
+        try{ const {d,f}=await lireFichierVigie(h); choisi={h, nom:h.name, d, f, dedans: await cxDansDossier(h)};
+          if(!FICHIER.test(h.name)) msg("Attention : ce fichier ne s'appelle pas vigie-….json. Vérifiez qu'il s'agit bien de vos données.");
+          ecran.querySelector("#cxChoix").innerHTML=cxCarte();
+        }catch(err){ msg(err&&err.name==="TimeoutError" ? "OneDrive ne répond pas : ce fichier n'est pas encore disponible sur l'ordinateur. Vérifiez que OneDrive est démarré et « À jour », puis réessayez." : "Ce fichier n'est pas un fichier de données Vigie lisible."); }
+        return;
+      }
+      if(x==="dossier" || x==="dossierDuFichier"){
+        let h; try{ h = await window.showDirectoryPicker({id:"vigie", mode:"readwrite", startIn: (x==="dossierDuFichier"&&choisi)?choisi.h:(dir||"documents")}); }catch(_){ return; }
+        dir=h; demo=false; await idbSet("dossier", h);
+        if(choisi){ choisi.dedans = await cxDansDossier(choisi.h); if(x==="dossierDuFichier" && !choisi.dedans){ peint(); msg("Ce dossier ne contient pas le fichier choisi. Sélectionnez le dossier où se trouve le fichier."); return; } }
+        peint(); if(choisi && choisi.dedans) msg("Dossier autorisé. Cliquez sur « Utiliser ce fichier ».", true); return;
+      }
+      if(x==="adopter" && choisi){ cxAdopter(choisi.nom, choisi.d); return; }
+      if(x==="importer"){ const d=await choisirFichierJson(); if(!d) return; try{ const n=importerDonnees(d); msg(`${n} éléments importés dans votre fichier.`, true); }catch(_){ msg("Ce fichier n'est pas une sauvegarde Vigie lisible."); } return; }
+    };
+    peint(); ecran.addEventListener("click", clic);
+  }).then(r=>{ cxEnCours=null; return r; });
+  return cxEnCours;
+}
 /* ---------- panneau « Dossier partagé » ---------- */
 function ouvrirPanneau(){
   const host=document.getElementById("overlayHost"); if(!host) return;
@@ -5240,16 +5369,19 @@ function ouvrirPanneau(){
       ${demo?`<button class="btn primary" data-stk="connecter">Connecter un dossier</button>`:`<button class="btn primary" data-stk="sync">Synchroniser maintenant</button>`}
       <button class="btn" data-stk="export">Exporter une sauvegarde</button>
       <button class="btn" data-stk="import">Importer une sauvegarde</button>
+      <button class="btn" data-stk="connexion">Connexion des données</button>
       ${demo?"":`<button class="btn" data-stk="changer">Changer de dossier</button>`}
     </div><p class="sub" style="margin-top:14px">Version de l'application : <b>${esc(window.VIGIE_VERSION||"")}</b></p></div>`;
 }
 document.addEventListener("click", async e=>{
   const t=e.target;
+  if(t.id==="cxAttente"){ e.stopPropagation(); pageConnexion(); return; }
   if(t.closest("[data-stockage]")){ e.stopPropagation(); ouvrirPanneau(); return; }
   if(t.closest("[data-stk-close]")){ document.getElementById("overlayHost").innerHTML=""; return; }
   const a=t.closest("[data-stk]"); if(!a) return;
   const x=a.dataset.stk; document.getElementById("overlayHost").innerHTML="";
   if(x==="sync") synchroniser(true);
+  if(x==="connexion"){ await vider(); const c=await pageConnexion(); fermerEcran(); if(c==="demo"){ notifier("Pour passer en démonstration, rechargez la page et choisissez le mode démonstration."); } return; }
   if(x==="export") exporter();
   if(x==="import"){ const d=await choisirFichierJson(); if(!d) return; try{ const n=importerDonnees(d); notifier(`${n} éléments importés`); }catch(_){ notifier("Ce fichier n'est pas une sauvegarde Vigie lisible."); } }
   if(x==="changer" || x==="connecter"){ await vider(); const ok = await etapeDossier(null, false); if(ok==="ok"){ demo=false; await brancher(); fermerEcran(); notifier(`Dossier « ${dir.name} » connecté`); } else fermerEcran(); }
@@ -5277,14 +5409,19 @@ function ecranLecture(e){
       <p>Vigie n'a pas pu lire ${illisibles.length?`${illisibles.length} ${pluriel(illisibles.length,"fichier")} de données`:"votre fichier de données"} dans ce dossier. C'est presque toujours OneDrive qui n'a pas fini de démarrer ou de télécharger les fichiers après un redémarrage.</p>
       <ol class="setup-list"><li>Vérifiez que l'icône OneDrive (nuage, en bas à droite) est active et affiche « À jour ».</li><li>Dans l'Explorateur, faites un clic droit sur le dossier partagé, puis <b>Toujours conserver sur cet appareil</b>.</li><li>Cliquez sur <b>Réessayer</b>.</li></ol>
       <p class="sub" style="font-size:13px">Rien n'a été modifié : Vigie n'écrit jamais dans le dossier tant que vos données n'ont pas été lues.${e&&e.message?` <span style="color:var(--muted)">(${esc(e.name||"")} ${esc(e.message)})</span>`:""}</p>
-      <div class="setup-actions"><button class="btn primary big" data-x="retry">Réessayer</button><button class="btn" data-x="autre">Choisir un autre dossier</button></div>`);
+      <div class="setup-actions"><button class="btn primary big" data-x="retry">Réessayer</button><button class="btn" data-x="cx">Connecter mon fichier moi-même</button><button class="btn" data-x="autre">Choisir un autre dossier</button></div>`);
     ecran.querySelector('[data-x="retry"]').onclick=()=>res("retry");
+    ecran.querySelector('[data-x="cx"]').onclick=()=>res("connexion");
     ecran.querySelector('[data-x="autre"]').onclick=()=>res("autre");
   });
 }
 async function brancher(){
   while(true){
     fichiers.clear(); erreur="";
+    const attente = setTimeout(()=>afficher(`<div class="setup-step">Dossier « ${esc(dir.name)} »</div><h1>Lecture de vos données…</h1>
+      <p>Vigie lit les fichiers du dossier partagé. Juste après le démarrage de l'ordinateur, OneDrive peut mettre quelques secondes à répondre.</p>
+      <p class="sub" style="font-size:13px">Si rien ne se passe d'ici 20 secondes, Vigie vous indiquera quoi faire.</p>
+      <div class="setup-actions"><button class="btn" id="cxAttente">Connecter mon fichier moi-même</button></div>`), 1500);
     try{
       await scanner();
       await lireMien();
@@ -5293,10 +5430,14 @@ async function brancher(){
       if(illisibles.length) throw new Error(`${illisibles.length} fichier(s) illisible(s)`);
       refusionner();
       if(retrouve) setTimeout(()=>notifier("Vos données ont été retrouvées dans le dossier partagé"), 400);
+      clearTimeout(attente);
+      if(cxEnCours){ const c=await cxEnCours; if(c==="demo"){ demo=true; mien=vide(); if(window.VIGIE_DEPART) importerDonnees(window.VIGIE_DEPART); pret=true; fermerEcran(); diffuser(); majStatut(); return; } }
       break;
     }catch(e){
-      charge=false;
+      clearTimeout(attente); charge=false;
+      if(cxEnCours){ const c=await cxEnCours; if(c==="demo"){ demo=true; mien=vide(); if(window.VIGIE_DEPART) importerDonnees(window.VIGIE_DEPART); pret=true; fermerEcran(); diffuser(); majStatut(); return; } continue; }
       const r=await ecranLecture(e);
+      if(r==="connexion"){ const c=await pageConnexion(); if(c==="demo"){ demo=true; mien=vide(); if(window.VIGIE_DEPART) importerDonnees(window.VIGIE_DEPART); pret=true; fermerEcran(); diffuser(); majStatut(); return; } }
       if(r==="autre"){ const c=await etapeDossier(null, false); if(c==="demo"){ demo=true; mien=vide(); if(window.VIGIE_DEPART) importerDonnees(window.VIGIE_DEPART); pret=true; fermerEcran(); diffuser(); majStatut(); return; } }
     }
   }
@@ -5306,12 +5447,21 @@ async function brancher(){
 
 /* ---------- démarrage ---------- */
 async function demarrer(){
+  if(/connexion/i.test(location.hash)){
+    const connu0 = supporte() ? await idbGet("dossier") : null;
+    if(connu0){ let p="prompt"; try{ p = await delai(connu0.queryPermission({mode:"readwrite"}), 5000, "autorisation"); }catch(_){}
+      if(p!=="granted"){ try{ p = await connu0.requestPermission({mode:"readwrite"}); }catch(_){} }
+      if(p==="granted") dir = connu0; }
+    await pageConnexion();
+    try{ history.replaceState(null, "", location.pathname + location.search); }catch(_){}
+    dir = null;
+  }
   if(!ident) await etapeIdentite();
   let choix = "ok";
   const connu = supporte() ? await idbGet("dossier") : null;
   if(connu){
     let p = "granted";
-    try{ if(typeof connu.queryPermission==="function") p = await connu.queryPermission({mode:"readwrite"}); }catch(_){ p="prompt"; }
+    try{ if(typeof connu.queryPermission==="function") p = await delai(connu.queryPermission({mode:"readwrite"}), 5000, "autorisation"); }catch(_){ p="prompt"; }
     if(p==="granted") dir = connu; else choix = await etapeDossier(connu, false);
   } else choix = await etapeDossier(null, true);
   if(choix==="demo"){ demo=true; mien=vide(); if(window.VIGIE_DEPART) importerDonnees(window.VIGIE_DEPART); pret=true; fermerEcran(); diffuser(); majStatut(); return {db, identite:ident}; }

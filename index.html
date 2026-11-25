@@ -6,7 +6,7 @@
 <title>Vigie Contrôle Interne</title>
 <meta name="description" content="Pilotage du contrôle interne : risques, contrôles, tests, plans d'action, conformité, équipe, formations et veille.">
 <meta name="theme-color" content="#003865">
-<script>window.VIGIE_VERSION = "6.3 du 17 novembre 2026";</script>
+<script>window.VIGIE_VERSION = "6.4 du 25 novembre 2026";</script>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -4972,6 +4972,7 @@ const fichiers = new Map();               // nom -> {lm, size, data} (fichiers d
 let mien = null;                          // contenu de mon propre fichier
 const fusion = {}; COLLECTIONS.forEach(c=>fusion[c]=new Map());
 const ecouteurs = {};
+let illisibles = [], presents = [];
 let derniereSync = null, erreur = "", ecriture = Promise.resolve(), minuterie = 0, modifie = false;
 
 const monFichier = () => `vigie-${slug(ident.nom)}-${ident.poste}.json`;
@@ -4997,16 +4998,27 @@ function instantane(c){ return {docs:[...fusion[c].entries()].map(([id,r])=>({id
 function diffuser(cols){ (cols||COLLECTIONS).forEach(c=>(ecouteurs[c]||[]).forEach(cb=>{ try{ cb(instantane(c)); }catch(e){ console.error(e); } })); }
 
 /* ---------- lecture du dossier ---------- */
+let charge = false;                       // vrai seulement quand mon fichier a été lu (ou n'existe pas encore)
+async function lireFichierVigie(h){
+  const f=await h.getFile(); const txt=await f.text();
+  if(!txt.trim()) throw new Error("fichier vide (OneDrive n'a pas encore téléchargé son contenu)");
+  const d=JSON.parse(txt);
+  if(!d || d.app!=="vigie" || typeof d.elements!=="object") throw new Error("format inconnu");
+  return {d, f};
+}
 async function lireMien(){
-  try{ const h=await dir.getFileHandle(monFichier()); const f=await h.getFile(); const d=JSON.parse(await f.text());
-    mien = (d && d.app==="vigie" && typeof d.elements==="object") ? {...vide(), ...d} : vide(); }
-  catch(_){ mien = vide(); }
+  charge=false;
+  let h; try{ h=await dir.getFileHandle(monFichier()); }
+  catch(e){ if(e && e.name==="NotFoundError"){ mien=vide(); charge=true; return; } throw e; }
+  const {d}=await lireFichierVigie(h);
+  mien={...vide(), ...d, elements:d.elements||{}, supprimes:d.supprimes||{}}; charge=true;
 }
 async function scanner(){
   if(!dir) return {change:false, auteurs:[]};
-  let change=false; const vus=new Set(), auteurs=new Set();
+  let change=false; const vus=new Set(), auteurs=new Set(); illisibles=[]; presents=[];
   try{
     for await (const [nom, h] of dir.entries()){
+      if(h.kind==="file" && FICHIER.test(nom)) presents.push(nom);
       if(h.kind!=="file" || !FICHIER.test(nom) || nom===monFichier()) continue;
       vus.add(nom);
       try{
@@ -5015,16 +5027,17 @@ async function scanner(){
         const data=JSON.parse(await f.text());
         if(!data || data.app!=="vigie" || typeof data.elements!=="object") continue;
         fichiers.set(nom,{lm:f.lastModified, size:f.size, data}); change=true; if(prec || pret) auteurs.add(data.auteur||nom);
-      }catch(_){ /* fichier en cours de synchronisation par OneDrive : nouvel essai au prochain passage */ }
+      }catch(_){ if(!fichiers.has(nom)) illisibles.push(nom); /* fichier en cours de synchronisation par OneDrive : nouvel essai au prochain passage */ }
     }
     for(const k of [...fichiers.keys()]) if(!vus.has(k)){ fichiers.delete(k); change=true; }
     erreur=""; derniereSync=new Date();
-  }catch(e){ erreur="lecture"; }
+  }catch(e){ erreur="lecture"; throw e; }
   return {change, auteurs:[...auteurs]};
 }
 async function synchroniser(manuel){
   if(demo || !dir) return;
-  const r = await scanner();
+  let r; try{ r = await scanner(); }catch(_){ majStatut(); if(manuel) notifier("Le dossier partagé est inaccessible. Vérifiez la synchronisation OneDrive."); return; }
+  if(!charge){ try{ await lireMien(); refusionner(); diffuser(); }catch(_){} }
   if(r.change){ refusionner(); diffuser(); if(r.auteurs.length && pret) notifier(`Mise à jour reçue de ${r.auteurs.join(", ")}`); }
   majStatut();
   if(manuel) notifier(erreur ? "Le dossier partagé est inaccessible. Vérifiez la synchronisation OneDrive." : "Données à jour");
@@ -5032,11 +5045,28 @@ async function synchroniser(manuel){
 
 /* ---------- écriture de mon fichier ---------- */
 function planifierEcriture(){ if(demo) return; modifie=true; clearTimeout(minuterie); minuterie=setTimeout(vider, 700); majStatut(); }
+let sauveJour = "";
+async function copieSecurite(){
+  const jour = new Date().toISOString().slice(0,10); if(sauveJour===jour) return; 
+  try{
+    let h; try{ h=await dir.getFileHandle(monFichier()); }catch(_){ sauveJour=jour; return; }
+    const f=await h.getFile(); if(!f.size){ sauveJour=jour; return; }
+    const d=await dir.getDirectoryHandle("Sauvegardes", {create:true});
+    const nom=monFichier().replace(/\.json$/i, `-${jour}.json`);
+    const w=await (await d.getFileHandle(nom, {create:true})).createWritable(); await w.write(await f.text()); await w.close();
+    const miens=[]; const base=monFichier().replace(/\.json$/i,"");
+    for await (const [n, x] of d.entries()) if(x.kind==="file" && n.startsWith(base+"-")) miens.push(n);
+    miens.sort().reverse().slice(30).forEach(n=>d.removeEntry(n).catch(()=>{}));
+    sauveJour=jour;
+  }catch(_){}
+}
 function vider(){
   if(!modifie || !dir || demo) return ecriture;
+  if(!charge){ erreur="lecture"; majStatut(); return ecriture; }   // jamais d'écriture tant que mon fichier n'a pas été lu
   modifie=false; mien.modifie=nowIso(); mien.auteur=ident.nom; mien.fonction=ident.fonction||""; mien.poste=ident.poste;
   const corps = JSON.stringify(mien, null, 1);
   ecriture = ecriture.then(async()=>{
+    await copieSecurite();
     const h=await dir.getFileHandle(monFichier(), {create:true});
     const w=await h.createWritable(); await w.write(corps); await w.close();
     erreur=""; derniereSync=new Date(); majStatut();
@@ -5231,9 +5261,46 @@ function ecouter(){ if(ecoute) return; ecoute=true;
   setInterval(()=>{ if(!document.hidden) synchroniser(); }, POLL_MS);
   document.addEventListener("visibilitychange", ()=>{ if(!document.hidden) synchroniser(); });
   window.addEventListener("focus", ()=>synchroniser()); }
+async function retrouverMesDonnees(){
+  // Données du navigateur effacées au redémarrage : un nouveau poste a été créé.
+  // On reprend le fichier existant qui porte le même nom d'utilisateur.
+  const moi = slug(ident.nom), cands=[];
+  for(const [nom, f] of fichiers){ if(slug(f.data.auteur)===moi && f.data.poste) cands.push({nom, f}); }
+  if(!cands.length) return false;
+  cands.sort((a,b)=>String(b.f.data.modifie||"").localeCompare(String(a.f.data.modifie||"")));
+  ident = {...ident, poste: cands[0].f.data.poste}; ls.set(LS_ID, ident);
+  fichiers.delete(cands[0].nom); await lireMien(); return true;
+}
+function ecranLecture(e){
+  return new Promise(res=>{
+    afficher(`<div class="setup-step">Dossier « ${esc(dir.name)} »</div><h1>Vos données ne peuvent pas être lues pour l'instant</h1>
+      <p>Vigie n'a pas pu lire ${illisibles.length?`${illisibles.length} ${pluriel(illisibles.length,"fichier")} de données`:"votre fichier de données"} dans ce dossier. C'est presque toujours OneDrive qui n'a pas fini de démarrer ou de télécharger les fichiers après un redémarrage.</p>
+      <ol class="setup-list"><li>Vérifiez que l'icône OneDrive (nuage, en bas à droite) est active et affiche « À jour ».</li><li>Dans l'Explorateur, faites un clic droit sur le dossier partagé, puis <b>Toujours conserver sur cet appareil</b>.</li><li>Cliquez sur <b>Réessayer</b>.</li></ol>
+      <p class="sub" style="font-size:13px">Rien n'a été modifié : Vigie n'écrit jamais dans le dossier tant que vos données n'ont pas été lues.${e&&e.message?` <span style="color:var(--muted)">(${esc(e.name||"")} ${esc(e.message)})</span>`:""}</p>
+      <div class="setup-actions"><button class="btn primary big" data-x="retry">Réessayer</button><button class="btn" data-x="autre">Choisir un autre dossier</button></div>`);
+    ecran.querySelector('[data-x="retry"]').onclick=()=>res("retry");
+    ecran.querySelector('[data-x="autre"]').onclick=()=>res("autre");
+  });
+}
 async function brancher(){
-  fichiers.clear(); erreur=""; await lireMien(); await scanner(); refusionner();
-  if(estVide()) await etapeContenu();
+  while(true){
+    fichiers.clear(); erreur="";
+    try{
+      await scanner();
+      await lireMien();
+      let retrouve=false;
+      if(!presents.includes(monFichier())) retrouve = await retrouverMesDonnees();
+      if(illisibles.length) throw new Error(`${illisibles.length} fichier(s) illisible(s)`);
+      refusionner();
+      if(retrouve) setTimeout(()=>notifier("Vos données ont été retrouvées dans le dossier partagé"), 400);
+      break;
+    }catch(e){
+      charge=false;
+      const r=await ecranLecture(e);
+      if(r==="autre"){ const c=await etapeDossier(null, false); if(c==="demo"){ demo=true; mien=vide(); if(window.VIGIE_DEPART) importerDonnees(window.VIGIE_DEPART); pret=true; fermerEcran(); diffuser(); majStatut(); return; } }
+    }
+  }
+  if(!presents.length && estVide()) await etapeContenu();
   pret=true; diffuser(); majStatut(); ecouter();
 }
 

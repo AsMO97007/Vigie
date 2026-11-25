@@ -131,6 +131,21 @@ Pour ajouter une nouvelle version, ouvrez la fiche et déposez le nouveau fichie
 
 Dans la version en ligne (claude.ai), seuls les PDF et les liens sont acceptés : les fichiers Word ne peuvent pas y être déposés.
 
+## Si vos données semblent avoir disparu
+
+Vos données ne sont jamais stockées dans le navigateur : elles sont dans le dossier partagé, dans le fichier `vigie-votre-nom-xxxx.json`.
+
+1. **Ne modifiez rien dans Vigie** tant que vous n'avez pas retrouvé vos données.
+2. **Vérifiez le mode.** Si l'indicateur en bas du menu affiche « Mode démonstration », ou un autre dossier que celui de l'équipe, cliquez dessus et reconnectez le bon dossier.
+3. **Vérifiez OneDrive.** L'icône OneDrive doit afficher « À jour ». Faites un clic droit sur le dossier partagé, puis **Toujours conserver sur cet appareil**.
+4. **Si votre fichier a été écrasé** (fichier récent et petit), ouvrez le dossier dans SharePoint, faites un clic droit sur le fichier, choisissez **Historique des versions**, puis restaurez la version d'avant le problème.
+
+Depuis la version 6.4 :
+
+- Vigie n'écrit jamais dans le dossier tant que votre fichier n'a pas été lu. Si la lecture échoue, il affiche « Vos données ne peuvent pas être lues pour l'instant », avec un bouton **Réessayer**.
+- Si les données du navigateur ont été effacées, Vigie retrouve votre fichier dès que vous saisissez le même nom.
+- Une copie de sécurité de votre fichier est faite chaque jour dans le sous-dossier **Sauvegardes**. Les 30 dernières sont conservées.
+
 ## Sauvegardes
 
 - Cliquez sur l'état de synchronisation, en bas de la barre latérale, puis **Exporter une sauvegarde** : vous obtenez un fichier `sauvegarde-vigie-AAAA-MM-JJ.json` contenant toutes les données de l'équipe. **Importer une sauvegarde** permet de les recharger.

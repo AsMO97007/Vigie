@@ -6,7 +6,7 @@
 <title>Vigie Contrôle Interne</title>
 <meta name="description" content="Pilotage du contrôle interne : risques, contrôles, tests, plans d'action, conformité, équipe, formations et veille.">
 <meta name="theme-color" content="#003865">
-<script>window.VIGIE_VERSION = "6.8 du 26 novembre 2026";</script>
+<script>window.VIGIE_VERSION = "6.9 du 26 novembre 2026";</script>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -1705,6 +1705,32 @@ tr.grouprow .sub{color:var(--muted) !important; opacity:1}
 .mj-chips select{max-width:260px}
 .mj-table .progress{white-space:nowrap} .mj-table .progress .meter{width:56px}
 .mj-mapv .mmap .mchip{font-size:.74rem}
+
+/* ---- journal ---- */
+.jr{list-style:none; margin:0; padding:0; display:flex; flex-direction:column}
+.jr-it{display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:12px; align-items:start; padding:11px 0; border-top:1px solid var(--line)}
+.jr-it:first-child{border-top:0}
+.jr-ic{display:inline-flex; width:26px; height:26px; border-radius:8px; align-items:center; justify-content:center; margin-top:1px}
+.jr-ic.ok{background:var(--ok-soft); color:var(--ok)} .jr-ic.acc{background:var(--accent-soft); color:var(--accent)} .jr-ic.crit{background:var(--crit-soft); color:var(--crit)}
+.jr-tx{font-size:.9rem; line-height:1.45; min-width:0}
+.jr-tx .jr-lk{padding:0; font-size:inherit; text-align:left}
+.jr-tg{padding:0 0 0 4px; font-size:.82rem}
+.jr-ch{display:flex; flex-wrap:wrap; gap:4px; margin-top:5px}
+.jr-ch i{font-style:normal; font-size:.74rem; background:var(--surface-2); border:1px solid var(--line); border-radius:6px; padding:1px 7px; color:var(--muted)}
+.jr-sub{margin:8px 0 0; padding:8px 12px; list-style:none; background:var(--surface-2); border-radius:10px; display:flex; flex-direction:column; gap:3px; max-height:280px; overflow:auto}
+.jr-sub li{font-size:.84rem}
+.jr-who{display:flex; align-items:center; gap:8px; white-space:nowrap}
+.jr-who time{font-size:.8rem; color:var(--muted); font-variant-numeric:tabular-nums}
+.jr-sum{display:flex; flex-wrap:wrap; gap:8px; margin:-4px 0 10px}
+.jr-sum span{font-size:.8rem; color:var(--muted); background:var(--surface-2); border-radius:99px; padding:3px 10px}
+.jr-sum b{color:var(--ink); font-variant-numeric:tabular-nums}
+.jr-more{display:flex; align-items:center; justify-content:center; gap:8px; width:100%; margin-top:10px; padding:10px; border:1px dashed var(--line-2); border-radius:12px; background:transparent; color:var(--accent); font-weight:650; font-size:.9rem; cursor:pointer}
+.jr-more:hover{background:var(--accent-soft); border-color:var(--accent)}
+.jr-more span{color:var(--muted); font-weight:500}
+.jr-filt{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:6px}
+.jr-filt select{background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:7px 10px}
+.jr-day{font-size:.74rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:16px 0 2px; font-family:var(--f-body)}
+@media (max-width:640px){ .jr-it{grid-template-columns:auto minmax(0,1fr)} .jr-who{grid-column:2} }
 /* ---- identification des risques majeurs ---- */
 .mj-opts{display:flex; flex-wrap:wrap; gap:12px 22px; padding:12px 22px; border-bottom:1px solid var(--line); background:var(--surface-2)}
 .mj-opts > div{display:flex; flex-direction:column; gap:6px}
@@ -8137,10 +8163,83 @@ function renderEvolution(){
   return head + `<div class="grid2"><section class="panel"><div class="panel-head"><div><h2>Score de conformité par trimestre</h2><p>${series.length} ${plural(series.length,"trimestre")} · le dernier point est l'état actuel.</p></div></div>${lineChart(series.map(s=>({l:qLbl(s.periode), v:s.score})))}</section>
       <section class="panel"><div class="panel-head"><div><h2>Indicateurs par trimestre</h2></div></div><div class="tablewrap" style="box-shadow:none"><table><thead><tr><th>Trimestre</th><th>Score</th><th>Risques</th><th>Critiques</th><th>Clés testés</th><th>Retards</th><th>Incidents</th></tr></thead><tbody>${series.slice().reverse().map(s=>`<tr><td><b>${esc(qLbl(s.periode))}</b>${s.periode===curK?' <span class="badge">en cours</span>':""}${s.exemple?'<span class="ex">exemple</span>':""}</td><td class="num"><b style="color:${grade(s.score).c}">${s.score??"—"}</b></td><td class="num">${s.nb?.risques??"—"}</td><td class="num">${s.nb?.critiques??"—"}</td><td class="num">${s.nb?.clesTestes!=null?s.nb.clesTestes+" %":"—"}</td><td class="num">${s.nb?.retard??"—"}</td><td class="num">${s.nb?.incidents??"—"}</td></tr>`).join("")}</tbody></table></div></section></div>
     ${mv}
-    <section class="panel"><div class="panel-head"><div><h2>Journal des modifications</h2><p>${H.length} ${plural(H.length,"modification enregistrée","modifications enregistrées")}.</p></div>
-      <div class="actions-row"><select id="hfPar" aria-label="Personne"><option value="">Toutes les personnes</option>${pers.map(p=>`<option ${HF.par===p?"selected":""}>${esc(p)}</option>`).join("")}</select><select id="hfCol" aria-label="Type"><option value="">Tous les éléments</option>${Object.entries(COL_LBL).filter(([c])=>H.some(h=>h.col===c)).map(([c,l])=>`<option value="${c}" ${HF.col===c?"selected":""}>${esc(l)}</option>`).join("")}</select></div></div>
-      ${HFl.length?`<div class="journal">${HFl.map(h=>`<div class="jl">${avatar(h.par||"?","sm")}<span><b>${esc(h.par||"")}</b> ${esc(ACT_LBL[h.action]||h.action)} ${esc((COL_LBL[h.col]||"").toLowerCase())} ${h.docId&&byId(h.col,h.docId)?`<button class="linkbtn" data-open="${esc(h.col)}:${esc(h.docId)}">${esc(h.ref||"")} ${esc(h.libelle)}</button>`:`<b>${esc(h.ref||"")} ${esc(h.libelle)}</b>`}${h.champs&&h.champs.length?`<span class="sub">${esc(h.champs.join(", "))}</span>`:""}</span><time>${new Date(h.le).toLocaleString("fr-FR",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}</time></div>`).join("")}</div>`:'<p class="sub">Aucune modification enregistrée depuis l\'activation du journal.</p>'}</section>`;
+    ${journalHtml(H)}`;
 }
+
+
+/* ---------- journal des modifications : 3 dernières entrées, regroupées, historique complet à la demande ---------- */
+const COL_PL = {risques:["risque","risques"],controles:["contrôle","contrôles"],tests:["test","tests"],actions:["plan d'action","plans d'action"],taches:["tâche","tâches"],equipe:["membre","membres"],exigences:["exigence","exigences"],actualites:["actualité","actualités"],majeurs:["risque majeur","risques majeurs"],incidents:["incident","incidents"],kri:["indicateur","indicateurs"],campagnes:["campagne","campagnes"],reponses:["réponse d'auto-évaluation","réponses d'auto-évaluation"],sod:["séparation des tâches","séparations des tâches"],pcif:["point PCIF","points PCIF"],documents:["document","documents"]};
+const ACT_IC = {creation:['<path d="M12 5v14M5 12h14"/>',"ok"], modification:['<path d="M4 20h4L19 9l-4-4L4 16z"/>',"acc"], suppression:['<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>',"crit"], import:['<path d="M12 3v12M7 10l5 5 5-5M5 21h14"/>',"acc"], statut:['<path d="M20 6 9 17l-5-5"/>',"ok"]};
+let JR = {tout:false, ouv:new Set()};
+function jrGroupes(H){
+  const G=[];
+  H.forEach(h=>{
+    const g=G[G.length-1], t=new Date(h.le).getTime();
+    if(g && g.par===h.par && g.action===h.action && g.col===h.col && Math.abs(g.t0-t)<=5*60e3) { g.L.push(h); g.t0=t; }
+    else G.push({key:(h.le||"")+"|"+(h.docId||h.ref||G.length), par:h.par, action:h.action, col:h.col, le:h.le, t0:t, L:[h]});
+  });
+  return G;
+}
+function jrQuand(le){
+  const d=new Date(le); if(isNaN(d)) return "";
+  const min=Math.round((Date.now()-d.getTime())/60000);
+  if(min<1) return "à l'instant"; if(min<60) return `il y a ${min} min`;
+  const j=new Date(); j.setHours(0,0,0,0); const hier=new Date(j); hier.setDate(j.getDate()-1);
+  const hh=d.toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"});
+  if(d>=j) return `aujourd'hui à ${hh}`; if(d>=hier) return `hier à ${hh}`;
+  return d.toLocaleString("fr-FR",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"});
+}
+function jrJour(le){
+  const d=new Date(le); const j=new Date(); j.setHours(0,0,0,0); const hier=new Date(j); hier.setDate(j.getDate()-1);
+  if(d>=j) return "Aujourd'hui"; if(d>=hier) return "Hier";
+  const s=d.toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long",year:d.getFullYear()!==j.getFullYear()?"numeric":undefined}); return s.charAt(0).toUpperCase()+s.slice(1);
+}
+function jrCible(h){
+  const lib=`${esc(h.ref||"")} ${esc(h.libelle||"")}`.trim();
+  return h.docId&&byId(h.col,h.docId) ? `<button class="linkbtn jr-lk" data-open="${esc(h.col)}:${esc(h.docId)}">${lib}</button>` : `<b>${lib}</b>`;
+}
+function jrLigne(g){
+  const h=g.L[0], n=g.L.length, [ic,ton]=ACT_IC[g.action]||ACT_IC.modification, pl=COL_PL[g.col]||[String(COL_LBL[g.col]||"élément").toLowerCase(), String(COL_LBL[g.col]||"éléments").toLowerCase()+"s"];
+  const verbe=esc(ACT_LBL[g.action]||g.action||"");
+  const ouvert=JR.ouv.has(g.key);
+  const texte = n===1
+    ? `<b>${esc(g.par||"Quelqu'un")}</b> ${verbe} ${g.action==="import"?"":esc(pl[0])+" "}${jrCible(h)}`
+    : `<b>${esc(g.par||"Quelqu'un")}</b> ${verbe} <b>${n} ${esc(pl[1])}</b> <button class="linkbtn jr-tg" data-jr-grp="${esc(g.key)}" aria-expanded="${ouvert}">${ouvert?"masquer le détail":"voir le détail"}</button>`;
+  const champs = n===1 && h.champs && h.champs.length ? `<span class="jr-ch">${h.champs.slice(0,6).map(c=>`<i>${esc(c)}</i>`).join("")}${h.champs.length>6?`<i>+${h.champs.length-6}</i>`:""}</span>` : "";
+  return `<li class="jr-it"><span class="jr-ic ${ton}">${svg(ic,14,2.2)}</span><div class="jr-tx"><div>${texte}</div>${champs}
+      ${n>1&&ouvert?`<ul class="jr-sub">${g.L.map(x=>`<li>${jrCible(x)}${x.champs&&x.champs.length?` <span class="sub" style="display:inline">· ${esc(x.champs.slice(0,4).join(", "))}</span>`:""}</li>`).join("")}</ul>`:""}</div>
+    <div class="jr-who">${avatar(g.par||"?","sm")}<time datetime="${esc(g.le||"")}" title="${esc(new Date(g.le).toLocaleString("fr-FR"))}">${jrQuand(g.le)}</time></div></li>`;
+}
+function journalHtml(H){
+  const pers=[...new Set(H.map(h=>h.par).filter(Boolean))].sort();
+  const Hf = JR.tout ? H.filter(h=>(!HF.par||h.par===HF.par)&&(!HF.col||h.col===HF.col)) : H;
+  const G = jrGroupes(Hf);
+  const j0=new Date(); j0.setHours(0,0,0,0); const auj=H.filter(h=>new Date(h.le)>=j0).length;
+  const s7=new Date(Date.now()-7*864e5); const sem=H.filter(h=>new Date(h.le)>=s7);
+  const resume = H.length ? `<div class="jr-sum"><span><b>${auj}</b> aujourd'hui</span><span><b>${sem.length}</b> sur 7 jours</span><span><b>${new Set(sem.map(h=>h.par)).size}</b> ${plural(new Set(sem.map(h=>h.par)).size,"contributeur")} cette semaine</span></div>` : "";
+  let corps="";
+  if(!H.length) corps='<p class="sub">Aucune modification enregistrée depuis l\'activation du journal.</p>';
+  else if(!JR.tout){
+    corps = `<ul class="jr">${G.slice(0,3).map(jrLigne).join("")}</ul>
+      ${G.length>3||H.length>3?`<button class="jr-more" data-jr-tout="1">${svg('<path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/>',16,2)}Afficher tout l'historique <span>${H.length} ${plural(H.length,"modification")}</span></button>`:""}`;
+  } else {
+    const lim=JR.lim||60, V=G.slice(0,lim); let jour="", html="";
+    V.forEach(g=>{ const j=jrJour(g.le); if(j!==jour){ if(html) html+="</ul>"; html+=`<h3 class="jr-day">${esc(j)}</h3><ul class="jr">`; jour=j; } html+=jrLigne(g); });
+    if(html) html+="</ul>";
+    corps = `<div class="jr-filt"><select id="hfPar" aria-label="Personne"><option value="">Toutes les personnes</option>${pers.map(p=>`<option ${HF.par===p?"selected":""}>${esc(p)}</option>`).join("")}</select><select id="hfCol" aria-label="Type"><option value="">Tous les éléments</option>${Object.entries(COL_LBL).filter(([c])=>H.some(h=>h.col===c)).map(([c,l])=>`<option value="${c}" ${HF.col===c?"selected":""}>${esc(l)}</option>`).join("")}</select>${HF.par||HF.col?`<button class="linkbtn" data-jr-reset="1">Effacer les filtres</button>`:""}<span class="sub" style="margin:0 0 0 auto">${Hf.length} ${plural(Hf.length,"modification")}</span></div>
+      ${html||'<p class="sub">Aucune modification pour ces filtres.</p>'}
+      ${G.length>lim?`<button class="jr-more" data-jr-plus="1">Afficher plus <span>${G.length-lim} ${plural(G.length-lim,"entrée")} restante${G.length-lim>1?"s":""}</span></button>`:""}`;
+  }
+  return `<section class="panel jr-panel"><div class="panel-head"><div><h2>Journal des modifications</h2><p>${JR.tout?"Historique complet, du plus récent au plus ancien.":"Les trois dernières modifications."}</p></div>
+    ${JR.tout?`<button class="btn sm" data-jr-tout="0">Réduire</button>`:""}</div>${resume}${corps}</section>`;
+}
+document.addEventListener("click", e=>{
+  const t=e.target; if(!(t instanceof Element)) return;
+  const a=t.closest("[data-jr-tout]"); if(a){ JR.tout = a.dataset.jrTout==="1"; JR.lim=60; if(!JR.tout){ HF.par=""; HF.col=""; } render(); if(JR.tout) setTimeout(()=>document.querySelector(".jr-panel")?.scrollIntoView({behavior:"smooth",block:"start"}),30); return; }
+  const g=t.closest("[data-jr-grp]"); if(g){ const k=g.dataset.jrGrp; JR.ouv.has(k)?JR.ouv.delete(k):JR.ouv.add(k); render(); return; }
+  if(t.closest("[data-jr-plus]")){ JR.lim=(JR.lim||60)+60; render(); return; }
+  if(t.closest("[data-jr-reset]")){ HF.par=""; HF.col=""; render(); return; }
+});
 
 /* ---------- relances ---------- */
 function relancesData(){ const G=new Map(); S.actions.filter(isLate).forEach(a=>{ const k=a.responsable||"Sans responsable"; (G.get(k)||G.set(k,[]).get(k)).push(a); }); return [...G.entries()].sort((a,b)=>b[1].length-a[1].length); }

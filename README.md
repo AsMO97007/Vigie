@@ -99,6 +99,18 @@ Dans la fiche d'un risque, le choix de la stratégie fait apparaître les inform
 
 Ces informations s'affichent dans le registre (carte « Dispositif de maîtrise »), avec la mention « À documenter » quand l'essentiel manque, et dans la colonne « MODALITES DU TRAITEMENT » de l'export Excel.
 
+## Risques majeurs
+
+Dans « Risques majeurs », le bouton **Identifier les risques majeurs** analyse vos risques opérationnels : intitulé, description, conséquences, processus et catégorie. Il les rapproche d'un référentiel d'une trentaine de risques majeurs types : fraude externe, fraude interne, corruption, achats, fournisseurs, cyberattaque, habilitations, continuité informatique, données personnelles, information financière, trésorerie, recouvrement, fiscalité, paie, compétences, santé-sécurité, climat social, conformité, litiges, continuité d'activité, qualité, stocks, environnement, réputation, stratégie, gouvernance et projets.
+
+La proposition s'affiche avant toute modification. Pour chaque risque majeur, vous voyez le nombre de risques, la cotation et les mots qui ont permis le rapprochement. Vous pouvez renommer ou décocher chaque risque majeur. Les réglages disponibles :
+
+- **Méthode** : par thème (recommandé), par processus ou par catégorie.
+- **Taille minimale** d'un risque majeur, et finesse du **rapprochement** (large, équilibré, strict).
+- **Portée** : « Compléter l'existant » ne rattache que les risques encore libres, en réutilisant vos risques majeurs actuels. « Tout refaire » recalcule la cartographie.
+
+Un risque majeur « Non coté » signifie qu'aucun des risques rattachés n'a encore de probabilité ni d'impact.
+
 ## Procédures et politiques
 
 Le référentiel documentaire regroupe vos procédures, politiques, chartes et modes opératoires.

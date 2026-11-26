@@ -6,7 +6,7 @@
 <title>Vigie Contrôle Interne</title>
 <meta name="description" content="Pilotage du contrôle interne : risques, contrôles, tests, plans d'action, conformité, équipe, formations et veille.">
 <meta name="theme-color" content="#003865">
-<script>window.VIGIE_VERSION = "6.6 du 25 novembre 2026";</script>
+<script>window.VIGIE_VERSION = "6.7 du 26 novembre 2026";</script>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -1614,6 +1614,31 @@ tr.grouprow .sub{color:var(--muted) !important; opacity:1}
   .nact button{display:none}
 }
 
+
+/* ---- identification des risques majeurs ---- */
+.mj-opts{display:flex; flex-wrap:wrap; gap:12px 22px; padding:12px 22px; border-bottom:1px solid var(--line); background:var(--surface-2)}
+.mj-opts > div{display:flex; flex-direction:column; gap:6px}
+.mj-opts > div > span{font-size:.72rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--muted)}
+.seg{display:inline-flex; border:1px solid var(--line-2); border-radius:10px; overflow:hidden; background:var(--surface)}
+.seg-b{border:0; background:none; padding:7px 12px; font:600 .82rem var(--f-body); color:var(--ink-2); cursor:pointer; border-right:1px solid var(--line)}
+.seg-b:last-child{border-right:0}
+.seg-b.on{background:var(--accent); color:#fff}
+.mj-list{display:flex; flex-direction:column; gap:10px}
+.mj-g{display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:12px; align-items:start; border:1px solid var(--line); border-radius:12px; padding:12px 14px; background:var(--surface)}
+.mj-g.off{opacity:.5}
+.mj-chk input{width:18px; height:18px; margin-top:8px; accent-color:var(--accent)}
+.mj-titre{width:100%; font:700 .98rem var(--f-body); color:var(--heading); border:1px solid transparent; border-radius:8px; padding:6px 8px; background:transparent}
+.mj-titre:hover:not(:disabled), .mj-titre:focus{border-color:var(--line-2); background:var(--surface)}
+.mj-titre:disabled{color:var(--heading); opacity:1}
+.mj-meta{display:flex; flex-wrap:wrap; gap:6px 10px; align-items:center; font-size:.8rem; color:var(--muted); margin:4px 8px 6px}
+.mj-mots{font-style:italic}
+.mj-g details summary{cursor:pointer; font-size:.84rem; color:var(--ink-2); margin:0 8px; list-style-position:outside}
+.mj-more{color:var(--accent); font-weight:600}
+.mj-rs{list-style:none; margin:8px 8px 0; padding:0; display:flex; flex-direction:column; gap:4px; max-height:260px; overflow:auto}
+.mj-rs li{display:grid; grid-template-columns:auto auto minmax(0,1fr); gap:8px; align-items:center; font-size:.84rem}
+.mj-rs .mono{font-size:.72rem; color:var(--muted)}
+.mj-nc{font-size:.8rem; color:var(--warn); margin:6px 0 8px}
+@media (max-width:700px){ .mj-opts{padding:12px 16px} .seg{flex-wrap:wrap} }
 </style>
 </head>
 <body>
@@ -7388,12 +7413,12 @@ function majMap(list, big){
 function renderMajeurs(){
   const M=S.majeurs.slice().sort((a,b)=>majCot(b).s-majCot(a).s || sortRef(a,b));
   const libres=S.risques.filter(r=>!r.majeurId || !byId("majeurs",r.majeurId));
-  const gen = canWrite ? `${!LOCAL?`<button class="btn" data-maj-gen="ai">${svg('<path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z" fill="currentColor" fill-opacity=".25"/>',16,2)}Proposer avec Claude</button>`:""}<button class="btn" data-maj-gen="cat">${svg(ICON.majeurs,16)}Regrouper par catégorie</button>` : "";
+  const gen = canWrite ? `${!LOCAL?`<button class="btn" data-maj-gen="ai">${svg('<path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z" fill="currentColor" fill-opacity=".25"/>',16,2)}Proposer avec Claude</button>`:""}<button class="btn" data-maj-gen="cat">${svg(ICON.majeurs,16)}Identifier les risques majeurs</button>` : "";
   const head = headerBlock("majeurs", `${M.length} ${plural(M.length,"risque majeur","risques majeurs")} · ${S.risques.length} ${plural(S.risques.length,"risque opérationnel","risques opérationnels")}`, "Cartographie des risques majeurs",
     "Les risques opérationnels regroupés en risques majeurs, lisibles par la direction et le comité d'audit. Chaque risque majeur prend la cotation de son risque opérationnel le plus critique, sauf cotation manuelle.",
     `${gen}${M.length?`<button class="btn" data-export-menu="majeurs">${svg('<path d="M12 3v12M7 10l5 5 5-5M5 21h14"/>',16)}Exporter</button>`:""}${canWrite?`<button class="btn primary" data-new="majeurs">${plus}Nouveau risque majeur</button>`:""}`);
   if(!loaded.majeurs || !loaded.risques) return head+'<p class="sub">Chargement…</p>';
-  if(!M.length) return head + `<section class="panel"><div class="empty"><b>Aucun risque majeur pour l'instant</b><p>${S.risques.length?`Vigie peut regrouper vos ${S.risques.length} risques opérationnels en risques majeurs${LOCAL?" par catégorie":" : Claude propose des regroupements par thème, ou vous regroupez par catégorie"}. Vous pourrez ensuite renommer, fusionner et réaffecter chaque risque.`:"Cartographiez d'abord vos risques opérationnels, puis regroupez-les ici."}</p>${S.risques.length&&canWrite?`<div class="actions-row" style="justify-content:center">${gen}</div>`:""}</div></section>`;
+  if(!M.length) return head + `<section class="panel"><div class="empty"><b>Aucun risque majeur pour l'instant</b><p>${S.risques.length?`Vigie analyse vos ${S.risques.length} risques opérationnels (intitulé, description, conséquences, processus) et les rapproche d'une trentaine de risques majeurs types${LOCAL?"":", ou Claude propose ses propres regroupements"}. Vous validez la proposition, puis vous pouvez renommer, fusionner et réaffecter chaque risque.`:"Cartographiez d'abord vos risques opérationnels, puis regroupez-les ici."}</p>${S.risques.length&&canWrite?`<div class="actions-row" style="justify-content:center">${gen}</div>`:""}</div></section>`;
   const crit=M.filter(m=>majCot(m).s>=15).length, high=M.filter(m=>{ const s=majCot(m).s; return s>=10&&s<15; }).length;
   return head + `<div class="grid2">
       <section class="panel"><div class="panel-head"><div><h2>Carte des risques majeurs</h2><p>Position selon la cotation consolidée. Cliquez une étiquette pour ouvrir le risque.</p></div></div>${majMap(M,false)}
@@ -7404,7 +7429,7 @@ function renderMajeurs(){
       return `<article class="mcard2" data-open="majeurs:${m.id}" role="button" tabindex="0"><div class="mh2"><span class="mono">${esc(m.ref)}</span>${L?pill(L.n,L.p):pill("Non coté","p-neutral")}${c.manuel?'<span class="badge">cotation manuelle</span>':""}</div><h3>${esc(m.titre)}${exTag(m)}</h3>${m.description?`<p>${esc(m.description)}</p>`:""}
         <div class="mstats"><span><b>${st.L.length}</b> ${plural(st.L.length,"risque")}</span><span><b>${st.C.length}</b> ${plural(st.C.length,"contrôle")}</span><span><b>${st.A.length}</b> ${plural(st.A.length,"action")}</span><span><b>${st.inc.length}</b> ${plural(st.inc.length,"incident")}</span></div>
         ${top.length?`<ul>${top.map(r=>`<li>${scoreChip(cur(r))}<span>${esc(r.titre)}</span></li>`).join("")}</ul>`:""}
-        <div class="sub">${m.proprietaire?`Propriétaire : ${esc(m.proprietaire)}`:"Sans propriétaire"}${st.unc.length?` · <span style="color:var(--crit)">${st.unc.length} sans contrôle</span>`:""}</div></article>`; }).join("")}</div>
+        ${!c.s&&st.L.length?`<p class="mj-nc">Aucun des risques rattachés n'est encore coté (probabilité et impact) : cotez-les, ou saisissez une cotation consolidée dans la fiche.</p>`:""}<div class="sub">${m.proprietaire?`Propriétaire : ${esc(m.proprietaire)}`:"Sans propriétaire"}${st.unc.length?` · <span style="color:var(--crit)">${st.unc.length} sans contrôle</span>`:""}</div></article>`; }).join("")}</div>
     ${libres.length?`<section class="panel" style="margin-top:20px"><div class="panel-head"><div><h2>Risques opérationnels non rattachés</h2><p>${libres.length} ${plural(libres.length,"risque")} à rattacher à un risque majeur.</p></div></div>
       <div class="tablewrap" style="box-shadow:none"><table class="data" style="min-width:640px"><thead><tr><th>Réf.</th><th>Risque</th><th>Catégorie</th><th>Criticité</th><th>Rattacher à</th></tr></thead><tbody>${libres.sort((a,b)=>cur(b)-cur(a)).map(r=>`<tr><td class="mono">${esc(r.ref)}</td><td><b>${esc(r.titre)}</b></td><td>${esc(catOf(r))}</td><td>${scoreChip(cur(r))}</td><td>${canWrite?`<select data-assign="${r.id}" aria-label="Risque majeur"><option value="">Choisir…</option>${M.map(m=>`<option value="${m.id}">${esc(m.ref)} — ${esc(m.titre)}</option>`).join("")}</select>`:"—"}</td></tr>`).join("")}</tbody></table></div></section>`:""}`;
 }
@@ -7466,6 +7491,177 @@ async function applyMajProposal(btn){
     closeOverlay(); toast(`${majProposal.length} ${plural(majProposal.length,"risque majeur créé","risques majeurs créés")}`); majProposal=null;
   }catch(e){ btn.disabled=false; btn.textContent="Appliquer"; toast("L'application a échoué. Réessayez."); }
 }
+
+
+/* ---------- moteur d'identification des risques majeurs ---------- */
+/* Référentiel de risques majeurs types : chaque risque opérationnel est rapproché du plus pertinent
+   d'après son intitulé, sa description, ses conséquences, son processus et sa catégorie. */
+const MAJ_REF = [
+ {code:"FRAUDE_EXT", t:"Fraude externe aux paiements (faux RIB, faux président, usurpation)", c:"Fraude et corruption", d:"Détournement de fonds par un tiers qui usurpe l'identité d'un fournisseur, d'un dirigeant ou d'une banque.",
+  k:[[/faux rib|changement (de|des) (rib|coordonnees)|coordonnees bancaires|\brib\b|iban/,4],[/faux (president|fournisseur|ordre|virement|client|conseiller)|usurpation|ingenierie sociale|escroquer|arnaque/,4],[/virement (frauduleux|non autorise)|cheque (vole|falsifie|perdu)|fraude (externe|au paiement|aux moyens de paiement)/,4],[/fraude/,1]]},
+ {code:"FRAUDE_INT", t:"Fraude interne et détournement d'actifs", c:"Fraude et corruption", d:"Appropriation ou utilisation indue de fonds, de biens ou d'informations de l'entreprise par un collaborateur.",
+  k:[[/detournement|abus de bien|enrichissement|appropriation|collusion/,4],[/achat frauduleux|fraude interne|frauduleu|facture fictive|fournisseur fictif|salarie fictif|fictif/,4],[/vol\b|vols\b|notes? de frais|carte (carburant|bancaire|achat|affaires)|avance(s)? sur frais/,3],[/falsif|manipulation|dissimul|fraude/,2]]},
+ {code:"CORRUPTION", t:"Corruption, conflits d'intérêts et trafic d'influence", c:"Fraude et corruption", d:"Avantage indu offert ou reçu, conflit d'intérêts non déclaré, manquement aux obligations de la loi Sapin II.",
+  k:[[/corruption|pot.de.vin|trafic d.influence|retrocommission|sapin/,5],[/conflit.{0,4}d.interet|favoritisme|cadeau|invitation|avantage indu|lobbying|tiers (a risque|intermediaire)/,4],[/evaluation des tiers|due diligence|integrite/,2]]},
+ {code:"ACHATS", t:"Achats et dépenses non maîtrisés", c:"Opérationnel", d:"Engagements de dépense hors procédure, absence de mise en concurrence, paiement de prestations non réalisées ou non conformes.",
+  k:[[/mise en concurrence|appel d.offres?|consultation|devis/,4],[/prestation non (realisee|conforme|rendue)|service (non )?fait|sans bon de commande|bon de commande|engagement (de|des) depense|hors (contrat|procedure)/,4],[/achat|acheteur|commande|referencement (fournisseur)?|politique achats?/,2],[/facture|fournisseur/,1]]},
+ {code:"FOURNISSEURS", t:"Dépendance et défaillance des fournisseurs et sous-traitants", c:"Opérationnel", d:"Rupture, défaillance ou manquement d'un fournisseur ou d'un sous-traitant critique, encadrement insuffisant des tiers.",
+  k:[[/sous.trait|externalis|prestataire (critique|externe|informatique)?|tiers? (critique|prestataire)/,4],[/dependance (a|vis.a.vis|envers)? ?(un|des|d.un)? ?(fournisseur|prestataire)|fournisseur unique|mono.?fournisseur|defaillance (du|d.un|des) (fournisseur|prestataire)/,5],[/approvisionnement|rupture|penurie|delai fournisseur/,3],[/fournisseur|prestataire|contrat de service|sla/,1]]},
+ {code:"CYBER", t:"Cyberattaque et intrusion dans les systèmes d'information", c:"Systèmes d'information et cyber", d:"Attaque informatique (rançongiciel, hameçonnage, intrusion) qui paralyse l'activité ou compromet les données.",
+  k:[[/cyber|ranc?ongiciel|ransomware|malware|virus|hame?connage|phishing|intrusion|piratage|attaque (informatique)?/,5],[/compromission|vulnerabilit|correctif|patch|antivirus|pare.feu|firewall|messagerie|poste de travail/,3],[/securite (informatique|des systemes|du si)|ssi\b/,3]]},
+ {code:"ACCES", t:"Accès non autorisés et habilitations mal gérées", c:"Systèmes d'information et cyber", d:"Droits d'accès excessifs, comptes non revus ou partagés, séparation des tâches insuffisante dans les outils.",
+  k:[[/habilitation|droits? d.acces|acces (indu|non autorise|excessif)|revue des (acces|droits)/,5],[/compte (privilegie|admin|administrateur|generique|partage|orphelin)|mot de passe|authentification|identifiant|\bmfa\b|double authentification/,4],[/separation des (taches|fonctions)|droits excessifs|depart (des|d.un) (salarie|collaborateur)/,3]]},
+ {code:"CONTINUITE_SI", t:"Indisponibilité des systèmes et perte de données", c:"Systèmes d'information et cyber", d:"Panne, sinistre ou erreur qui rend les outils indisponibles ou entraîne une perte de données non restaurables.",
+  k:[[/sauvegarde|restaur|reprise (d.activite|informatique)?|\bpra\b|\bpca\b|perte de donnees|donnees perdues/,5],[/indisponib|panne (informatique|du si|des systemes|serveur|reseau|logiciel|des outils)|hebergement|serveur|datacenter|redondance|reseau informatique|incident (informatique|technique)/,3],[/continuite (informatique|du si)|plan de secours/,4]]},
+ {code:"DONNEES", t:"Atteinte aux données personnelles et confidentielles (RGPD)", c:"Conformité et juridique", d:"Fuite, violation ou traitement non conforme de données personnelles ou confidentielles.",
+  k:[[/rgpd|donnees personnelles|donnees a caractere personnel|cnil|vie privee|dpo\b/,5],[/violation de donnees|fuite (de|des) (donnees|informations)|divulgation|confidential|secret des affaires|donnees sensibles/,4]]},
+ {code:"NUMERIQUE", t:"Usages numériques et projets informatiques non maîtrisés (IA, outils non validés)", c:"Systèmes d'information et cyber", d:"Recours non encadré à l'intelligence artificielle ou à des outils non validés, projets et évolutions des systèmes mal conduits.",
+  k:[[/intelligence artificielle|\bia\b|chatgpt|ia generative|shadow it|outils? non (valide|autorise|maitrise)/,5],[/projet (informatique|si|erp)|migration|deploiement|evolution (du|des) (si|outils?)|recette|developpement|logiciel|application/,3],[/obsolescen|dette technique|progiciel|erp\b|outil(s)? (metier|de gestion)/,2]]},
+ {code:"INFO_FIN", t:"Information financière et comptable erronée", c:"Financier et comptable", d:"Comptes, clôtures ou reportings financiers inexacts ou incomplets, qui faussent les décisions et l'information des tiers.",
+  k:[[/comptab|ecritures?|cloture|bilan|etats financiers|comptes (annuels|consolides)|consolidation|liasse/,4],[/provision|rapprochement (bancaire|des comptes)?|immobilisation|amortissement|cut.?off|rattachement|charges a payer|produits constates/,3],[/reporting (financier)?|chiffre d.affaires|revenus?|resultat|budget|prevision/,2]]},
+ {code:"TRESORERIE", t:"Pertes de trésorerie et défaut de liquidité", c:"Financier et comptable", d:"Tension de trésorerie, paiements non maîtrisés ou exposition financière (change, taux, contrepartie) qui fragilise l'entreprise.",
+  k:[[/tresorerie|liquidit|cash|decaissement|encaissement|signature bancaire|pouvoirs bancaires/,4],[/banque|bancaire|paiement|reglement|placement|change|taux d.interet|financement|endettement|covenant/,2]]},
+ {code:"RECOUVREMENT", t:"Impayés clients et recouvrement insuffisant", c:"Financier et comptable", d:"Créances non recouvrées, facturation tardive ou erronée, risque de crédit client mal évalué.",
+  k:[[/impaye|recouvrement|creances? (client|douteuses)?|credit client|solvabilit|encours client|relance/,5],[/factur(ation|e) (client|de vente|tardive|erronee)|avoir|retard de paiement|delai de paiement/,3]]},
+ {code:"FISCAL", t:"Risque fiscal et déclaratif (redressement, erreurs de déclaration)", c:"Conformité et juridique", d:"Erreurs ou omissions dans les déclarations fiscales et sociales, exposant à des redressements et pénalités.",
+  k:[[/fiscal|\btva\b|impot|urssaf|redressement|douane|taxe|prix de transfert|credit d.impot|\bcir\b|\bcii\b|liasse fiscale/,5],[/declaration (fiscale|sociale|des|de)|declaratif|controle fiscal/,4]]},
+ {code:"PAIE", t:"Erreurs de paie et de gestion administrative du personnel", c:"Ressources humaines", d:"Paies, primes ou temps de travail calculés ou déclarés de façon erronée, dossiers du personnel incomplets.",
+  k:[[/\bpaie\b|salaire|bulletin|remuneration|prime|variable|commission/,5],[/temps de travail|heures? supplementaires|absence|conges?|pointage|astreinte|contrat de travail|interim/,3]]},
+ {code:"COMPETENCES", t:"Perte de compétences clés et difficultés de recrutement", c:"Ressources humaines", d:"Départ de personnes clés, sous-effectif ou compétences insuffisantes qui fragilisent l'activité.",
+  k:[[/competence|recrut|turnover|depart (de|d.un|des) (personnes?|collaborateurs?|salaries?)? ?cle|personne(s)? cle|homme cle|succession|savoir.faire/,5],[/attractivit|fidelis|sous.effectif|effectifs?|formation|polyvalence|transmission/,3]]},
+ {code:"SST", t:"Atteinte à la santé et à la sécurité des personnes", c:"Ressources humaines", d:"Accident du travail, maladie professionnelle ou risques psychosociaux touchant les salariés ou les intervenants.",
+  k:[[/sante|securite (des|au) (personnes|salaries|travail|collaborateurs)|accident|blessure|maladie professionnelle|psychosociaux|\brps\b|harcelement|epuisement/,5],[/chantier|travail en hauteur|penibilit|\bduer?p?\b|ergonom|\bepi\b|intervention sur site|coactivite/,3]]},
+ {code:"SOCIAL", t:"Climat social dégradé et contentieux du travail", c:"Ressources humaines", d:"Conflits collectifs, contentieux prud'homaux ou manquements au droit du travail.",
+  k:[[/greve|conflit social|climat social|syndica|prud.?hom|licenciement|discrimination|egalite (professionnelle|femmes)/,5],[/droit du travail|representants du personnel|\bcse\b|dialogue social/,3]]},
+ {code:"CONFORMITE", t:"Non-conformité réglementaire et sanctions", c:"Conformité et juridique", d:"Manquement à une réglementation applicable (sectorielle, anti-blanchiment, sanctions internationales, normes) entraînant sanctions ou retrait d'agrément.",
+  k:[[/non.conformite reglementaire|reglementation|reglementaire|obligation (legale|reglementaire)|veille (reglementaire|juridique)/,4],[/blanchiment|lcb.?ft|embargo|sanctions? (internationales|financieres)|gel des avoirs|devoir de vigilance|loi /,4],[/conformite|non.conform|sanction|amende|autorite|agrement|certification|norme|accreditation|homologation/,2]]},
+ {code:"JURIDIQUE", t:"Litiges, contrats défavorables et engagements non maîtrisés", c:"Conformité et juridique", d:"Contrats mal négociés ou non suivis, engagements pris sans pouvoir, litiges avec des clients, fournisseurs ou partenaires.",
+  k:[[/litige|contentieux|clause|juridique|propriete intellectuelle|contrefacon|brevet|marque/,4],[/contrat|engagement|delegation de (pouvoir|signature)|signature|penalites?|responsabilite (civile|contractuelle)|garantie/,2]]},
+ {code:"CONTINUITE", t:"Interruption de l'activité et défaillance des opérations", c:"Opérationnel", d:"Sinistre, crise ou défaillance opérationnelle qui interrompt ou désorganise durablement l'activité.",
+  k:[[/interruption (de|d.)? ?(l.)?activite|arret (de|d.)? ?(l.)?(activite|production)|continuite d.activite|sinistre|incendie|inondation|catastrophe|pandemie|crise/,5],[/panne (d.une? |de |du |des )?(materiel|equipement|machine|ligne|outil de production|installation)|machine critique|equipement critique/,4],[/defaillance (des|d.une?) (operations?|processus|equipement|machine)|production|exploitation|capacite/,2]]},
+ {code:"QUALITE", t:"Défaut de qualité et insatisfaction des clients", c:"Opérationnel", d:"Produits ou services non conformes, réclamations, délais non tenus ou perte de clients.",
+  k:[[/qualite|non.qualite|defaut|reclamation|satisfaction|insatisfaction|\bsav\b|rappel (de|des) produits?|retour client/,4],[/client|delai (de|client)|livraison|engagement de service|niveau de service|conformite (du|des) produits?/,1]]},
+ {code:"ACTIFS", t:"Perte ou dégradation des stocks et des actifs physiques", c:"Opérationnel", d:"Écarts d'inventaire, casse, vol ou mauvaise gestion des stocks, du matériel et des équipements.",
+  k:[[/stock|inventaire|entrepot|magasin|depreciation|obsolete|casse/,4],[/materiel|equipement|vehicule|parc|outillage|actif|logistique|transport|maintenance|entretien/,2]]},
+ {code:"ENVIRONNEMENT", t:"Atteinte à l'environnement et engagements RSE non tenus", c:"RSE et environnement", d:"Pollution, gestion des déchets, empreinte carbone ou reporting de durabilité (CSRD) non maîtrisés.",
+  k:[[/environnement|pollution|dechet|carbone|emission|\bges\b|climat|biodiversit|\bicpe\b|csrd|durabilit|\brse\b/,5],[/energie|eau|developpement durable|bilan carbone|reporting extra.financier|devoir de vigilance/,3]]},
+ {code:"REPUTATION", t:"Atteinte à l'image et à la réputation", c:"Stratégique", d:"Événement ou communication qui dégrade la confiance des clients, des partenaires, des salariés ou du public.",
+  k:[[/reputation|image (de marque|de l.entreprise)?|bad buzz|reseaux sociaux|presse|media|e.reputation/,5],[/communication (de crise|externe)?|confiance|notoriete/,2]]},
+ {code:"STRATEGIE", t:"Remise en cause du modèle économique et de la stratégie", c:"Stratégique", d:"Évolution du marché, de la concurrence ou des clients qui rend la stratégie ou le modèle économique inadapté.",
+  k:[[/strateg|modele economique|concurren|part de marche|positionnement|innovation|disruption/,5],[/dependance (a|envers|vis.a.vis)? ?(un|des|d.un)? ?(client|marche)|client (principal|majeur|cle)|croissance externe|acquisition|investissement|rentabilit|marge/,3]]},
+ {code:"GOUVERNANCE", t:"Gouvernance, pilotage et contrôle interne insuffisants", c:"Stratégique", d:"Organisation, délégations, procédures ou dispositif de contrôle qui ne permettent pas de piloter et de maîtriser l'activité.",
+  k:[[/gouvernance|pilotage|delegation(s)? de pouvoirs?|organigramme|roles et responsabilites|comite/,4],[/procedure(s)? (absente|non formalisee|inexistante|obsolete|a formaliser)|absence de procedure|controle interne|dispositif de controle|tableau de bord|indicateurs?/,3],[/decision|organisation|documentation|tracabilit|piste d.audit|justificatif/,1]]},
+ {code:"PROJETS", t:"Dérive des projets et des transformations (coûts, délais, objectifs)", c:"Stratégique", d:"Projets ou programmes de transformation qui dérivent en coûts, en délais ou en résultats attendus.",
+  k:[[/derive (du|des)? ?projets?|projet|transformation|programme|conduite du changement/,3],[/planning|jalon|depassement (de )?budget|retard (du|de) projet|maitrise d.ouvrage|cahier des charges/,3]]},
+];
+const MAJ_CAT_TO = {"Stratégique":"STRATEGIE","Opérationnel":"CONTINUITE","Financier et comptable":"INFO_FIN","Fraude et corruption":"FRAUDE_INT","Conformité et juridique":"CONFORMITE","Systèmes d'information et cyber":"CYBER","Ressources humaines":"COMPETENCES","RSE et environnement":"ENVIRONNEMENT"};
+const majTxt = r => {
+  const o = {t:[r.titre], d:[r.description, r.consequences, r.categorieDetail], p:[r.typeProcessus, r.macroProcessus, r.processusDetail, r.processus, r.activites, r.taches]};
+  const T = {o:{}};
+  for(const k in o){ const brut=o[k].filter(Boolean).join(" ").normalize("NFC").toLowerCase(); T[k]=norm(brut); T.o[k]=brut.length===T[k].length?brut:T[k]; }
+  return T;
+};
+const majMot = (T,k,m) => T.o[k].slice(m.index, m.index+m[0].length) || m[0];
+function majScore(r, ref, T){
+  T = T || majTxt(r); let s=0; const vus=[];
+  ref.k.forEach(([re,w])=>{
+    let m=0; const a=re.exec(T.t), b=re.exec(T.d), c=re.exec(T.p);
+    if(a){ m+=w*2; vus.push(majMot(T,"t",a)); } if(b){ m+=w; if(!a) vus.push(majMot(T,"d",b)); } if(c){ m+=w*0.6; if(!a&&!b) vus.push(majMot(T,"p",c)); }
+    s+=m;
+  });
+  if(s>0 && catOf(r)===ref.c) s+=1.5;
+  return {s, vus};
+}
+function majClasser(risques, opts){
+  const G=new Map(); const add=(key, meta, r, vus)=>{ if(!G.has(key)) G.set(key, {...meta, key, risques:[], mots:new Map()}); const g=G.get(key); g.risques.push(r); (vus||[]).forEach(v=>g.mots.set(v.trim(), (g.mots.get(v.trim())||0)+1)); };
+  const refMeta = ref => ({code:ref.code, titre:ref.t, categorie:ref.c, description:ref.d});
+  const procKey = r => (r.typeProcessus||r.macroProcessus||r.processus||"").trim();
+  if(opts.mode==="categorie"){
+    risques.forEach(r=>{ const c=catOf(r); add("CAT:"+c, {code:"CAT:"+c, titre:MAJ_TITRES[c]||"Autres risques opérationnels", categorie:CATEGORIES.includes(c)?c:"", description:`Regroupe les risques opérationnels de la catégorie « ${c} ».`}, r); });
+  } else if(opts.mode==="processus"){
+    risques.forEach(r=>{ const p=procKey(r)||"Processus non renseigné"; add("PROC:"+norm(p), {code:"PROC:"+norm(p), titre:`Défaillance du processus ${p}`, categorie:"", description:`Regroupe les risques opérationnels du processus « ${p} ».`}, r); });
+  } else {
+    const best=[];
+    risques.forEach(r=>{ const T=majTxt(r); const sc=MAJ_REF.map(ref=>({ref, ...majScore(r,ref,T)})).filter(x=>x.s>=opts.seuil).sort((a,b)=>b.s-a.s); best.push({r, sc}); });
+    // premier passage : chaque risque vers son meilleur thème
+    const cnt={}, fort={}; best.forEach(({sc})=>{ if(sc[0]){ cnt[sc[0].ref.code]=(cnt[sc[0].ref.code]||0)+1; if(sc[0].s>=10) fort[sc[0].ref.code]=1; } });
+    const garde = code => (cnt[code]||0) >= opts.min || (opts.min<=2 && fort[code]);
+    const reste=[];
+    best.forEach(({r, sc})=>{
+      const ok = sc.find(x=>garde(x.ref.code));
+      if(ok) add(ok.ref.code, refMeta(ok.ref), r, ok.vus); else reste.push(r);
+    });
+    // risques sans thème reconnu : par processus si le groupe est assez grand, sinon thème par défaut de la catégorie
+    const parProc={}; reste.forEach(r=>{ const p=procKey(r); if(p) (parProc[norm(p)]=parProc[norm(p)]||{p, L:[]}).L.push(r); });
+    reste.forEach(r=>{
+      const p=procKey(r), pp=p&&parProc[norm(p)];
+      if(pp && pp.L.length>=Math.max(opts.min,3)) add("PROC:"+norm(p), {code:"PROC:"+norm(p), titre:`Défaillance du processus ${pp.p}`, categorie:CATEGORIES.includes(catOf(r))?catOf(r):"", description:`Risques du processus « ${pp.p} » qui ne relèvent d'aucun risque majeur type.`}, r);
+      else { const ref=MAJ_REF.find(x=>x.code===MAJ_CAT_TO[catOf(r)]); if(ref) add(ref.code, refMeta(ref), r); else add("AUTRES", {code:"AUTRES", titre:"Autres risques opérationnels", categorie:"", description:"Risques à examiner : aucun risque majeur type ne leur correspond."}, r); }
+    });
+  }
+  return [...G.values()].map(g=>({...g, keep:true, n:g.risques.length, cot:g.risques.reduce((a,r)=>Math.max(a,cur(r)||0),0),
+    mots:[...g.mots.entries()].sort((a,b)=>b[1]-a[1]).slice(0,5).map(x=>x[0])})).sort((a,b)=>b.cot-a.cot || b.n-a.n);
+}
+let MJ = null;   // état de la proposition
+function majExistant(g){ const nt=norm(g.titre); return S.majeurs.find(m=>(m.code && m.code===g.code) || norm(m.titre)===nt); }
+function majPropose(btn){
+  if(!S.risques.length){ toast("Aucun risque opérationnel à analyser."); return; }
+  MJ = {mode:"theme", min:2, seuil:3, portee: S.majeurs.length ? "completer" : "tout", titres:{}, off:new Set()};
+  majCalc(); majPeint();
+}
+function majCalc(){
+  const base = MJ.portee==="completer" ? S.risques.filter(r=>!r.majeurId || !byId("majeurs", r.majeurId)) : S.risques.slice();
+  MJ.base = base.length;
+  MJ.G = majClasser(base, MJ);
+}
+function majPeint(){
+  const G=MJ.G, actifs=G.filter(g=>!MJ.off.has(g.key)), nR=actifs.reduce((a,g)=>a+g.n,0);
+  const nouveaux = MJ.portee==="completer" ? actifs.filter(g=>!majExistant(g)).length : actifs.length;
+  const opt = (k,v,l)=>`<button type="button" class="seg-b ${MJ[k]===v?"on":""}" data-mj-opt="${k}:${v}">${l}</button>`;
+  panel(`<div class="xp-head"><div><div class="eyebrow">Identification des risques majeurs</div><h2>${actifs.length} ${plural(actifs.length,"risque majeur proposé","risques majeurs proposés")}</h2><p class="sub" style="margin:4px 0 0">À partir de ${MJ.base} ${plural(MJ.base,"risque opérationnel","risques opérationnels")}${MJ.portee==="completer"?" non rattachés":""}. Vérifiez, renommez ou décochez avant d'appliquer.</p></div><button class="btn ghost" data-close-ov aria-label="Fermer">✕</button></div>
+    <div class="mj-opts">
+      <div><span>Méthode</span><div class="seg">${opt("mode","theme","Par thème (recommandé)")}${opt("mode","processus","Par processus")}${opt("mode","categorie","Par catégorie")}</div></div>
+      ${MJ.mode==="theme"?`<div><span>Taille minimale</span><div class="seg">${[1,2,3,5].map(n=>opt("min",n,n===1?"1 risque":`${n} risques`)).join("")}</div></div>
+      <div><span>Rapprochement</span><div class="seg">${opt("seuil",2,"Large")}${opt("seuil",3,"Équilibré")}${opt("seuil",5,"Strict")}</div></div>`:""}
+      ${S.majeurs.length?`<div><span>Portée</span><div class="seg">${opt("portee","completer","Compléter l'existant")}${opt("portee","tout","Tout refaire")}</div></div>`:""}
+    </div>
+    <div class="xp-body mj-list">${G.length?G.map((g,i)=>{ const on=!MJ.off.has(g.key), ex=MJ.portee==="completer"&&majExistant(g), top=g.risques.slice().sort((a,b)=>(cur(b)||0)-(cur(a)||0));
+      return `<div class="mj-g ${on?"":"off"}">
+        <label class="mj-chk"><input type="checkbox" data-mj-keep="${esc(g.key)}" ${on?"checked":""} aria-label="Retenir ce risque majeur"></label>
+        <div class="mj-main">
+          <input class="mj-titre" data-mj-titre="${esc(g.key)}" value="${esc(MJ.titres[g.key]??(ex?ex.titre:g.titre))}" ${ex?"disabled":""} aria-label="Intitulé du risque majeur">
+          <div class="mj-meta">${ex?`<span class="badge">Rejoint ${esc(ex.ref)}</span>`:`<span class="badge">Nouveau</span>`}${g.categorie?`<span class="badge">${esc(g.categorie)}</span>`:""}<span><b>${g.n}</b> ${plural(g.n,"risque")}</span>${g.mots.length?`<span class="mj-mots">repéré via : ${g.mots.map(esc).join(", ")}</span>`:""}</div>
+          <details><summary>${top.slice(0,3).map(r=>esc(r.titre)).join(" · ")}${g.n>3?` <span class="mj-more">et ${g.n-3} autres</span>`:""}</summary>
+            <ul class="mj-rs">${top.map(r=>`<li>${scoreChip(cur(r))}<span class="mono">${esc(r.ref||"")}</span><span>${esc(r.titre)}</span></li>`).join("")}</ul></details>
+        </div>
+        ${scoreChip(g.cot)}</div>`; }).join(""):`<p class="sub">Tous les risques opérationnels sont déjà rattachés. Choisissez « Tout refaire » pour recalculer la cartographie.</p>`}</div>
+    <div class="xp-foot"><span class="sub" style="margin:0">${nR} ${plural(nR,"risque rattaché","risques rattachés")} · ${nouveaux} ${plural(nouveaux,"risque majeur créé","risques majeurs créés")}${MJ.portee==="tout"&&S.majeurs.length?` · les ${S.majeurs.length} risques majeurs actuels seront remplacés`:""}</span><span class="actions-row"><button class="btn" data-close-ov>Annuler</button><button class="btn primary" id="mjApply" ${actifs.length?"":"disabled"}>Appliquer</button></span></div>`, "wide");
+}
+async function majAppliquer(btn){
+  btn.disabled=true; btn.textContent="Application…";
+  const now=nowIso();
+  try{
+    if(MJ.portee==="tout"){ for(const m of S.majeurs.slice()) await W.del("majeurs", m.id); }
+    const next = MJ.portee==="tout" ? (()=>{ let n=0; return ()=>`RM-${String(++n).padStart(3,"0")}`; })() : refSeq("majeurs");
+    let cree=0, lie=0;
+    for(const g of MJ.G){ if(MJ.off.has(g.key)) continue;
+      let id = MJ.portee==="completer" ? majExistant(g)?.id : null;
+      if(!id){ const data={ref:next(), titre:(MJ.titres[g.key]??g.titre).trim()||g.titre, description:g.description, categorie:g.categorie, code:g.code, exemple:false, creeLe:now, modifieLe:now}; id=await W.add("majeurs", data); logHist("majeurs", id, data, "creation"); cree++; }
+      for(const r of g.risques){ await W.update("risques", r.id, {majeurId:id, modifieLe:now}); lie++; }
+    }
+    closeOverlay(); MJ=null; toast(`${cree} ${plural(cree,"risque majeur créé","risques majeurs créés")}, ${lie} ${plural(lie,"risque rattaché","risques rattachés")}`);
+  }catch(e){ btn.disabled=false; btn.textContent="Appliquer"; toast("L'application a échoué. Réessayez."); }
+}
+document.addEventListener("click", e=>{
+  const t=e.target; if(!(t instanceof Element) || !MJ) return;
+  const o=t.closest("[data-mj-opt]"); if(o){ const [k,v]=o.dataset.mjOpt.split(":"); MJ[k]= (k==="min"||k==="seuil") ? Number(v) : v; MJ.off=new Set(); majCalc(); majPeint(); return; }
+  if(t.closest("#mjApply")){ majAppliquer(t.closest("#mjApply")); return; }
+});
+document.addEventListener("change", e=>{
+  const t=e.target; if(!(t instanceof Element) || !MJ) return;
+  if(t.matches("[data-mj-keep]")){ t.checked ? MJ.off.delete(t.dataset.mjKeep) : MJ.off.add(t.dataset.mjKeep); const sc=document.querySelector(".mj-list")?.scrollTop; majPeint(); const l=document.querySelector(".mj-list"); if(l&&sc) l.scrollTop=sc; }
+});
+document.addEventListener("input", e=>{ const t=e.target; if(MJ && t instanceof Element && t.matches("[data-mj-titre]")) MJ.titres[t.dataset.mjTitre]=t.value; });
 
 /* ---------- incidents ---------- */
 function incNet(x){ return Math.max(0,(Number(x.perte)||0)-(Number(x.recupere)||0)); }
@@ -8016,7 +8212,7 @@ function plusClick(t){
   if(t.closest("[data-import-risques]")){ importRisques(); return true; }
   if(t.closest("[data-imp-modele]")){ modeleExcel(); return true; }
   if(t.closest("#impGo")){ runImport(t.closest("#impGo")); return true; }
-  const mg=t.closest("[data-maj-gen]"); if(mg){ mg.dataset.majGen==="ai" ? genMajeursAI(mg) : genMajeursCat(mg); return true; }
+  const mg=t.closest("[data-maj-gen]"); if(mg){ mg.dataset.majGen==="ai" ? genMajeursAI(mg) : majPropose(mg); return true; }
   if(t.closest("#majApply")){ applyMajProposal(t.closest("#majApply")); return true; }
   const ae=t.closest("button[data-ae]"); if(ae){ AE_CUR=ae.dataset.ae; render(); return true; }
   const ar=t.closest("[data-ae-rep]"); if(ar){ const [cid,kid]=ar.dataset.aeRep.split(":"); const r=repFor(cid,kid); const k=byId("controles",kid);

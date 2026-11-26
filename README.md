@@ -99,7 +99,13 @@ Dans la fiche d'un risque, le choix de la stratégie fait apparaître les inform
 
 Ces informations s'affichent dans le registre (carte « Dispositif de maîtrise »), avec la mention « À documenter » quand l'essentiel manque, et dans la colonne « MODALITES DU TRAITEMENT » de l'export Excel.
 
+## Points d'attention
+
+En haut des pages Risques majeurs, Risques opérationnels, Incidents, Indicateurs, Contrôles, Tests, Plans d'action et Tâches, Vigie signale ce qui demande une action : risques critiques sans contrôle, risques non cotés, contrôles jamais testés, tests en retard, actions en retard ou sans responsable, indicateurs en alerte… **Voir** liste les éléments concernés, et un clic ouvre leur fiche. **Masquer** replie le bandeau (le choix est mémorisé page par page).
+
 ## Risques majeurs
+La page présente quatre indicateurs (nombre, part des risques rattachés, part des risques majeurs cotés, propriétaires) et trois vues : **Cartes**, **Carte** (matrice probabilité × impact) et **Tableau**. Vous pouvez filtrer par niveau ou par catégorie, chercher, y compris dans les risques rattachés, et trier. Chaque carte montre la répartition des risques rattachés par niveau, leur couverture par des contrôles, les actions et incidents, et la **prochaine étape** recommandée.
+
 
 Dans « Risques majeurs », le bouton **Identifier les risques majeurs** analyse vos risques opérationnels : intitulé, description, conséquences, processus et catégorie. Il les rapproche d'un référentiel d'une trentaine de risques majeurs types : fraude externe, fraude interne, corruption, achats, fournisseurs, cyberattaque, habilitations, continuité informatique, données personnelles, information financière, trésorerie, recouvrement, fiscalité, paie, compétences, santé-sécurité, climat social, conformité, litiges, continuité d'activité, qualité, stocks, environnement, réputation, stratégie, gouvernance et projets.
 

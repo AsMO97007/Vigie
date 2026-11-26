@@ -6,7 +6,7 @@
 <title>Vigie Contrôle Interne</title>
 <meta name="description" content="Pilotage du contrôle interne : risques, contrôles, tests, plans d'action, conformité, équipe, formations et veille.">
 <meta name="theme-color" content="#003865">
-<script>window.VIGIE_VERSION = "6.7 du 26 novembre 2026";</script>
+<script>window.VIGIE_VERSION = "6.8 du 26 novembre 2026";</script>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -1615,11 +1615,101 @@ tr.grouprow .sub{color:var(--muted) !important; opacity:1}
 }
 
 
+
+/* ---- points d'attention ---- */
+.ins{margin:-6px 0 22px; border:1px solid var(--line); border-radius:var(--r); background:linear-gradient(180deg, color-mix(in srgb, var(--pc,var(--accent)) 6%, var(--surface)), var(--surface)); padding:14px 16px; box-shadow:var(--sh-1)}
+.ins-h{display:flex; align-items:center; justify-content:space-between; margin-bottom:10px}
+.ins-h b{font-size:.78rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted)}
+.ins-g{display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:10px}
+.ins-c{display:grid; grid-template-columns:auto minmax(0,1fr); gap:10px; align-items:start; background:var(--surface); border:1px solid var(--line); border-left:3px solid var(--ic); border-radius:12px; padding:10px 12px}
+.ins-c.crit{--ic:var(--crit); --icb:var(--crit-soft)} .ins-c.warn{--ic:var(--warn); --icb:var(--warn-soft)} .ins-c.info{--ic:var(--accent); --icb:var(--accent-soft)}
+.ins-i{display:inline-flex; width:30px; height:30px; border-radius:9px; align-items:center; justify-content:center; background:var(--icb); color:var(--ic)}
+.ins-t b{display:block; font-size:.9rem; line-height:1.3; color:var(--heading,var(--ink))}
+.ins-n{font-family:var(--f-display); font-size:1.15rem; color:var(--ic); margin-right:2px}
+.ins-t small{display:block; font-size:.8rem; color:var(--muted); margin-top:3px; line-height:1.4}
+.ins-a{display:flex; gap:6px; flex-wrap:wrap; margin-top:8px}
+.ins-more{margin:10px 0 0; font-size:.82rem; color:var(--muted)}
+.ins-pill{display:inline-flex; align-items:center; gap:8px; margin:-8px 0 18px; border:1px solid var(--line); background:var(--surface); border-radius:99px; padding:6px 12px; font-weight:600; font-size:.84rem; color:var(--ink-2); cursor:pointer; box-shadow:var(--sh-1)}
+.ins-pill span{color:var(--accent)}
+.ins-list{display:flex; flex-direction:column; gap:6px}
+.ins-li{display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:10px; align-items:center; width:100%; text-align:left; border:1px solid var(--line); background:var(--surface); border-radius:10px; padding:9px 12px; cursor:pointer; color:var(--ink)}
+.ins-li:hover{border-color:var(--accent); background:var(--accent-soft)}
+.ins-li .mono{font-size:.72rem}
+.ins-li b{display:block; font-size:.88rem; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.ins-li small{display:block; font-size:.76rem; color:var(--muted)}
+.ins-li:not(:has(.mono)){grid-template-columns:minmax(0,1fr) auto}
+
+/* ---- risques majeurs ---- */
+.mj-kpis-top{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin-bottom:16px}
+.mj-k{background:var(--surface); border:1px solid var(--line); border-radius:var(--r); padding:14px 16px; box-shadow:var(--sh-1); display:flex; flex-direction:column; gap:2px}
+.mj-k > span:first-child{font-size:.8rem; font-weight:600; color:var(--muted)}
+.mj-k b{font-family:var(--f-display); font-size:1.75rem; line-height:1.15; color:var(--heading,var(--ink)); font-variant-numeric:tabular-nums}
+.mj-k small{font-size:.8rem; color:var(--muted)}
+.mj-k.crit b{color:var(--crit)} .mj-k.warn .mj-meter i{background:var(--warn)} .mj-k.ok .mj-meter i{background:var(--ok)}
+.mj-meter{display:block; height:5px; border-radius:3px; background:var(--surface-3); overflow:hidden; margin-top:6px}
+.mj-meter i{display:block; height:100%; background:var(--accent); border-radius:3px}
+.mj-bar{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:10px}
+.mj-views{display:inline-flex; background:var(--surface-3); border-radius:11px; padding:3px}
+.mj-vb{display:inline-flex; align-items:center; gap:6px; border:0; background:none; padding:7px 12px; border-radius:9px; font-weight:600; font-size:.86rem; color:var(--muted); cursor:pointer}
+.mj-vb.on{background:var(--surface); color:var(--ink); box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.mj-q{flex:1 1 280px; height:auto !important; min-height:40px; max-width:none}
+.mj-bar select, .mj-chips select{background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:8px 10px}
+.mj-chips{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:16px}
+.mj-chip{display:inline-flex; align-items:center; gap:6px; border:1px solid var(--line); background:var(--surface); border-radius:99px; padding:3px 10px 3px 4px; cursor:pointer; font-size:.84rem}
+.mj-chip b{font-variant-numeric:tabular-nums}
+.mj-chip.on{border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-soft)}
+.mj-count{margin-left:auto; font-size:.82rem; color:var(--muted)}
+.mj-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(330px, 1fr)); gap:16px; margin-bottom:20px}
+.mj-card{position:relative; display:flex; flex-direction:column; gap:10px; background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:18px 18px 14px; cursor:pointer; box-shadow:var(--sh-1); transition:transform .15s, box-shadow .15s, border-color .15s; overflow:hidden}
+.mj-card::before{content:""; position:absolute; inset:0 0 auto; height:4px; background:var(--lvc,var(--surface-3))}
+.mj-card.lv4{--lvc:var(--crit)} .mj-card.lv3{--lvc:var(--high)} .mj-card.lv2{--lvc:var(--warn)} .mj-card.lv1{--lvc:var(--ok)}
+.mj-card:hover{transform:translateY(-2px); box-shadow:var(--sh-2); border-color:var(--line-2)}
+.mj-card-h{display:flex; align-items:center; gap:8px; flex-wrap:wrap}
+.mj-tend{font-size:.78rem; color:var(--muted); font-weight:600}
+.mj-score{margin-left:auto; display:flex; flex-direction:column; align-items:center; justify-content:center; min-width:52px; height:46px; border-radius:12px; background:var(--surface-3); color:var(--h-ink,var(--ink))}
+.mj-score b{font-family:var(--f-display); font-size:1.3rem; line-height:1}
+.mj-score small{font-size:.66rem; font-weight:700; opacity:.75; margin-top:2px}
+.mj-score.c1{background:var(--h1)} .mj-score.c2{background:var(--h2)} .mj-score.c3{background:var(--h3)} .mj-score.c4{background:var(--h4)}
+.mj-card h3{margin:0; font-family:var(--f-display); font-size:1.08rem; line-height:1.3; color:var(--heading,var(--ink))}
+.mj-desc{margin:0; font-size:.86rem; color:var(--muted); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
+.mj-dist{display:flex; height:8px; border-radius:4px; overflow:hidden; gap:2px; background:var(--surface-2)}
+.mj-dist i{display:block; height:100%}
+.mj-dist-l{display:flex; flex-wrap:wrap; gap:4px 12px; font-size:.76rem; color:var(--muted); margin-top:-4px}
+.mj-dist-l span{display:inline-flex; align-items:center; gap:5px}
+.mj-dist-l i{width:8px; height:8px; border-radius:2px; display:inline-block}
+.mj-kpis{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; padding:10px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line)}
+.mj-kpis b{display:block; font-family:var(--f-display); font-size:1.15rem; font-variant-numeric:tabular-nums; color:var(--heading,var(--ink))}
+.mj-kpis b.late{color:var(--crit)}
+.mj-kpis small{display:block; font-size:.72rem; color:var(--muted); line-height:1.25}
+.mj-top{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:5px}
+.mj-top li{display:grid; grid-template-columns:auto minmax(0,1fr); gap:8px; align-items:center; font-size:.84rem}
+.mj-top li span:last-child{overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.mj-next{display:flex; flex-direction:column; gap:1px; background:var(--warn-soft); border-radius:10px; padding:8px 10px}
+.mj-next span{font-size:.68rem; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--warn)}
+.mj-next b{font-size:.86rem; font-weight:600; color:var(--ink)}
+.mj-next.ok{background:var(--ok-soft)} .mj-next.ok span{color:var(--ok)}
+.mj-foot{display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:auto; font-size:.84rem}
+.mj-nop{color:var(--warn); font-weight:600}
+.mj-mapv{display:grid; grid-template-columns:minmax(0,1.4fr) minmax(0,1fr); gap:20px; margin-bottom:20px}
+.mmap.big .mchip span{display:block; font-family:var(--f-body); font-size:.7rem; font-weight:600; white-space:normal; line-height:1.2; margin-top:2px; max-width:150px}
+.mj-table td small.sub{margin-top:2px}
+.mj-table .late{color:var(--crit); font-size:.8rem}
+.mj-libres{margin-top:4px}
+.mj-empty{display:flex; gap:24px; align-items:center; padding:32px}
+.mj-empty h2{font-size:1.35rem; margin-bottom:6px}
+.mj-empty p{color:var(--muted); max-width:70ch; margin:0 0 14px}
+@media (max-width:1100px){ .mj-kpis-top{grid-template-columns:repeat(2,minmax(0,1fr))} .mj-mapv{grid-template-columns:1fr} }
+@media (max-width:640px){ .mj-kpis-top{grid-template-columns:1fr 1fr} .mj-grid{grid-template-columns:1fr} .mj-kpis{grid-template-columns:repeat(2,minmax(0,1fr))} .mj-empty{flex-direction:column; align-items:flex-start} .mj-count{margin-left:0} }
+.mj-card-h{position:relative; padding-right:64px; min-height:40px}
+.mj-card-h .mj-score{position:absolute; right:0; top:-4px; margin:0}
+.mj-chips select{max-width:260px}
+.mj-table .progress{white-space:nowrap} .mj-table .progress .meter{width:56px}
+.mj-mapv .mmap .mchip{font-size:.74rem}
 /* ---- identification des risques majeurs ---- */
 .mj-opts{display:flex; flex-wrap:wrap; gap:12px 22px; padding:12px 22px; border-bottom:1px solid var(--line); background:var(--surface-2)}
 .mj-opts > div{display:flex; flex-direction:column; gap:6px}
 .mj-opts > div > span{font-size:.72rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--muted)}
-.seg{display:inline-flex; border:1px solid var(--line-2); border-radius:10px; overflow:hidden; background:var(--surface)}
+.mj-opts .seg{display:inline-flex; border:1px solid var(--line-2); border-radius:10px; overflow:hidden; background:var(--surface)}
 .seg-b{border:0; background:none; padding:7px 12px; font:600 .82rem var(--f-body); color:var(--ink-2); cursor:pointer; border-right:1px solid var(--line)}
 .seg-b:last-child{border-right:0}
 .seg-b.on{background:var(--accent); color:#fff}
@@ -6062,7 +6152,7 @@ function render(){
   try{ document.body.style.setProperty("--pc", NAVC[view]||"#0088CE"); }catch(_){}
   const m = $("#main");
   autoSnapshot();
-  const fn = {aujourdhui:renderToday, tableau:renderDashboard, conformite:renderConformite, formations:renderFormations, actualites:renderNews, taches:renderTasks, equipe:renderTeam, majeurs:renderMajeurs, autoeval:renderAutoeval, sod:renderSod, documents:renderDocuments, evolution:renderEvolution, pcif:(typeof renderPcif==="function"?renderPcif:null)}[view];
+  const fn = {aujourdhui:renderToday, tableau:renderDashboard, conformite:renderConformite, formations:renderFormations, actualites:renderNews, taches:renderTasks, equipe:renderTeam, majeurs:renderMajeursV2, autoeval:renderAutoeval, sod:renderSod, documents:renderDocuments, evolution:renderEvolution, pcif:(typeof renderPcif==="function"?renderPcif:null)}[view];
   if(fn){ m.innerHTML = fn(); if(view==="formations") learnMount(); }
   else { m.innerHTML = renderListShell(view); renderListBody(); }
 }
@@ -6073,7 +6163,7 @@ function banners(){
   return b+ex;
 }
 function headerBlock(id, eyebrow, title, lede, right){
-  return `${banners()}${backBar()}<div class="head" style="--c:${NAVC[id]||"var(--accent)"}"><div class="head-l">${tile(id,"lg")}<div><div class="eyebrow">${eyebrow}</div><h1>${title}</h1>${lede?`<p class="lede">${lede}</p>`:""}</div></div><div class="actions-row">${right||""}</div></div>`;
+  return `${banners()}${backBar()}<div class="head" style="--c:${NAVC[id]||"var(--accent)"}"><div class="head-l">${tile(id,"lg")}<div><div class="eyebrow">${eyebrow}</div><h1>${title}</h1>${lede?`<p class="lede">${lede}</p>`:""}</div></div><div class="actions-row">${right||""}</div></div>${insightsHtml(id)}`;
 }
 
 /* ---------- Aujourd'hui ---------- */
@@ -7662,6 +7752,239 @@ document.addEventListener("change", e=>{
   if(t.matches("[data-mj-keep]")){ t.checked ? MJ.off.delete(t.dataset.mjKeep) : MJ.off.add(t.dataset.mjKeep); const sc=document.querySelector(".mj-list")?.scrollTop; majPeint(); const l=document.querySelector(".mj-list"); if(l&&sc) l.scrollTop=sc; }
 });
 document.addEventListener("input", e=>{ const t=e.target; if(MJ && t instanceof Element && t.matches("[data-mj-titre]")) MJ.titres[t.dataset.mjTitre]=t.value; });
+
+
+/* =========================================================
+   Points d'attention : sur chaque page, ce qui demande une action
+   ========================================================= */
+const INS_LS = "vigie.ins.replie";
+let INS_REPLIE = (()=>{ try{ return new Set(JSON.parse(localStorage.getItem(INS_LS)||"[]")); }catch(_){ return new Set(); } })();
+const insSave = () => { try{ localStorage.setItem(INS_LS, JSON.stringify([...INS_REPLIE])); }catch(_){} };
+let INS_CACHE = {};
+const aCtlTxt = r => !!(String(r.controleN1||"").trim() || String(r.controleN2||"").trim());
+const aCtlFiche = r => S.controles.some(c=>c.risqueId===r.id);
+const couvert = r => aCtlFiche(r) || aCtlTxt(r);
+const nonCote = r => !inh(r) && !res(r);
+const majOf = r => r.majeurId && byId("majeurs", r.majeurId);
+function insightsFor(v){
+  const I=[]; const it=(col,L)=>L.map(x=>({col, id:x.id}));
+  const add=(lvl,n,t,s,items,act)=>{ if(n>0) I.push({lvl,n,t,s,items,act}); };
+  if(v==="majeurs" && loaded.majeurs && loaded.risques){
+    const libres=S.risques.filter(r=>!majOf(r));
+    add("crit", libres.length, plural(libres.length,"risque opérationnel non rattaché","risques opérationnels non rattachés"), "Ils n'apparaissent dans aucun risque majeur présenté à la direction.", it("risques",libres), {k:"identifier", l:"Identifier"});
+    const tot=S.risques.filter(majOf).length;
+    const gros=S.majeurs.filter(m=>{ const n=linkedRisks(m.id).length; return n>=15 && tot && n/tot>=0.3; });
+    add("warn", gros.length, plural(gros.length,"risque majeur trop large","risques majeurs trop larges"), gros.length?`« ${gros[0].titre} » regroupe ${linkedRisks(gros[0].id).length} risques : scindez-le pour une lecture plus fine.`:"", it("majeurs",gros), {k:"scinder", l:"Scinder"});
+    const sp=S.majeurs.filter(m=>!m.proprietaire);
+    add("warn", sp.length, plural(sp.length,"risque majeur sans propriétaire","risques majeurs sans propriétaire"), "Chaque risque majeur doit être porté par un membre de la direction.", it("majeurs",sp));
+    const nc=S.majeurs.filter(m=>!majCot(m).s && linkedRisks(m.id).length);
+    add("info", nc.length, plural(nc.length,"risque majeur non coté","risques majeurs non cotés"), "Aucun des risques rattachés n'a de probabilité ni d'impact.", it("majeurs",nc));
+    const vides=S.majeurs.filter(m=>!linkedRisks(m.id).length);
+    add("info", vides.length, plural(vides.length,"risque majeur vide","risques majeurs vides"), "Aucun risque opérationnel ne leur est rattaché.", it("majeurs",vides));
+  }
+  if(v==="risques" && loaded.risques){
+    const nc=S.risques.filter(nonCote); add("warn", nc.length, plural(nc.length,"risque non coté","risques non cotés"), "Sans probabilité ni impact, ils n'apparaissent ni sur la carte ni dans la cotation des risques majeurs.", it("risques",nc));
+    const cs=S.risques.filter(r=>cur(r)>=15 && !couvert(r)); add("crit", cs.length, plural(cs.length,"risque critique sans contrôle","risques critiques sans contrôle"), "Aucun contrôle de niveau 1 ou 2, ni fiche contrôle rattachée.", it("risques",cs));
+    const sp=S.risques.filter(r=>!r.proprietaire); add("info", sp.length, plural(sp.length,"risque sans propriétaire","risques sans propriétaire"), "Désignez qui est responsable de chaque risque.", it("risques",sp));
+    const sm=S.risques.filter(r=>!majOf(r)); add("info", sm.length, plural(sm.length,"risque hors risque majeur","risques hors risque majeur"), "Rattachez-les pour qu'ils remontent à la direction.", it("risques",sm), {k:"go", v:"majeurs", l:"Risques majeurs"});
+  }
+  if(v==="controles" && loaded.controles){
+    const lastTest = c => S.tests.filter(t=>t.controleId===c.id && t.date).map(t=>t.date).sort().pop();
+    const y=new Date(TODAY); y.setFullYear(y.getFullYear()-1); const Y=y.toISOString().slice(0,10);
+    const st=S.controles.filter(c=>!S.tests.some(t=>t.controleId===c.id)); add("warn", st.length, plural(st.length,"contrôle jamais testé","contrôles jamais testés"), "Planifiez un test de conception ou d'efficacité.", it("controles",st), {k:"new", v:"tests", l:"Planifier un test"});
+    const vieux=S.controles.filter(c=>c.cle && lastTest(c) && lastTest(c)<Y); add("warn", vieux.length, plural(vieux.length,"contrôle clé non testé depuis un an","contrôles clés non testés depuis un an"), "Les contrôles clés se testent au moins une fois par an.", it("controles",vieux));
+    const ko=S.controles.filter(c=>{ const T=S.tests.filter(t=>t.controleId===c.id && t.date).sort((a,b)=>String(a.date).localeCompare(String(b.date))); const l=T[T.length-1]; return l && /Inefficace|Partiellement/.test(l.resultat||""); });
+    add("crit", ko.length, plural(ko.length,"contrôle jugé inefficace","contrôles jugés inefficaces"), "Selon leur dernier test : ouvrez un plan d'action.", it("controles",ko));
+    const sr=S.controles.filter(c=>!c.risqueId); add("info", sr.length, plural(sr.length,"contrôle sans risque","contrôles sans risque"), "Rattachez chaque contrôle au risque qu'il couvre.", it("controles",sr));
+  }
+  if(v==="tests" && loaded.tests){
+    const ret=S.tests.filter(t=>t.date && t.date<TODAY_ISO && /Planifié|En cours/.test(t.resultat||"Planifié")); add("crit", ret.length, plural(ret.length,"test en retard","tests en retard"), "Date dépassée et résultat non saisi.", it("tests",ret));
+    const sa=S.tests.filter(t=>/Inefficace|Partiellement/.test(t.resultat||"") && !S.actions.some(a=>a.controleId===t.controleId && isOpen(a))); add("warn", sa.length, plural(sa.length,"test défavorable sans plan d'action","tests défavorables sans plan d'action"), "Formalisez le constat et le plan d'action.", it("tests",sa), {k:"new", v:"actions", l:"Créer un constat"});
+    const pr=S.tests.filter(t=>/Efficace|Partiellement|Inefficace/.test(t.resultat||"") && !String(t.preuves||"").trim() && !(t.documentIds||[]).length); add("info", pr.length, plural(pr.length,"test sans preuve","tests sans preuve"), "Joignez ou décrivez les éléments probants.", it("tests",pr));
+  }
+  if(v==="actions" && loaded.actions){
+    const O=S.actions.filter(isOpen), J15=new Date(Date.now()+15*864e5).toISOString().slice(0,10);
+    const l=O.filter(isLate); add("crit", l.length, plural(l.length,"action en retard","actions en retard"), "Échéance dépassée : relancez les responsables.", it("actions",l));
+    const p=O.filter(a=>a.echeance && a.echeance>=TODAY_ISO && a.echeance<=J15); add("warn", p.length, plural(p.length,"échéance sous 15 jours","échéances sous 15 jours"), "À surveiller dès maintenant.", it("actions",p));
+    const sr=O.filter(a=>!a.responsable); add("warn", sr.length, plural(sr.length,"action sans responsable","actions sans responsable"), "Sans responsable, une action n'avance pas.", it("actions",sr));
+    const se=O.filter(a=>!a.echeance); add("info", se.length, plural(se.length,"action sans échéance","actions sans échéance"), "Fixez une date cible.", it("actions",se));
+  }
+  if(v==="incidents" && loaded.incidents){
+    const m30=new Date(Date.now()-30*864e5).toISOString().slice(0,10);
+    const o=S.incidents.filter(x=>x.statut!=="Clos" && x.date && x.date<m30); add("warn", o.length, plural(o.length,"incident ouvert depuis plus de 30 jours","incidents ouverts depuis plus de 30 jours"), "Analysez-les et clôturez-les.", it("incidents",o));
+    const sr=S.incidents.filter(x=>!x.risqueId); add("info", sr.length, plural(sr.length,"incident sans risque","incidents sans risque"), "Rattachez-les pour alimenter la cotation des risques.", it("incidents",sr));
+    const sa=S.incidents.filter(x=>x.statut!=="Clos" && Number(x.perte)>0 && !x.actionId); add("warn", sa.length, plural(sa.length,"incident avec perte sans plan d'action","incidents avec perte sans plan d'action"), "Une perte appelle une mesure corrective.", it("incidents",sa));
+  }
+  if(v==="kri" && loaded.kri){
+    const c=S.kri.filter(k=>kriState(k).s==="Critique"); add("crit", c.length, plural(c.length,"indicateur au seuil critique","indicateurs au seuil critique"), "La dernière mesure dépasse le seuil critique.", it("kri",c));
+    const a=S.kri.filter(k=>kriState(k).s==="Alerte"); add("warn", a.length, plural(a.length,"indicateur en alerte","indicateurs en alerte"), "La dernière mesure dépasse le seuil d'alerte.", it("kri",a));
+    const s=S.kri.filter(kriStale); add("info", s.length, plural(s.length,"indicateur à mesurer","indicateurs à mesurer"), "Pas de mesure sur la dernière période.", it("kri",s));
+  }
+  if(v==="taches" && loaded.taches){
+    const o=S.taches.filter(t=>t.statut!=="Terminée");
+    const l=o.filter(t=>t.echeance && t.echeance<TODAY_ISO); add("crit", l.length, plural(l.length,"tâche en retard","tâches en retard"), "Échéance dépassée.", it("taches",l));
+    const u=o.filter(t=>t.priorite==="Urgente"); add("warn", u.length, plural(u.length,"tâche urgente ouverte","tâches urgentes ouvertes"), "À traiter en priorité.", it("taches",u));
+    const na=o.filter(t=>!t.assigneId); add("info", na.length, plural(na.length,"tâche non attribuée","tâches non attribuées"), "Attribuez-les à un membre de l'équipe.", it("taches",na));
+  }
+  return I.sort((a,b)=>({crit:0,warn:1,info:2}[a.lvl]-{crit:0,warn:1,info:2}[b.lvl]));
+}
+const INS_ICON = {crit:'<path d="M12 8v5M12 16.5v.5"/><path d="M10.3 3.9 2.6 17.5A2 2 0 0 0 4.3 20.5h15.4a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/>', warn:'<circle cx="12" cy="12" r="9"/><path d="M12 7.5v5M12 15.8v.4"/>', info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.8v.4"/>'};
+function insightsHtml(v){
+  let I; try{ I=insightsFor(v); }catch(_){ I=[]; }
+  INS_CACHE[v]=I; if(!I.length) return "";
+  if(INS_REPLIE.has(v)) return `<button class="ins-pill" data-ins-toggle="${v}">${svg(INS_ICON[I[0].lvl],15,2)}${I.length} ${plural(I.length,"point d'attention","points d'attention")}<span>Afficher</span></button>`;
+  return `<section class="ins" aria-label="Points d'attention"><div class="ins-h"><b>Points d'attention</b><button class="linkbtn" data-ins-toggle="${v}">Masquer</button></div>
+    <div class="ins-g">${I.slice(0,4).map((x,i)=>`<div class="ins-c ${x.lvl}"><span class="ins-i">${svg(INS_ICON[x.lvl],18,2)}</span><div class="ins-t"><b><span class="ins-n">${x.n}</span> ${esc(x.t)}</b><small>${esc(x.s)}</small>
+      <div class="ins-a">${x.items&&x.items.length?`<button class="btn sm" data-ins-voir="${v}:${i}">Voir</button>`:""}${x.act?`<button class="btn sm primary" data-ins-act="${v}:${i}">${esc(x.act.l)}</button>`:""}</div></div></div>`).join("")}</div>
+    ${I.length>4?`<p class="ins-more">${I.length-4} autre${I.length-4>1?"s":""} point${I.length-4>1?"s":""} d'attention : <button class="linkbtn" data-ins-tout="${v}">tout voir</button></p>`:""}</section>`;
+}
+function insItemLabel(col, o){
+  const r=o.ref?`<span class="mono">${esc(o.ref)}</span>`:"";
+  const t=esc(o.titre || (col==="tests" ? (byId("controles",o.controleId)?.titre||"Test") : "—"));
+  let sub="";
+  if(col==="risques") sub=[o.typeProcessus||o.processus, o.proprietaire].filter(Boolean).map(esc).join(" · ");
+  if(col==="majeurs") sub=`${linkedRisks(o.id).length} ${plural(linkedRisks(o.id).length,"risque")}`;
+  if(col==="actions"||col==="taches") sub=[o.responsable, o.echeance?`échéance ${shortD(o.echeance)}`:""].filter(Boolean).map(esc).join(" · ");
+  if(col==="tests") sub=[o.resultat, o.date?shortD(o.date):""].filter(Boolean).map(esc).join(" · ");
+  const sc = (col==="risques") ? scoreChip(cur(o)) : (col==="majeurs" ? scoreChip(majCot(o).s) : "");
+  return `<button class="ins-li" data-open="${col}:${o.id}">${r}<span class="t"><b>${t}</b>${sub?`<small>${sub}</small>`:""}</span>${sc}</button>`;
+}
+function insPanel(x){
+  const L=(x.items||[]).map(o=>{ const d=byId(o.col,o.id); return d?insItemLabel(o.col,d):""; }).join("");
+  panel(`<div class="xp-head"><div><div class="eyebrow">Point d'attention</div><h2>${x.n} ${esc(x.t)}</h2><p class="sub" style="margin:4px 0 0">${esc(x.s)}</p></div><button class="btn ghost" data-close-ov aria-label="Fermer">✕</button></div><div class="xp-body"><div class="ins-list">${L}</div></div>`, "narrow");
+}
+function insTout(v){
+  const I=INS_CACHE[v]||[];
+  panel(`<div class="xp-head"><div><div class="eyebrow">${esc(VNAME[v]||"")}</div><h2>${I.length} points d'attention</h2></div><button class="btn ghost" data-close-ov aria-label="Fermer">✕</button></div><div class="xp-body"><div class="ins-list">${I.map((x,i)=>`<div class="ins-c ${x.lvl}"><span class="ins-i">${svg(INS_ICON[x.lvl],18,2)}</span><div class="ins-t"><b><span class="ins-n">${x.n}</span> ${esc(x.t)}</b><small>${esc(x.s)}</small><div class="ins-a">${x.items&&x.items.length?`<button class="btn sm" data-ins-voir="${v}:${i}">Voir</button>`:""}${x.act?`<button class="btn sm primary" data-ins-act="${v}:${i}">${esc(x.act.l)}</button>`:""}</div></div></div>`).join("")}</div></div>`, "narrow");
+}
+document.addEventListener("click", e=>{
+  const t=e.target; if(!(t instanceof Element)) return;
+  const tg=t.closest("[data-ins-toggle]"); if(tg){ const v=tg.dataset.insToggle; INS_REPLIE.has(v)?INS_REPLIE.delete(v):INS_REPLIE.add(v); insSave(); render(); return; }
+  const vo=t.closest("[data-ins-voir]"); if(vo){ const [v,i]=vo.dataset.insVoir.split(":"); const x=(INS_CACHE[v]||[])[+i]; if(x){ e.stopPropagation(); insPanel(x); } return; }
+  const to=t.closest("[data-ins-tout]"); if(to){ e.stopPropagation(); insTout(to.dataset.insTout); return; }
+  const ac=t.closest("[data-ins-act]"); if(ac){ const [v,i]=ac.dataset.insAct.split(":"); const x=(INS_CACHE[v]||[])[+i]; if(!x||!x.act) return; e.stopPropagation(); closeOverlay();
+    if(x.act.k==="identifier") majPropose();
+    else if(x.act.k==="scinder"){ majPropose(); if(MJ){ MJ.portee="tout"; majCalc(); majPeint(); } }
+    else if(x.act.k==="go") go(x.act.v);
+    else if(x.act.k==="new") openDrawer(x.act.v);
+  }
+}, true);
+
+/* =========================================================
+   Risques majeurs : nouvelle page
+   ========================================================= */
+const MJV_LS="vigie.majeurs.vue";
+let MJV = (()=>{ try{ return {vue:"cartes", q:"", niv:"", cat:"", tri:"crit", ...JSON.parse(localStorage.getItem(MJV_LS)||"{}"), q:""}; }catch(_){ return {vue:"cartes", q:"", niv:"", cat:"", tri:"crit"}; } })();
+const mjvSave = () => { try{ localStorage.setItem(MJV_LS, JSON.stringify({vue:MJV.vue, tri:MJV.tri})); }catch(_){} };
+const NIVX = [["Critique",4,"p-crit"],["Élevé",3,"p-high"],["Modéré",2,"p-warn"],["Faible",1,"p-ok"],["Non coté",0,"p-neutral"]];
+const nivOf = s => { const L=level(s); return L?L.n:"Non coté"; };
+function mjInfos(m){
+  const c=majCot(m), st=majStats(m), L=st.L;
+  const dist=[0,0,0,0,0]; L.forEach(r=>{ const l=level(cur(r)); dist[l?l.c:0]++; });
+  const couv=L.filter(couvert).length, nc=L.filter(nonCote).length;
+  const critSans=L.filter(r=>cur(r)>=15 && !couvert(r)).length;
+  let next=null;
+  if(!L.length) next={t:"Rattacher des risques opérationnels", k:"open"};
+  else if(!m.proprietaire) next={t:"Désigner un propriétaire à la direction", k:"open"};
+  else if(critSans) next={t:`Couvrir ${critSans} ${plural(critSans,"risque critique")} sans contrôle`, k:"risques"};
+  else if(nc===L.length) next={t:`Coter les ${L.length} risques rattachés`, k:"risques"};
+  else if(nc) next={t:`Coter ${nc} ${plural(nc,"risque")} rattaché${nc>1?"s":""}`, k:"risques"};
+  else if(!m.appetence) next={t:"Définir l'appétence au risque", k:"open"};
+  else if(st.late.length) next={t:`Relancer ${st.late.length} ${plural(st.late.length,"action")} en retard`, k:"risques"};
+  return {c, st, L, dist, couv, nc, critSans, next, niv:nivOf(c.s)};
+}
+function mjDistBar(I){
+  const n=I.L.length||1, col=["var(--surface-3)","var(--h1)","var(--h2)","var(--h3)","var(--h4)"];
+  const seg=[4,3,2,1,0].filter(k=>I.dist[k]).map(k=>`<i style="width:${I.dist[k]/n*100}%;background:${col[k]}" title="${I.dist[k]} ${k?NIVX[4-k][0].toLowerCase():"non coté"}${I.dist[k]>1?"s":""}"></i>`).join("");
+  const lab=[[4,"critique"],[3,"élevé"],[2,"modéré"],[1,"faible"],[0,"non coté"]].filter(([k])=>I.dist[k]).map(([k,l])=>`<span><i style="background:${col[k]}"></i>${I.dist[k]} ${l}${I.dist[k]>1?"s":""}</span>`).join("");
+  return `<div class="mj-dist">${seg||'<i style="width:100%;background:var(--surface-3)"></i>'}</div><div class="mj-dist-l">${lab||"<span>Aucun risque rattaché</span>"}</div>`;
+}
+function mjCard(m){
+  const I=mjInfos(m), L=level(I.c.s), pc=I.L.length?Math.round(I.couv/I.L.length*100):0;
+  const top=I.L.slice().sort((a,b)=>(cur(b)||0)-(cur(a)||0)).slice(0,3);
+  return `<article class="mj-card lv${L?L.c:0}" data-open="majeurs:${m.id}" role="button" tabindex="0" aria-label="${esc(m.ref)} ${esc(m.titre)}">
+    <div class="mj-card-h"><span class="mono">${esc(m.ref)}</span>${L?pill(L.n,L.p):pill("Non coté","p-neutral")}${m.tendance?`<span class="mj-tend" title="Tendance">${TREND[m.tendance]||""} ${esc(m.tendance.toLowerCase())}</span>`:""}${exTag(m)}
+      <span class="mj-score ${L?"c"+L.c:""}" title="${I.c.s?`Probabilité ${I.c.p} × impact ${I.c.i}${I.c.manuel?" (cotation manuelle)":I.c.r?` · selon ${I.c.r.ref||I.c.r.titre}`:""}`:"Non coté"}"><b>${I.c.s||"—"}</b>${I.c.s?`<small>P${I.c.p}×I${I.c.i}</small>`:""}</span></div>
+    <h3>${esc(m.titre)}</h3>
+    ${m.description?`<p class="mj-desc">${esc(m.description)}</p>`:""}
+    ${mjDistBar(I)}
+    <div class="mj-kpis">
+      <div><b>${I.L.length}</b><small>${plural(I.L.length,"risque")}</small></div>
+      <div title="Risques couverts par un contrôle (fiche ou contrôle de niveau 1 ou 2)"><b>${I.L.length?pc+" %":"—"}</b><small>couverts</small><span class="mj-meter"><i style="width:${pc}%"></i></span></div>
+      <div><b class="${I.st.late.length?"late":""}">${I.st.A.length}</b><small>${plural(I.st.A.length,"action")}${I.st.late.length?` · ${I.st.late.length} en retard`:""}</small></div>
+      <div><b>${I.st.inc.length}</b><small>${plural(I.st.inc.length,"incident")}</small></div>
+    </div>
+    ${top.length?`<ul class="mj-top">${top.map(r=>`<li>${scoreChip(cur(r))}<span>${esc(r.titre)}</span></li>`).join("")}</ul>`:""}
+    ${I.next?`<div class="mj-next"><span>Prochaine étape</span><b>${esc(I.next.t)}</b></div>`:`<div class="mj-next ok"><span>Situation</span><b>Risque majeur documenté et suivi</b></div>`}
+    <div class="mj-foot">${m.proprietaire?`<span class="who">${avatar(m.proprietaire,"sm")}<span>${esc(m.proprietaire)}</span></span>`:`<span class="mj-nop">Sans propriétaire</span>`}
+      ${I.L.length?`<button class="btn sm" data-mj-risques="${m.id}">Voir les ${I.L.length} risques</button>`:""}</div>
+  </article>`;
+}
+function mjFiltres(M){
+  const q=norm(MJV.q);
+  let L=M.filter(m=>(!MJV.niv || nivOf(majCot(m).s)===MJV.niv) && (!MJV.cat || (m.categorie||"Non classé")===MJV.cat) && (!q || norm([m.ref,m.titre,m.description,m.proprietaire].join(" ")).includes(q) || linkedRisks(m.id).some(r=>norm(r.titre).includes(q))));
+  const T={crit:(a,b)=>majCot(b).s-majCot(a).s || linkedRisks(b.id).length-linkedRisks(a.id).length, taille:(a,b)=>linkedRisks(b.id).length-linkedRisks(a.id).length, ref:(a,b)=>sortRef(a,b), titre:(a,b)=>String(a.titre).localeCompare(String(b.titre),"fr")};
+  return L.sort(T[MJV.tri]||T.crit);
+}
+function mjTable(L){
+  return `<div class="tablewrap"><table class="data mj-table"><thead><tr><th>Réf.</th><th>Risque majeur</th><th>Cotation</th><th>Risques</th><th>Critiques</th><th>Non cotés</th><th>Couverture</th><th>Actions</th><th>Propriétaire</th></tr></thead><tbody>
+    ${L.map(m=>{ const I=mjInfos(m), pc=I.L.length?Math.round(I.couv/I.L.length*100):0; return `<tr data-open="majeurs:${m.id}"><td class="mono">${esc(m.ref)}</td><td><b>${esc(m.titre)}</b>${m.categorie?`<small class="sub">${esc(m.categorie)}</small>`:""}</td><td>${scoreChip(I.c.s)}</td><td class="num">${I.L.length}</td><td class="num">${I.dist[4]||"—"}</td><td class="num">${I.nc||"—"}</td><td><span class="progress"><span class="meter"><i style="width:${pc}%"></i></span>${I.L.length?pc+" %":"—"}</span></td><td class="num">${I.st.A.length}${I.st.late.length?` <span class="late">(${I.st.late.length} en retard)</span>`:""}</td><td>${m.proprietaire?esc(m.proprietaire):'<span class="sub">—</span>'}</td></tr>`; }).join("")}</tbody></table></div>`;
+}
+function renderMajeursV2(){
+  const M=S.majeurs.slice();
+  const libres=S.risques.filter(r=>!majOf(r));
+  const gen = canWrite ? `${!LOCAL?`<button class="btn" data-maj-gen="ai">${svg('<path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z" fill="currentColor" fill-opacity=".25"/>',16,2)}Proposer avec Claude</button>`:""}<button class="btn" data-maj-gen="cat">${svg(ICON.majeurs,16)}Identifier les risques majeurs</button>` : "";
+  const head = headerBlock("majeurs", `${M.length} ${plural(M.length,"risque majeur","risques majeurs")} · ${S.risques.length} ${plural(S.risques.length,"risque opérationnel","risques opérationnels")}`, "Cartographie des risques majeurs",
+    "Les risques qui menacent l'atteinte des objectifs, tels que la direction et le comité d'audit les suivent. Chacun regroupe des risques opérationnels et prend la cotation du plus critique, sauf cotation manuelle.",
+    `${gen}${M.length?`<button class="btn" data-export-menu="majeurs">${svg('<path d="M12 3v12M7 10l5 5 5-5M5 21h14"/>',16)}Exporter</button>`:""}${canWrite?`<button class="btn primary" data-new="majeurs">${plus}Nouveau risque majeur</button>`:""}`);
+  if(!loaded.majeurs || !loaded.risques) return head+'<p class="sub">Chargement…</p>';
+  if(!M.length) return head + `<section class="panel mj-empty"><div class="mj-empty-i">${tile("majeurs","xl")}</div><div><h2>Construisez votre cartographie des risques majeurs</h2>
+    <p>${S.risques.length?`Vigie analyse vos <b>${S.risques.length} risques opérationnels</b> (intitulé, description, conséquences, processus) et les rapproche d'une trentaine de risques majeurs types : fraude, cyberattaque, conformité, continuité d'activité… Vous validez la proposition avant toute modification.`:"Cartographiez d'abord vos risques opérationnels : Vigie pourra ensuite les regrouper en risques majeurs."}</p>
+    ${S.risques.length&&canWrite?`<div class="actions-row">${gen}</div>`:`<div class="actions-row"><button class="btn primary" data-go="risques">Aller aux risques opérationnels</button></div>`}</div></section>`;
+  const tot=S.risques.length, rat=tot-libres.length, cotes=M.filter(m=>majCot(m).s).length;
+  const nb=k=>M.filter(m=>nivOf(majCot(m).s)===k).length;
+  const kpi=(lbl,val,sub,pc,tone)=>`<div class="mj-k ${tone||""}"><span>${lbl}</span><b>${val}</b><small>${sub}</small>${pc!=null?`<span class="mj-meter"><i style="width:${pc}%"></i></span>`:""}</div>`;
+  const cats=[...new Set(M.map(m=>m.categorie||"Non classé"))].sort();
+  const L=mjFiltres(M);
+  const vb=(v,l,ic)=>`<button class="mj-vb ${MJV.vue===v?"on":""}" data-mjv="vue:${v}" aria-pressed="${MJV.vue===v}">${svg(ic,15,2)}${l}</button>`;
+  const body = !L.length ? `<section class="panel"><div class="empty"><b>Aucun risque majeur ne correspond</b><p>Modifiez la recherche ou les filtres.</p><button class="btn" data-mjv="reset:1">Réinitialiser</button></div></section>`
+    : MJV.vue==="carte" ? `<div class="mj-mapv"><section class="panel"><div class="panel-head"><div><h2>Carte des risques majeurs</h2><p>Position selon la cotation consolidée. Cliquez une étiquette pour ouvrir le risque.</p></div></div>${majMap(L,false)}
+        <div class="legend"><span><i class="c1"></i>Faible</span><span><i class="c2"></i>Modéré</span><span><i class="c3"></i>Élevé</span><span><i class="c4"></i>Critique</span></div>${L.some(m=>!majCot(m).s)?`<p class="sub">${L.filter(m=>!majCot(m).s).length} risque(s) majeur(s) non coté(s) n'apparaissent pas sur la carte.</p>`:""}</section>
+        <section class="panel"><div class="panel-head"><div><h2>Classement</h2><p>${nb("Critique")} ${plural(nb("Critique"),"critique")} · ${nb("Élevé")} ${plural(nb("Élevé"),"élevé")}</p></div></div><div class="list-rows">${L.map(m=>{ const c=majCot(m); return `<div class="lr" style="grid-template-columns:62px minmax(0,1fr) auto" data-open="majeurs:${m.id}" role="button" tabindex="0"><span class="mono">${esc(m.ref)}</span><span class="t"><b>${esc(m.titre)}</b><small>${linkedRisks(m.id).length} ${plural(linkedRisks(m.id).length,"risque")}${m.proprietaire?` · ${esc(m.proprietaire)}`:""}</small></span>${scoreChip(c.s)}</div>`; }).join("")}</div></section></div>`
+    : MJV.vue==="tableau" ? mjTable(L)
+    : `<div class="mj-grid">${L.map(mjCard).join("")}</div>`;
+  return head + `<div class="mj-kpis-top">
+      ${kpi("Risques majeurs", M.length, `${nb("Critique")} ${plural(nb("Critique"),"critique")} · ${nb("Élevé")} ${plural(nb("Élevé"),"élevé")}`, null, nb("Critique")?"crit":"")}
+      ${kpi("Risques opérationnels rattachés", tot?Math.round(rat/tot*100)+" %":"—", `${rat} sur ${tot}`, tot?rat/tot*100:0, libres.length?"warn":"ok")}
+      ${kpi("Risques majeurs cotés", M.length?Math.round(cotes/M.length*100)+" %":"—", `${cotes} sur ${M.length}`, M.length?cotes/M.length*100:0, cotes<M.length?"warn":"ok")}
+      ${kpi("Avec propriétaire", M.filter(m=>m.proprietaire).length+" / "+M.length, M.filter(m=>!m.proprietaire).length?"à désigner à la direction":"tous désignés", M.length?M.filter(m=>m.proprietaire).length/M.length*100:0, M.some(m=>!m.proprietaire)?"warn":"ok")}
+    </div>
+    <div class="mj-bar">
+      <div class="mj-views">${vb("cartes","Cartes",'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>')}${vb("carte","Carte",'<path d="M3 21V3M3 21h18"/><circle cx="9" cy="14" r="2"/><circle cx="15" cy="8" r="2"/>')}${vb("tableau","Tableau",'<path d="M3 5h18M3 12h18M3 19h18"/>')}</div>
+      <label class="search mj-q">${svg('<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',16)}<input id="mjQ" type="search" placeholder="Rechercher un risque majeur ou un risque rattaché" value="${esc(MJV.q)}"></label>
+      <select data-mjv-sel="tri" aria-label="Trier"><option value="crit" ${MJV.tri==="crit"?"selected":""}>Tri : criticité</option><option value="taille" ${MJV.tri==="taille"?"selected":""}>Tri : nombre de risques</option><option value="ref" ${MJV.tri==="ref"?"selected":""}>Tri : référence</option><option value="titre" ${MJV.tri==="titre"?"selected":""}>Tri : intitulé</option></select>
+    </div>
+    <div class="mj-chips">${NIVX.map(([n,,p])=>{ const k=nb(n); return k?`<button class="mj-chip ${MJV.niv===n?"on":""}" data-mjv="niv:${n}"><span class="pill ${p}">${n}</span><b>${k}</b></button>`:""; }).join("")}
+      ${cats.length>1?`<select data-mjv-sel="cat" aria-label="Catégorie"><option value="">Toutes les catégories</option>${cats.map(c=>`<option ${MJV.cat===c?"selected":""}>${esc(c)}</option>`).join("")}</select>`:""}
+      ${MJV.niv||MJV.cat||MJV.q?`<button class="linkbtn" data-mjv="reset:1">Effacer les filtres</button>`:""}<span class="mj-count">${L.length} sur ${M.length}</span></div>
+    ${body}
+    ${libres.length?`<section class="panel mj-libres"><div class="panel-head"><div><h2>Risques opérationnels non rattachés</h2><p>${libres.length} ${plural(libres.length,"risque")} n'apparaissent dans aucun risque majeur.</p></div>${canWrite?`<button class="btn primary" data-maj-gen="cat">Rattacher automatiquement</button>`:""}</div>
+      <div class="tablewrap" style="box-shadow:none"><table class="data" style="min-width:640px"><thead><tr><th>Réf.</th><th>Risque</th><th>Processus</th><th>Criticité</th><th>Rattacher à</th></tr></thead><tbody>${libres.sort((a,b)=>cur(b)-cur(a)).slice(0,50).map(r=>`<tr><td class="mono">${esc(r.ref)}</td><td><b>${esc(r.titre)}</b></td><td>${esc(r.typeProcessus||r.processus||"")}</td><td>${scoreChip(cur(r))}</td><td>${canWrite?`<select data-assign="${r.id}" aria-label="Risque majeur"><option value="">Choisir…</option>${M.slice().sort(sortRef).map(m=>`<option value="${m.id}">${esc(m.ref)} — ${esc(m.titre)}</option>`).join("")}</select>`:"—"}</td></tr>`).join("")}</tbody></table></div>${libres.length>50?`<p class="sub">Les 50 plus critiques sont affichés. Utilisez « Rattacher automatiquement » pour les autres.</p>`:""}</section>`:""}`;
+}
+function mjRisquesPanel(id){
+  const m=byId("majeurs",id); if(!m) return; const L=linkedRisks(id).slice().sort((a,b)=>(cur(b)||0)-(cur(a)||0));
+  panel(`<div class="xp-head"><div><div class="eyebrow">${esc(m.ref)} · ${L.length} ${plural(L.length,"risque rattaché","risques rattachés")}</div><h2>${esc(m.titre)}</h2></div><button class="btn ghost" data-close-ov aria-label="Fermer">✕</button></div>
+    <div class="xp-body"><div class="ins-list">${L.map(r=>insItemLabel("risques",r)).join("")}</div></div>`, "narrow");
+}
+let mjqT=null;
+document.addEventListener("click", e=>{
+  const t=e.target; if(!(t instanceof Element)) return;
+  const b=t.closest("[data-mjv]"); if(b){ const [k,v]=b.dataset.mjv.split(":"); if(k==="reset"){ MJV.niv=""; MJV.cat=""; MJV.q=""; } else if(k==="niv") MJV.niv = MJV.niv===v?"":v; else MJV[k]=v; mjvSave(); render(); return; }
+  const r=t.closest("[data-mj-risques]"); if(r){ e.stopPropagation(); mjRisquesPanel(r.dataset.mjRisques); return; }
+  const g=t.closest("[data-go]"); if(g && g.closest(".mj-empty")){ go(g.dataset.go); return; }
+}, true);
+document.addEventListener("change", e=>{ const t=e.target; if(t instanceof Element && t.matches("[data-mjv-sel]")){ MJV[t.dataset.mjvSel]=t.value; mjvSave(); render(); } });
+document.addEventListener("input", e=>{ const t=e.target; if(t instanceof Element && t.id==="mjQ"){ MJV.q=t.value; clearTimeout(mjqT); mjqT=setTimeout(()=>{ const pos=t.selectionStart; render(); const n=document.getElementById("mjQ"); if(n){ n.focus(); try{ n.setSelectionRange(pos,pos); }catch(_){} } }, 220); } });
 
 /* ---------- incidents ---------- */
 function incNet(x){ return Math.max(0,(Number(x.perte)||0)-(Number(x.recupere)||0)); }
